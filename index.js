@@ -5,34 +5,40 @@ const helmet = require('helmet');
 
 const sessionCheck = require('./middleware/sessionCheck')
 
-const user = require('./router/user');
-const admin = require('./router/admin');
-const product = require('./router/product');
-const company = require('./router/company');
-const web_auth = require('./router/web_auth');
-const dashboard = require('./router/dashboard');
-const discount = require('./router/discount');
-const category = require('./router/category');
-const award = require('./router/award');
-const order = require('./router/order');
-
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const connection = require('./conf/db');
 
-app.use(session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: false
-}))
+var sessionStore = new MySQLStore({}, connection);
+
+
+
+const user = require('./route/user');
+const admin = require('./route/admin');
+const product = require('./route/product');
+const company = require('./route/company');
+const web_auth = require('./route/web_auth');
+const dashboard = require('./route/dashboard');
+const discount = require('./route/discount');
+const category = require('./route/category');
+const award = require('./route/award');
+const order = require('./route/order');
 
 app.set('views', './view');
 app.set('view engine', 'ejs');
+
+app.use(session({
+    secret              : 'secret',
+    store               : sessionStore,
+    resave              : false,
+    saveUninitialized   : true
+}))
 
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', web_auth);
-
 app.use('/api/admin', admin);
 app.use('/api/company', company);
 app.use('/api/user', user);

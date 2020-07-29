@@ -9,6 +9,7 @@ router.use(flash());
 
 router.get('/', web_auth_controller.login_page);
 router.get('/logout', web_auth_controller.logout);
-router.post('/', web_auth_controller.login);
+router.post('/auth', web_auth_controller.auth);
+router.post('/', web_auth_controller.new_user);
 
 module.exports = router;

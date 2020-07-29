@@ -1,4 +1,6 @@
-const Web_Model = require("../model/web_auth");
+const bcrypt = require('bcrypt');
+
+const web_auth_model = require("../model/web_auth");
 
 exports.login_page = function(req, res){
     if(req.session.email){
@@ -8,24 +10,26 @@ exports.login_page = function(req, res){
     }
 }
 
-exports.login = function(req, res){
-    var dbemail = '123';
-    var dbpassword = '123';
-    var email = req.body.email;
-    var password = req.body.password;
-
-    if( email === '' || password === ''){
-        req.flash('error', "Please enter your login information.");
-        res.redirect('/');
-    } else if(email === dbemail && password === dbpassword){
-        req.session.email = email;
-        req.session.password = password;
-        //res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-        res.redirect('/api/dashboard');
-    } else{
-        req.flash('error', "Login Failed ! Please try again.");
-        res.redirect('/');
-    }
+exports.auth = function(req, res){
+    web_auth_model.auth(req.body.email).then((resultdb) => {
+        if(!resultdb || null){
+            req.flash('error', "User not registered !");
+            res.redirect('/');
+        } else {
+            bcrypt.compare(req.body.password, resultdb[0].password, function (err, result) {
+                if(result == true){
+                    req.session.loggedin = true;
+                    req.session.email = resultdb[0].username;
+                    res.redirect('/api/dashboard');
+                } else {
+                    req.flash('error', "Login Failed ! Please try again.");
+                    res.redirect('/');
+                }
+            });
+        }
+    }).catch((err) => {
+        console.log(err);
+    })
 }
 
 exports.logout = function(req, res){
@@ -36,4 +40,8 @@ exports.logout = function(req, res){
             res.redirect('/');
         }
     })
+}
+
+exports.new_user = function(req, res){
+
 }

@@ -1,31 +1,21 @@
 const mysql = require('mysql');
-const bcrypt = require('bcrypt');
+const connectionPool = require('../conf/db');
 
-const connectionPool = mysql.createPool({
-    connectionLimit: 10,
-    host: '127.0.0.1',
-    user: 'hofonspring',
-    password: '0000',
-    database: 'unknown'
-});
-
-exports.userLogin = (insertValues) => {
+exports.auth = (username) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
             if (connectionError) {
                 reject(connectionError);
             } else {
-                connection.query('SELECT * FROM user WHERE user_name = ?', insertValues.user_name, (error, result) => {
-                    if (error) {
-                        console.error('SQL Error : ', error);
-                        reject(error);
-                    } if (results.length > 0) {
-                        resolve(result);
+                connection.query('SELECT * FROM user WHERE username = ?', username, function (error, results, fields) {
+                    if (results.length > 0) {
+                        resolve(results);
                     } else {
-                        reject(error);
+                        resolve(null);
                     }
                 });
             }
+            connection.release();
         });
     });
 };
