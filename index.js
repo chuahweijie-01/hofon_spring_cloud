@@ -31,7 +31,7 @@ app.use(session({
     secret              : 'secret',
     store               : sessionStore,
     resave              : false,
-    saveUninitialized   : true
+    saveUninitialized   : false
 }))
 
 app.use(helmet());

@@ -20,7 +20,9 @@ exports.auth = function(req, res){
                 if(result == true){
                     req.session.loggedin = true;
                     req.session.email = resultdb[0].username;
-                    res.redirect('/api/dashboard');
+                    req.session.save(function (err) {
+                        res.redirect('/api/dashboard');
+                    })
                 } else {
                     req.flash('error', "Login Failed ! Please try again.");
                     res.redirect('/');

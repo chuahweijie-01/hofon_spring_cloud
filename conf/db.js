@@ -4,7 +4,7 @@ var options = {
     host        : 'localhost',
     port        :  3306,
     user        : 'root',
-    password    : 'NewTaipei1996',
+    password    : 'Cchuahweijie5105-',
     database    : 'expressdb'
 }
 
