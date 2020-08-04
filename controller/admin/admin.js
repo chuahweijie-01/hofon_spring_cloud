@@ -3,6 +3,7 @@ const admin_model = require('../../model/admin')
 exports.admin_create = function(req, res){
     var insertValues = 'Entering';
     admin_model.addAdmin(insertValues).then((result) => {
+        
         req.flash('success', "資料更新成功");
         res.redirect('/api/admin/new');
     }).catch((err) => {
