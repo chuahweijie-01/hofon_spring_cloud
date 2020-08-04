@@ -1,35 +1,7 @@
 const bcrypt = require('bcrypt');
 
-const web_auth_model = require("../model/web_auth");
-
 exports.login_page = function(req, res){
-    if(req.session.email){
-        res.redirect('/api/dashboard');
-    } else{
-        res.render('login');
-    }
-}
-
-exports.auth = function(req, res){
-    web_auth_model.auth(req.body.email).then((resultdb) => {
-        if(!resultdb || null){
-            req.flash('error', "User not registered !");
-            res.redirect('/');
-        } else {
-            bcrypt.compare(req.body.password, resultdb[0].password, function (err, result) {
-                if(result == true){
-                    req.session.loggedin = true;
-                    req.session.email = resultdb[0].username;
-                    res.redirect('/api/dashboard');
-                } else {
-                    req.flash('error', "Login Failed ! Please try again.");
-                    res.redirect('/');
-                }
-            });
-        }
-    }).catch((err) => {
-        console.log(err);
-    })
+    res.render('login', { message: req.flash('error') });
 }
 
 exports.logout = function(req, res){
@@ -42,6 +14,19 @@ exports.logout = function(req, res){
     })
 }
 
-exports.new_user = function(req, res){
+exports.loginFailed = function (req, res) {
+    if (!req.user) {
+        req.flash('error', "登入失敗，請重新登入。");
+        req.session.save(function (err) {
+            res.redirect('/');
+        })
+    }
+}
 
+exports.auth = function (req, res) {
+    req.session.loggedin = true;
+    req.session.username = req.body.username;
+    req.session.save(function (err) {
+        res.redirect('/api/dashboard');
+    })
 }
