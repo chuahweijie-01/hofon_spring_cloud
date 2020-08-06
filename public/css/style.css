@@ -3,7 +3,7 @@ body{
   margin-bottom: 100px;
 }
 
-/* Navbar */
+/* NAVBAR */
 .navbar{
   min-height: 33px !important;
   margin-bottom:0;
@@ -70,14 +70,14 @@ body{
   color: #ffbbbc;
 }
 
-/* Custom */
+/* CUSTOM */
 .main-color-bg{
   background-color: #e74c3c !important;
   border-color: #c0392b !important;
   color:#ffffff !important;
 }
 
-/* Header */
+/* HEADER */
 #header{
   background:#333333;
   color:#ffffff;
@@ -89,7 +89,7 @@ body{
   padding-top: 20px;
 }
 
-/* Breadcrumb */
+/* BREAD-CRUMB */
 .breadcrumb{
   background:#cccccc;
   color:#333333;
@@ -99,7 +99,7 @@ body{
   color:#333333;
 }
 
-/* Progress Bars */
+/* PROGRESS BAR */
 .progress-bar{
   background:#333333;
   color:#ffffff;
@@ -133,7 +133,7 @@ body{
   content: "\f107";
 }
 
-/* Footer */
+/* FOOTER */
 #footer{
   background:#333333;
   color:#ffffff;
@@ -166,14 +166,15 @@ body{
   }
 }
 
-#custom-text {
+/* FILE UPLOAD TEXT */
+#custom-text, #custom-text2 {
   margin-left: 10px;
   font-family: sans-serif;
   color: #aaa;
   padding: 8px ;
 }
 
-/*Checkboxes styles*/
+/* CHECKBOXES */
 input[type="checkbox"] { display: none; }
 
 input[type="checkbox"] + label {
@@ -242,7 +243,7 @@ select {
   -moz-appearance: none;
 }
 
-select.minimal {
+/*select.minimal {
   background-image:
     linear-gradient(45deg, transparent 50%, gray 50%),
     linear-gradient(135deg, gray 50%, transparent 50%);
@@ -267,8 +268,9 @@ select.minimal:focus {
     5px 5px;
   background-repeat: no-repeat;
   outline: 0;
-}
+}*/
 
+/* RATING STAR */
 .rating {
   display: inline-block;
   position: relative;
@@ -334,6 +336,7 @@ select.minimal:focus {
   text-shadow: 0 0 5px rgb(255, 166, 0);
 }
 
+/* DELETE MODAL */
 .modal-confirm {		
 	color: #636363;
   width: 400px;
@@ -414,6 +417,7 @@ select.minimal:focus {
 	background: #ee3535;
 }
 
+/* INVOICE DESIGN */
 #invoice{
   padding: 30px;
 }

@@ -1,35 +1,37 @@
-exports.user_create = function(req, res){
+exports.user_create = (req, res) => {
 
 }
 
-exports.user_create_address = function(req, res){
+exports.user_create_address = (req, res) => {
 
 }
 
-exports.user_display = function(req, res){
+exports.user_display = (req, res) => {
 
 }
 
-exports.user_display_list = function(req, res){
+exports.user_display_list = (req, res) => {
     res.render('user',{
         user: req.session.username,
-        title: "消費者"
+        title: "消費者",
+        icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
+        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">消費者</li>'
     });
 }
 
-exports.user_display_address = function(req, res){
+exports.user_display_address = (req, res) => {
 
 }
 
-exports.user_update = function(req, res){
+exports.user_update = (req, res) => {
 
 }
 
-exports.user_delete = function(req, res){
+exports.user_delete = (req, res) => {
 
 }
 
-exports.user_delete_address = function(req, res){
+exports.user_delete_address = (req, res) => {
 
 }
 

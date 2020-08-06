@@ -1,6 +1,6 @@
-const category_model = require('../../model/category')
+const category_model = require('../../model/admin/category')
 
-exports.category_create = function (req, res) {
+exports.category_create = (req, res) => {
     var insertValues = 'Entering';
     category_model.addCategory(insertValues).then((result) => {
         req.flash('success', "資料更新成功");
@@ -13,31 +13,35 @@ exports.category_create = function (req, res) {
     })
 }
 
-exports.category_display = function (req, res) {
+exports.category_display = (req, res) => {
 
 }
 
-exports.category_display_list = function (req, res) {
+exports.category_display_list = (req, res) => {
     res.render('category', {
         user: req.session.username,
-        title: "類別"
+        title: "類別",
+        icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
+        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">類別</li>'
     });
 }
 
-exports.category_new = function (req, res) {
+exports.category_new = (req, res) => {
     res.render('category_modify', {
         user: req.session.username,
         title: "類別",
+        icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
+        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/category">類別</a></li><li class="active">新增類別</li>',
         message: req.flash('error')
     });
 }
 
 
-exports.category_update = function (req, res) {
+exports.category_update = (req, res) => {
 
 }
 
-exports.category_delete = function (req, res) {
+exports.category_delete = (req, res) => {
 
 }
 

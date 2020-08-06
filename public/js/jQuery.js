@@ -1,10 +1,12 @@
 $(function () {
+  //SIDE MENU DROP DOWN
   $(".list-group-tree").on('click', "[data-toggle=collapse]", function () {
     $(this).toggleClass('in')
     $(this).next(".list-group.collapse").collapse('toggle');
     return false;
   })
 
+  //FRONT-END SEARCH
   $("#tableSearch").on("keyup", function () {
     var value = $(this).val().toLowerCase();
     $("#myTable tr").filter(function () {
@@ -12,10 +14,12 @@ $(function () {
     });
   });
 
+  //CUSTOMIZE FILE HANDLE BUTTON
   $("#custom-button").on('click', function () {
     $("#real-file").trigger("click");
   })
 
+  //CUSTOMIZE FILE HANDLE BUTTON
   $("#real-file").on("change", function () {
     if ($("#real-file").val()) {
       $("#custom-text").text($("#real-file").val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
@@ -24,6 +28,21 @@ $(function () {
     }
   });
 
+  //CUSTOMIZE FILE HANDLE BUTTON
+  $("#custom-button2").on('click', function () {
+    $("#real-file2").trigger("click");
+  })
+
+  //CUSTOMIZE FILE HANDLE BUTTON
+  $("#real-file2").on("change", function () {
+    if ($("#real-file2").val()) {
+      $("#custom-text2").text($("#real-file2").val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+    } else {
+      $("#custom-text2").text("圖檔尚未選擇");
+    }
+  });
+
+  //PASSWORD SIMILIARITY CHECK
   $('#password, #confirmed_password').on('keyup', function () {
     if (!$('#password').val() || !$('#confirmed_password').val()) {
       $('#message').html('請輸入密碼').css('color', 'red');
@@ -34,6 +53,7 @@ $(function () {
     }
   });
 
+  //PDF DOWNLOAD FOR ORDER
   $('#download').on('click', function () {
     const invoice = $('#invoice')[0];
     var opt = {
@@ -49,8 +69,8 @@ $(function () {
   $('#deleteCompany').on('click', function (e) {
     e.preventDefault();
     var data = {};
-    data.title = "title";
-    data.message = "message";
+    data.title = "foo";
+    data.message = "bar";
 
     $.ajax({
       type: 'DELETE',
@@ -62,5 +82,6 @@ $(function () {
       }
     })
   });
+
 });
 

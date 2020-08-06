@@ -16,7 +16,6 @@ router.get('/', admin_controller.admin_display_list);
 //Then direct to edit page with input filled
 router.get('/:id', admin_controller.admin_display)
 
-
 //Update admin information
 router.put('/:id', admin_controller.admin_update)
 

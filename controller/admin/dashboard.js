@@ -1,9 +1,8 @@
-exports.dashboard = function(req, res){
-    //Check for user role
-    //Administrator and client should have different data retrieved from database
-    
-    res.render('index',{
+exports.dashboard = (req, res) => {
+    res.render('dashboard',{
         user: req.session.username,
-        title: "儀表版面"
+        title: '儀表版面',
+        icon: '<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>',
+        navigation: '<li class="active">儀表版面</li>'
     });
 }

@@ -1,6 +1,6 @@
-const discount_model = require('../../model/discount')
+const discount_model = require('../../model/admin/discount')
 
-exports.discount_create = function(req, res){
+exports.discount_create = (req, res) => {
     var insertValues = 'Entering';
     discount_model.addDiscount(insertValues).then((result) => {
         req.flash('success', "資料更新成功");
@@ -13,31 +13,35 @@ exports.discount_create = function(req, res){
     })
 }
 
-exports.discount_display = function(req, res){
+exports.discount_display = (req, res) => {
     
 }
 
-exports.discount_display_list = function(req, res){
+exports.discount_display_list = (req, res) => {
     res.render('discount',{
         user: req.session.username,
-        title: "促銷"
+        title: "促銷",
+        icon: '<span class="glyphicon glyphicon-gift" aria-hidden="true"></span>',
+        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">促銷</li>'
     });
 }
 
-exports.discount_new = function(req, res){
+exports.discount_new = (req, res) => {
     res.render('discount_modify',{
         user: req.session.username,
         title: "促銷",
+        icon: '<span class="glyphicon glyphicon-gift" aria-hidden="true"></span>',
+        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/discount">促銷</a></li><li class="active">新增促銷</li>',
         message: req.flash('error')
     });
 }
 
 
-exports.discount_update = function(req, res){
+exports.discount_update = (req, res) => {
     
 }
 
-exports.discount_delete = function(req, res){
+exports.discount_delete = (req, res) => {
     
 }
 

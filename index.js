@@ -16,12 +16,14 @@ const user = require('./route/admin/user');
 const admin = require('./route/admin/admin');
 const product = require('./route/admin/product');
 const company = require('./route/admin/company');
-const web_auth = require('./route/web_auth');
+const web_auth = require('./route/admin/web_auth');
 const dashboard = require('./route/admin/dashboard');
 const discount = require('./route/admin/discount');
 const category = require('./route/admin/category');
 const award = require('./route/admin/award');
 const order = require('./route/admin/order');
+const ads = require('./route/admin/ads');
+const mobile = require('./route/admin/mobile')
 
 const middlewares = require('./middleware/middlewares');
 
@@ -58,6 +60,8 @@ app.use('/api/dashboard', middlewares.checkAuthenticated, dashboard);
 app.use('/api/category', category);
 app.use('/api/award', award);
 app.use('/api/order', order);
+app.use('/api/ads', ads);
+app.use('/api/mobile', mobile);
 
 var port = process.env.PORT || 3000
 app.listen(3000, () => console.log(`Listening to Port : ${port} ... `));

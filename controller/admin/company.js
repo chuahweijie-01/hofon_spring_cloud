@@ -1,4 +1,4 @@
-const company_model = require('../../model/company')
+const company_model = require('../../model/admin/company')
 
 exports.company_create = (req, res) => {
     var insertValues = 'Entering';
@@ -13,31 +13,37 @@ exports.company_create = (req, res) => {
     })
 }
 
-exports.company_display = function (req, res) {
+exports.company_display = (req, res) => {
 
 }
 
-exports.company_display_list = function (req, res) {
+exports.company_display_list = (req, res) => {
     res.render('company', {
         user: req.session.username,
-        title: "公司"
+        title: "公司",
+        icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
+        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">公司</li>'
     });
 }
 
-exports.company_new = function (req, res) {
+exports.company_new = (req, res) => {
     res.render('company_modify', {
         user: req.session.username,
         title: "公司",
+        icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
+        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/company">公司</a></li><li class="active">新增公司</li>',
         message: req.flash('error')
     });
 }
 
-exports.company_update = function (req, res) {
+exports.company_update = (req, res) => {
 
 }
 
-exports.company_delete = function (req, res) {
-    title = JSON.stringify(req.body.title);
-    console.log(title);
-    res.send("This if far away from Express : " + title);
+exports.company_delete = (req, res) => {
+    /*title = JSON.stringify(req.body.title);
+    message = JSON.stringify(req.body.title);*/
+    console.log(req.body.title);
+    console.log(req.body.message);
+    res.send("This if far away from Express : " + req.body.title);
 }
