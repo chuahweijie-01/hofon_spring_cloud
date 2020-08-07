@@ -26,8 +26,12 @@ exports.loginFormValidate = [
     (req, res, next) => {
         const errors = validationResult(req);
 
+        const modified_errors = errors.array().map( (obj) => { 
+            return Object.assign(obj, { type: 'error' }); 
+        })
+
         if (!errors.isEmpty()) {
-            req.flash('error', errors.array());
+            req.flash('error', modified_errors);
             req.session.save(function (err) {
                 res.redirect('/');
             })

@@ -19,7 +19,10 @@ exports.logout = (req, res) => {
 
 exports.loginFailed = (req, res) => {
     if (!req.user) {
-        req.flash('error', {'msg' : '登入失敗，請重新登入'});
+        req.flash('error', {
+            'msg' : '登入失敗，請重新登入',
+            'type': 'error'
+        });
         req.session.save(function (err) {
             res.redirect('/');
         })

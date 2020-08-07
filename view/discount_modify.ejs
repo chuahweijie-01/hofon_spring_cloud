@@ -1,20 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> 管理平臺 | <%= title%> </title>
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-</head>
-
+<%- include('partial/header')-%>
 <body>
-
-  <%- include('partial/header')-%>
-
   <section id="main">
     <div class="container">
       <div class="row">
@@ -38,10 +25,46 @@
                     <input type="text" class="form-control" placeholder="">
                   </div>
                 </div>
-                <div class="form-group">
-                  <label>簡介</label>
-                  <textarea class="form-control" placeholder="Page Body" rows="6" style="resize:none;"></textarea>
+                <hr>
+                <label style="font-size: 20px; margin-bottom: 10px;">選擇產品</label>
+                <div class="row">
+                  <div class="col-md-12">
+                    <input class="form-control" id="tableSearch" type="text" placeholder="Search">
+                  </div>
                 </div>
+                <br>
+                <table class="table table-striped table-hover">
+                  <tbody id="myTable">
+                    <tr>
+                      <td><input type="checkbox" id="box-0">
+                        <label for="box-0">產品_1</label></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" id="box-1">
+                        <label for="box-1">產品_2</label></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" id="box-2">
+                        <label for="box-2">產品_3</label></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" id="box-3">
+                        <label for="box-3">產品_4</label></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" id="box-4">
+                        <label for="box-4">產品_5</label></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" id="box-5">
+                        <label for="box-5">產品_6</label></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox" id="box-6">
+                        <label for="box-6">產品_7</label></td>
+                    </tr>
+                  </tbody>
+                </table>
                 <br>
                 <input type="submit" class="btn btn-danger" value="更新">
               </form>
@@ -54,9 +77,6 @@
 
   <%- include('partial/footer')-%>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/jQuery.js"></script>
 </body>
 
 </html>
