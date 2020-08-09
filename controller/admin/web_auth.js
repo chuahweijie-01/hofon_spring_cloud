@@ -36,3 +36,10 @@ exports.auth = (req, res) => {
         res.redirect('/api/dashboard');
     })
 }
+
+exports.register_page = (req, res) => {
+    res.render('register', {
+        title: "注冊頁面",
+        message: req.flash('error')
+    })
+}

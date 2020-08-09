@@ -63,5 +63,9 @@ app.use('/api/order', order);
 app.use('/api/ads', ads);
 app.use('/api/mobile', mobile);
 
+app.get('/api/test', (req, res) => {
+    res.render('order');
+})
+
 var port = process.env.PORT || 3000
 app.listen(3000, () => console.log(`Listening to Port : ${port} ... `));

@@ -13,15 +13,15 @@ module.exports = function (passport) {
       } else {
         connection.query('SELECT * FROM expressdb.user WHERE username = ?', [username], (error, results) => {
           if (error) {
-            return done('Error occered : ' + error);
+            done('Error occered : ' + error);
           } else if (!results.length) {
-            return done(null, false);
+            done(null, false);
           } else {
             bcrypt.compare(password, results[0].password, (err, result) => {
               if (result) {
-                return done(null, results[0].user_id);
+                done(null, results[0].user_id);
               } else {
-                return done(null, false);
+                done(null, false);
               }
             });
           }
@@ -48,7 +48,7 @@ module.exports = function (passport) {
       } else {
         connection.query('SELECT * FROM user WHERE user_id = ?', [id], (error, results) => {
           if (error) {
-            return done('Error occered : ' + error);
+            done('Error occered : ' + error);
           } else {
             done(error, results[0].user_id);
           }
