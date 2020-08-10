@@ -7,13 +7,14 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const connection = require('./conf/db');
 const cookieParser = require('cookie-parser');
+const methodOverride = require('method-override')
 
 var sessionStore = new MySQLStore({}, connection);
 const passport = require('passport');
 const flash = require('connect-flash');
 
 const user = require('./route/admin/user');
-const admin = require('./route/admin/admin');
+const client = require('./route/admin/client');
 const product = require('./route/admin/product');
 const company = require('./route/admin/company');
 const web_auth = require('./route/admin/web_auth');
@@ -24,6 +25,7 @@ const award = require('./route/admin/award');
 const order = require('./route/admin/order');
 const ads = require('./route/admin/ads');
 const mobile = require('./route/admin/mobile')
+const admin = require('./route/admin/admin')
 
 const middlewares = require('./middleware/middlewares');
 
@@ -49,9 +51,30 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+//app.use(methodOverride('_method'));
+
+app.use((req, res, next) => {
+    if(req.query._method == 'DELETE'){
+        req.method = 'DELETE';
+        req.url = req.path;
+    }
+    next();
+})
+
+app.use((req, res, next) => {
+    if(req.isAuthenticated()) {
+        res.locals.user = req.session.username;
+    }
+    next();
+})
+
+app.use((req, res, next) => {
+    res.locals.role = req.session.role;
+    next();
+})
 
 app.use('/', web_auth);
-app.use('/api/admin', admin);
+app.use('/api/client', client);
 app.use('/api/company', company);
 app.use('/api/user', user);
 app.use('/api/product', product);
@@ -62,10 +85,7 @@ app.use('/api/award', award);
 app.use('/api/order', order);
 app.use('/api/ads', ads);
 app.use('/api/mobile', mobile);
-
-app.get('/api/test', (req, res) => {
-    res.render('order');
-})
+app.use('/api/admin', admin);
 
 var port = process.env.PORT || 3000
 app.listen(3000, () => console.log(`Listening to Port : ${port} ... `));

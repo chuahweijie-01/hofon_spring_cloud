@@ -1,49 +1,127 @@
 const company_model = require('../../model/admin/company')
 
 exports.company_create = (req, res) => {
-    var insertValues = 'Entering';
-    company_model.addCompany(insertValues).then((result) => {
-        req.flash('success', "資料更新成功");
-        res.redirect('/api/company/new');
-    }).catch((err) => {
-        req.flash('error', "數據庫並未連接");
+        
+    company_info = {
+
+        company_name        : req.body.company_name,
+        company_logo        : req.body.company_logo,
+        company_phone       : req.body.company_phone,
+        company_address     : req.body.company_address,
+        company_description : req.body.company_description,
+
+        company_contact_fax      : req.body.company_contact_fax,
+        company_contact_name     : req.body.company_contact_name,
+        company_contact_phone    : req.body.company_contact_phone,
+        company_contact_position : req.body.company_contact_position,
+
+        company_bank_image          : req.body.company_bank_image,
+        company_bank_name           : req.body.company_bank_name ,
+        company_bank_branch         : req.body.company_bank_branch,
+        company_bank_account        : req.body.company_bank_account ,
+        company_bank_account_holder : req.body.company_bank_account_holder
+
+    }
+
+    company_model.add_company(company_info).then((result) => {
+        req.flash('flash', {
+            'msg' : result + ' 注冊成功',
+            'type': 'success'
+        });
         req.session.save(function (err) {
-            res.redirect('/api/company/new');
+            res.redirect('/api/company');
+        })
+    }).catch((err) => {
+        console.log(err)
+        req.flash('flash', {
+            'msg' : '數據庫並未連接',
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/company');
         })
     })
 }
 
 exports.company_display = (req, res) => {
+    company_model.company(req.params.id).then((result) => {
+        res.render('company_edit', {
+            title: "公司",
+            icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
+            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/company">公司</a></li><li class="active">更新公司</li>',
+            message: req.flash('flash'),
+            value : result
+        })
+    }).catch((err) => {
 
+    })
 }
 
 exports.company_display_list = (req, res) => {
-    res.render('company', {
-        user: req.session.username,
-        title: "公司",
-        icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
-        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">公司</li>'
-    });
+    company_model.company_list().then((result) => {
+        res.render('company', {
+            title: "公司",
+            icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
+            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">公司</li>',
+            message: req.flash('flash'),
+            data : result
+        });
+    }).catch((err) => {
+        console.log(err);
+        res.render('company', {
+            title: "公司",
+            icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
+            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">公司</li>',
+            message: req.flash('flash'),
+            data : ''
+        });
+    })
 }
 
 exports.company_new = (req, res) => {
-    res.render('company_modify', {
-        user: req.session.username,
+    res.render('company_add', {
         title: "公司",
         icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
         navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/company">公司</a></li><li class="active">新增公司</li>',
-        message: req.flash('error')
+        message: req.flash('flash'),
+        value : ''
     });
 }
 
 exports.company_update = (req, res) => {
+    
+    company_info = {
 
+        company_name        : req.body.company_name,
+        company_logo        : req.body.company_logo,
+        company_phone       : req.body.contact_phone,
+        company_address     : req.body.company_address,
+        company_description : req.body.company_description,
+
+        company_contact_fax      : req.body.contact_fax,
+        company_contact_name     : req.body.contact_name,
+        company_contact_phone    : req.body.contact_phone,
+        company_contact_position : req.body.contact_position,
+
+        company_bank_image          : req.body.bank_image,
+        company_bank_name           : req.body.bank_name ,
+        company_bank_branch         : req.body.bank_branch,
+        company_bank_account        : req.body.bank_account ,
+        company_bank_account_holder : req.body.bank_account_holder
+
+    }
 }
 
 exports.company_delete = (req, res) => {
-    /*title = JSON.stringify(req.body.title);
-    message = JSON.stringify(req.body.title);*/
-    console.log(req.body.title);
-    console.log(req.body.message);
-    res.send("This if far away from Express : " + req.body.title);
+    company_model.company_delete(req.params.id).then((result) => {
+        req.flash('flash', {
+            'msg' : '資料刪除成功',
+            'type': 'success'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/company');
+        })
+    }).catch((err) => {
+
+    })
 }

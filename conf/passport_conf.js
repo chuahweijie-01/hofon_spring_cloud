@@ -1,11 +1,9 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const mysql = require('mysql');
-
 const connectionPool = require('./db');
 
 module.exports = function (passport) {
-
   const authenticateUser = async (req, username, password, done) => {
     connectionPool.getConnection((connectionError, connection) => {
       if (connectionError) {
@@ -19,6 +17,8 @@ module.exports = function (passport) {
           } else {
             bcrypt.compare(password, results[0].password, (err, result) => {
               if (result) {
+                req.session.role = results[0].userrole;
+                req.session.username = results[0].username;
                 done(null, results[0].user_id);
               } else {
                 done(null, false);

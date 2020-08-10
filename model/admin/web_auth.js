@@ -1,40 +1,30 @@
 const mysql = require('mysql');
 const connectionPool = require('../../conf/db');
 
-exports.auth = (username) => {
+exports.insert = (user) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
             if (connectionError) {
                 reject(connectionError);
             } else {
-                connection.query('SELECT * FROM user WHERE username = ?', username, function (error, results, fields) {
+                connection.query('SELECT * FROM expressdb.user WHERE username = ?', user.username, function (error, results, fields) {
                     if (results.length > 0) {
-                        resolve(results);
+                        reject(1);
                     } else {
-                        resolve(null);
-                    }
-                });
-            }
-            connection.release();
-        });
-    });
-};
-
-exports.insert = (insertValues) => {
-    return new Promise((resolve, reject) => {
-        connectionPool.getConnection((connectionError, connection) => {
-            if (connectionError) {
-                reject(connectionError);
-            } else {
-                connection.query('INSERT INTO user SET ?', insertValues, (error, result) => {
-                    if (error) {
-                        console.error('SQL error: ', error);
-                        reject(error);
-                    } else if (result.affectedRows === 1) {
-                        resolve(result);
+                        connection.query('INSERT INTO user SET ?', user, (error, result) => {
+                            if (error) {
+                                console.error('SQL error: ', error);
+                                reject(error);
+                            } else if (result.affectedRows === 1) {
+                                resolve(result);
+                            } else {
+                                reject(error);
+                            }
+                        });
                     }
                     connection.release();
-                });
+                })
+
             }
         });
     });

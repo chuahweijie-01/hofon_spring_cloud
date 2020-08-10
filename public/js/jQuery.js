@@ -66,22 +66,20 @@ $(function () {
     html2pdf().from(invoice).set(opt).save();
   });
 
-  $('#deleteCompany').on('click', function (e) {
+  /*$('#deleteCompany').on('click', function (e) {
     e.preventDefault();
-    var data = {};
-    data.title = "foo";
-    data.message = "bar";
+    var id = $('#deleteCompany').attr('data-id');
 
     $.ajax({
       type: 'DELETE',
-      data: JSON.stringify(data),
       contentType: 'application/json',
-      url: '/api/company/' + data,
+      url: '/api/company/' + id,
       success: function (data) {
         console.log(data)
+        windows.location.replace('localhost:3000/api/company')
       }
     })
-  });
+  });*/
 
 });
 

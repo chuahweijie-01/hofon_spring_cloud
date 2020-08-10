@@ -11,6 +11,7 @@ router.get('/logout', web_auth_controller.logout);
 router.get('/loginFailed', web_auth_controller.loginFailed);
 router.get('/register', web_auth_controller.register_page);
 
+router.post('/register_admin', middlewares.loginFormValidate, web_auth_controller.register_admin);
 router.post('/auth', middlewares.loginFormValidate, passport.authenticate('local-login', {
     failureRedirect: '/loginFailed'
 }), web_auth_controller.auth);

@@ -1,5 +1,13 @@
 <% if (message.length > 0) { %>
-<div class="alert alert-success">
-  <strong><%= message%></strong>
-</div>
+  <% message.forEach(function(info) { %>
+    <% if(info.type == 'error') { %>
+      <div class="alert alert-danger">
+        <strong><%= info.msg%></strong>
+      </div>
+    <% } else if (info.type == 'success'){ %>
+      <div class="alert alert-success">
+        <strong><%= info.msg%></strong>
+      </div>
+    <% } %>
+  <% }) %>
 <% } %>

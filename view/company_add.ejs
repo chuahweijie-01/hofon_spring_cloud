@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partial/header')-%>
+
+<body>
+  <section id="main">
+    <div class="container">
+      <div class="row">
+        <%- include('partial/sidemenu')-%>
+        <div class="col-md-9">
+          <%- include('partial/flash')-%>
+          <div class="panel panel-default">
+            <div class="panel-heading main-color-bg">
+              <h3 class="panel-title"><%= title%></h3>
+            </div>
+            <div class="panel-body">
+              <form action="/api/company" method='POST'>
+                <label style="font-size: 20px;">負責人資料</label>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>姓名</label>
+                    <input type="text" name="company_contact_name" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>職銜</label>
+                    <input type="text" name="company_contact_position" class="form-control">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>聯絡號碼</label>
+                    <input type="text" name="company_contact_phone" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>分機</label>
+                    <input type="text" name="company_contact_fax" class="form-control">
+                  </div>
+                </div>
+                <hr>
+                <label style="font-size: 20px;">公司資料</label>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>名稱</label>
+                    <input type="text" name="company_name" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>商標</label>
+                    <div style="position:relative;">
+                      <input type="file" name="company_logo" id="real-file" class="hidden" />
+                      <button type="button" id="custom-button" class="btn btn-danger">上傳商標</button>
+                      <span id="custom-text">圖檔尚未選擇</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>聯絡號碼</label>
+                    <input type="text" name="company_phone" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>簡介</label>
+                  <textarea name="company_description" class="form-control" rows="6" style="resize:none;"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>地址</label>
+                  <input type="text" name="company_address" class="form-control" value="">
+                </div>
+                <hr>
+                <label style="font-size: 20px;">銀行戶口</label>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>存摺封面影本</label>
+                    <div style="position:relative;">
+                      <input type="file" name="bank_image" id="real-file2" class="hidden" />
+                      <button type="button" id="custom-button2" class="btn btn-danger">上傳影本</button>
+                      <span id="custom-text2">圖檔尚未選擇</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>銀行</label>
+                    <input type="text" name="company_bank_name" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>分行</label>
+                    <input type="text" name="company_bank_branch" class="form-control">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>賬號</label>
+                    <input type="text" name="company_bank_account" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>戶名</label>
+                    <input type="text" name="company_bank_account_holder" class="form-control">
+                  </div>
+                </div>
+                <hr>
+                <input type="submit" class="btn btn-danger" value="更新">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('partial/footer')-%>
+
+</body>
+
+</html>

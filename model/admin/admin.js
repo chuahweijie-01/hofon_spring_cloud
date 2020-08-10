@@ -1,14 +1,7 @@
 const mysql = require('mysql');
+const connectionPool = require('../../conf/db');
 
-const connectionPool = mysql.createPool({
-    connectionLimit: 10,
-    host: '127.0.0.1',
-    user: 'hofonspring',
-    password: '0000',
-    database: 'unknown'
-  });
-
-exports.addAdmin = (insertValues) => {
+exports.add_admin = (insertValues) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
             if(connectionError) {
@@ -20,6 +13,29 @@ exports.addAdmin = (insertValues) => {
                         reject(error);
                     } else if (result.affectedRows === 1){
                         resolve('SUCCESS');
+                    }
+                    connection.release();
+                });
+            }
+        });
+    });
+};
+
+exports.admin_list = () => {
+    return new Promise((resolve, reject) => {
+        connectionPool.getConnection((connectionError, connection) => {
+            if(connectionError) {
+                reject(connectionError);
+            } else {
+                connection.query('SELECT * FROM companydb.admin WHERE admin_role = 1', (error, result) => {
+                    if(error) {
+                        console.error('SQL Error : ', error);
+                        reject(error);
+                    } else if (result.length > 0) {
+                        resolve(result)
+                    } else {
+                        resolve(result);
+                        //reject(1)
                     }
                     connection.release();
                 });

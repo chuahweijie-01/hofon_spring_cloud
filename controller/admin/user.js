@@ -12,7 +12,6 @@ exports.user_display = (req, res) => {
 
 exports.user_display_list = (req, res) => {
     res.render('user',{
-        user: req.session.username,
         title: "消費者",
         icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
         navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">消費者</li>'

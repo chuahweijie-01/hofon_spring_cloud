@@ -8,13 +8,13 @@ const connectionPool = mysql.createPool({
     database: 'unknown'
   });
 
-  exports.addMobileSetting = (insertValues) => {
+exports.addClient = (insertValues) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
             if(connectionError) {
                 reject(connectionError);
             } else {
-                connection.query('INSERT INTO mobile SET ?', insertValues, (error, result) => {
+                connection.query('INSERT INTO client SET ?', insertValues, (error, result) => {
                     if(error) {
                         console.error('SQL Error : ', error);
                         reject(error);
