@@ -31,7 +31,7 @@ exports.loginFormValidate = [
         })
 
         if (!errors.isEmpty()) {
-            req.flash('error', modified_errors);
+            req.flash('flash', modified_errors);
             req.session.save(function (err) {
                 res.redirect('/');
             })
@@ -40,3 +40,11 @@ exports.loginFormValidate = [
         }
     }
 ]
+
+exports.checkUserRole = (req, res, next) => {
+    if (req.session.role == 0) {
+        res.redirect('/api/company/' + req.session.company)
+    } else {
+        next()
+    }
+}

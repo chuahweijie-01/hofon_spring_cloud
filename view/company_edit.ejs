@@ -14,7 +14,7 @@
               <h3 class="panel-title"><%= title%></h3>
             </div>
             <div class="panel-body">
-              <form action="/api/company/<%= value[0].company_id%>" method='POST'>
+              <form action="/api/company/<%= value[0].company_id%>?_method=PUT" method='POST'>
                 <label style="font-size: 20px;">負責人資料</label>
                 <div class="row">
                   <div class="form-group col-md-6">

@@ -51,18 +51,21 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-//app.use(methodOverride('_method'));
+app.use(methodOverride('_method'));
 
 app.use((req, res, next) => {
-    if(req.query._method == 'DELETE'){
+    if (req.query._method == 'DELETE') {
         req.method = 'DELETE';
+        req.url = req.path;
+    } else if (req.query._method == 'PUT') {
+        req.method = 'PUT';
         req.url = req.path;
     }
     next();
 })
 
 app.use((req, res, next) => {
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         res.locals.user = req.session.username;
     }
     next();

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <%- include('partial/header')-%>
 
 <body>
@@ -20,17 +19,17 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>賬號</label>
-                    <input type="text" name="name" class="form-control" placeholder="">
+                    <input type="text" name="admin_email" class="form-control" placeholder="">
                   </div>
                   <div class="form-group col-md-6">
                     <label>名稱</label>
-                    <input type="text" class="form-control" placeholder="">
+                    <input type="text" name="admin_name" class="form-control" placeholder="">
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>密碼</label>
-                    <input type="password" id="password" class="form-control" placeholder="">
+                    <input type="password" name="admin_password" id="password" class="form-control" placeholder="">
                   </div>
                   <div class="form-group col-md-6">
                     <label>請再次輸入密碼</label><span id='message' style="padding-left: 20px;"></span>
@@ -38,7 +37,7 @@
                   </div>
                 </div>
                 <hr>
-                <input type="submit" class="btn btn-danger" value="更新">
+                <input type="submit" class="btn btn-danger" value="新增">
               </form>
             </div>
           </div>

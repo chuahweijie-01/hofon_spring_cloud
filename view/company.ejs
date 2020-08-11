@@ -29,20 +29,43 @@
                     <th>加入日期</th>
                     <th></th>
                   </tr>
-                  
+
                 </thead>
                 <tbody id="myTable">
 
                   <% if (data.length) { %>
-                    <% for (var i=0; i< data.length; i++) { %>
-                      <tr>
-                        <td><%= data[i].company_id %></td>
-                        <td><%= data[i].company_name %></td>
-                        <td><%= data[i].created_date %></td>
-                        <td><a class="btn btn-default" href="/api/company/<%= data[i].company_id%>">Edit</a> <a class="btn btn-danger" href="/api/company/<%= data[i].company_id%>?_method=DELETE">Delete</a></td>
-                      </tr>
-                    <% } %>
+                  <% for (var i=0; i< data.length; i++) { %>
+                  <tr>
+                    <td><%= data[i].company_id %></td>
+                    <td><%= data[i].company_name %></td>
+                    <td><%= data[i].created_date %></td>
+                    <td><a class="btn btn-default" href="/api/company/<%= data[i].company_id%>">編輯</a> <a class="btn btn-danger" href="#companyDeleteModal_<%= data[i].company_id %>" data-toggle="modal">刪除</a></td>
+                  </tr>
+
+                  <div id="companyDeleteModal_<%= data[i].company_id %>" class="modal fade">
+                    <div class="modal-dialog modal-confirm">
+                      <div class="modal-content">
+                        <div class="modal-header flex-column">
+                          <div class="icon-box">
+                            <i class="material-icons">&#xE5CD;</i>
+                          </div>
+                          <h4 class="modal-title w-100">即將刪除 <%= data[i].company_name %></h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                          <p>改作業無法復原，確認要繼續執行嗎？</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                          <a type="button" class="btn btn-secondary" data-dismiss="modal" style="color: white;">取消</a>
+                          <a type="button" class="btn btn-danger" href="/api/company/<%= data[i].company_id%>?_method=DELETE" style="color: white;">刪除</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <% } %>
+                  <% } %>
+
                 </tbody>
               </table>
             </div>

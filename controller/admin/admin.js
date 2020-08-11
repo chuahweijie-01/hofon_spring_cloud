@@ -1,48 +1,73 @@
+const bcrypt = require('bcrypt');
 const admin_model = require('../../model/admin/admin')
 
 exports.admin_create = (req, res) => {
-    var insertValues = 'Entering';
-    admin_model.add_admin(insertValues).then((result) => {
-        req.flash('flash', {
-            'msg': '注冊成功',
-            'type': 'success'
-        });
-        res.redirect('/api/admin/new');
-    }).catch((err) => {
-        req.flash('flash', {
-            'msg': '數據庫並未連接',
-            'type': 'error'
-        });
-        req.session.save(function (err) {
-            res.redirect('/api/admin/new');
+    bcrypt.hash(req.body.admin_password, 10, (err, hash) => {
+        admin_info = {
+            admin_email: req.body.admin_email,
+            admin_name: req.body.admin_name,
+            admin_password: hash,
+            company_id : 1,
+            admin_role: 1
+        }
+
+        admin_model.add_admin(admin_info).then((result) => {
+            req.flash('flash', {
+                'msg': result,
+                'type': 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/admin');
+            })
+        }).catch((err) => {
+            req.flash('flash', {
+                'msg': err,
+                'type': 'error'
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/admin');
+            })
         })
     })
 }
 
 exports.admin_display = (req, res) => {
+    admin_model.admin(req.params.id).then((result) => {
+        res.render('admin_edit', {
+            title: "禾豐春總管",
+            icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
+            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/admin">禾豐春總管</a></li><li class="active">新增禾豐春總管</li>',
+            message: req.flash('flash'),
+            value: result
+        })
+    }).catch((err) => {
 
+    })
 }
 
 exports.admin_display_list = (req, res) => {
     admin_model.admin_list().then((result) => {
-        console.log(result);
         res.render('admin', {
             title: "禾豐春總管",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">禾豐春總管</li>'
+            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">禾豐春總管</li>',
+            message: req.flash('flash'),
+            data: result
         });
     }).catch((err) => {
         console.log(err);
         res.render('admin', {
             title: "禾豐春總管",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">禾豐春總管</li>'
+            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">禾豐春總管</li>',
+            message: req.flash('flash'),
+            data: ''
         });
     })
 }
 
 exports.admin_new = (req, res) => {
-    res.render('admin_modify', {
+    res.render('admin_add', {
         title: "禾豐春總管",
         icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
         navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/admin">禾豐春總管</a></li><li class="active">新增禾豐春總管</li>',
@@ -56,7 +81,23 @@ exports.admin_update = (req, res) => {
 }
 
 exports.admin_delete = (req, res) => {
-
+    admin_model.admin_delete(req.params.id).then((result) => {
+        req.flash('flash', {
+            'msg': result,
+            'type': 'success'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/admin');
+        })
+    }).catch((err) => {
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/admin');
+        })
+    })
 }
 
 
