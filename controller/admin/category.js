@@ -1,52 +1,146 @@
 const category_model = require('../../model/admin/category')
 
 exports.category_create = (req, res) => {
-    var insertValues = 'Entering';
-    category_model.addCategory(insertValues).then((result) => {
+    category_name = req.body.category_name;
+    company_id = req.body.company_id;
+
+    category_model.category_create(category_name, company_id).then((result) => {
         req.flash('flash', {
-            'msg' : '注冊成功',
+            'msg': result,
             'type': 'success'
         });
-        res.redirect('/api/category/new');
+        req.session.save(function (err) {
+            res.redirect('/api/category');
+        })
     }).catch((err) => {
         req.flash('flash', {
-            'msg' : '數據庫並未連接',
+            'msg': err,
             'type': 'error'
         });
         req.session.save(function (err) {
-            res.redirect('/api/category/new');
+            res.redirect('/api/category');
         })
     })
 }
 
 exports.category_display = (req, res) => {
+    category_model.company_list().then((company) => {
+        category_model.category_display(req.params.id).then((category) => {
+            res.render('category_edit', {
+                title: "類別",
+                icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
+                navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/category">類別</a></li><li class="active">更新類別</li>',
+                message: req.flash('flash'),
+                data: category,
+                company: company
+            });
+        }).catch((err) => {
+            req.flash('flash', {
+                'msg': err,
+                'type': 'error'
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/category');
+            })
+        })
+    }).catch((err) => {
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/category');
+        })
+    })
 
 }
 
 exports.category_display_list = (req, res) => {
-    res.render('category', {
-        title: "類別",
-        icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
-        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">類別</li>'
-    });
+    category_model.category_display_list().then((result) => {
+        res.render('category', {
+            title: "類別",
+            icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
+            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">類別</li>',
+            message: req.flash('flash'),
+            data: result
+        });
+    }).catch((err) => {
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/dashboard');
+        })
+    })
 }
 
 exports.category_new = (req, res) => {
-    res.render('category_modify', {
-        title: "類別",
-        icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
-        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/category">類別</a></li><li class="active">新增類別</li>',
-        message: req.flash('flash')
-    });
+    category_model.company_list().then((result) => {
+        res.render('category_add', {
+            title: "類別",
+            icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
+            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/category">類別</a></li><li class="active">新增類別</li>',
+            message: req.flash('flash'),
+            data: result
+        });
+    }).catch((err) => {
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/category');
+        })
+    })
 }
-
 
 exports.category_update = (req, res) => {
 
+    company_id = req.body.company_id;
+
+    category_info = {
+        category_id: req.params.id,
+        category_name: req.body.category_name
+    }
+
+    category_model.category_update(category_info, company_id).then((result) => {
+        req.flash('flash', {
+            'msg': result,
+            'type': 'success'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/category');
+        })
+    }).catch((err) => {
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/category');
+        })
+    })
 }
 
 exports.category_delete = (req, res) => {
-
+    category_model.category_delete(req.params.id).then((result) => {
+        req.flash('flash', {
+            'msg': result,
+            'type': 'success'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/category');
+        })
+    }).catch((err) => {
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/category');
+        })
+    })
 }
 
 

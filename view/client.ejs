@@ -28,9 +28,8 @@
                     <th>名稱</th>
                     <% if (locals.role === 1) { %>
                       <th>所屬公司</th>
-                    <% } else { %>
-                      <th>注冊時間</th>
                     <% } %>
+                    <th>最後一次登入</th>
                     <th></th>
                   </tr>
                   <tr>
@@ -44,9 +43,9 @@
                     <td><%= data[i].admin_name %></td>
                     <% if (locals.role === 1) { %>
                       <td><%= data[i].company_name %></td>
-                    <% } else { %>
-                      <td><%= data[i].created_date %></td>
                     <% } %>
+                    <td><%= data[i].last_login %></td>
+                    
                     <td><a class="btn btn-default" href="/api/client/<%= data[i].admin_id%>">編輯</a> <a
                         class="btn btn-danger" href="#clientDeleteModal_<%= data[i].admin_id %>"
                         data-toggle="modal">刪除</a></td>

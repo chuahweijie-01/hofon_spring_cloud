@@ -15,13 +15,20 @@ module.exports = function (passport) {
           } else if (!results.length) {
             done(null, false);
           } else {
-            console.log(results)
             bcrypt.compare(password, results[0].admin_password, (err, result) => {
               if (result) {
                 req.session.role = results[0].admin_role;
                 req.session.username = results[0].admin_name;
                 req.session.company = results[0].company_id;
-                done(null, results[0].admin_id);
+
+                connection.query(`UPDATE companydb.admin SET last_login = NOW() WHERE admin_id = ?`, results[0].admin_id, (error, result) => {
+                  if(error) {
+                    done('Error occured : ' + error);
+                  } else if (result.affectedRows === 1) {
+                    done(null, results[0].admin_id);
+                  }
+                })
+
               } else {
                 done(null, false);
               }

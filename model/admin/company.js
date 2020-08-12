@@ -10,7 +10,7 @@ exports.add_company = (company_info) => {
                 connection.query('INSERT INTO companydb.company SET ?', company_info, (error, result) => {
                     if (error) {
                         console.error('SQL Error : ', error);
-                        reject('數據庫連接失敗');
+                        reject('公司新增失敗');
                     } else if (result.affectedRows === 1) {
                         resolve(`${company_info.company_name} 注冊成功`);
                     }
@@ -30,7 +30,7 @@ exports.company_list = () => {
                 connection.query('SELECT * FROM companydb.company', (error, result) => {
                     if (error) {
                         console.error('SQL Error : ', error);
-                        reject(error);
+                        reject('資料選取失敗');
                     } else if (result.length > 0) {
                         resolve(result)
                     } else {
@@ -52,7 +52,7 @@ exports.company = (company_id) => {
                 connection.query('SELECT * FROM companydb.company WHERE company_id = ?', [company_id], (error, result) => {
                     if (error) {
                         console.error('SQL Error : ', error);
-                        reject(error);
+                        reject('資料選取失敗');
                     } else if (result.length > 0) {
                         resolve(result)
                     } else {
@@ -65,14 +65,14 @@ exports.company = (company_id) => {
     });
 };
 
-exports.update_company = (company_id, company_info) => {
+exports.company_update = (company_id, company_info) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
             if (connectionError) {
                 reject(connectionError);
             } else {
                 connection.query('UPDATE companydb.company SET ? WHERE company_id = ?', [company_info, company_id], (error, result) => {
-                    console.log(result)
+                    console.log('資料更新失敗，請稍後再試')
                     if (error) {
                         console.error('SQL Error : ', error);
                         reject('數據庫連接失敗');
@@ -100,7 +100,7 @@ exports.company_delete = (company_id) => {
                 connection.query('DELETE FROM companydb.company WHERE company_id = ?', [company_id], (error, result) => {
                     if (error) {
                         console.error('SQL Error : ', error);
-                        reject('數據庫連接失敗');
+                        reject('資料刪除失敗，請稍後再試');
                     } else if (result.affectedRows === 1) {
                         resolve('資料刪除成功')
                     } else {

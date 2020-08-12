@@ -11,7 +11,7 @@ exports.admin_create = (req, res) => {
             admin_role: 1
         }
 
-        admin_model.add_admin(admin_info).then((result) => {
+        admin_model.admin_create(admin_info).then((result) => {
             req.flash('flash', {
                 'msg': result,
                 'type': 'success'
@@ -32,21 +32,27 @@ exports.admin_create = (req, res) => {
 }
 
 exports.admin_display = (req, res) => {
-    admin_model.admin(req.params.id).then((result) => {
+    admin_model.admin_display(req.params.id).then((result) => {
         res.render('admin_edit', {
             title: "禾豐春總管",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/admin">禾豐春總管</a></li><li class="active">新增禾豐春總管</li>',
+            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/admin">禾豐春總管</a></li><li class="active">更新禾豐春總管</li>',
             message: req.flash('flash'),
             value: result
         })
     }).catch((err) => {
-
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/admin');
+        })
     })
 }
 
 exports.admin_display_list = (req, res) => {
-    admin_model.admin_list().then((result) => {
+    admin_model.admin_display_list().then((result) => {
         res.render('admin', {
             title: "禾豐春總管",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
@@ -55,14 +61,13 @@ exports.admin_display_list = (req, res) => {
             data: result
         });
     }).catch((err) => {
-        console.log(err);
-        res.render('admin', {
-            title: "禾豐春總管",
-            icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">禾豐春總管</li>',
-            message: req.flash('flash'),
-            data: ''
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
         });
+        req.session.save(function (err) {
+            res.redirect('/api/dashboard');
+        })
     })
 }
 
@@ -77,7 +82,29 @@ exports.admin_new = (req, res) => {
 
 
 exports.admin_update = (req, res) => {
+    admin_id = req.params.id
+    admin_info = {
+        admin_name : req.body.admin_name,
+        admin_email : req.body.admin_email
+    }
 
+    admin_model.admin_update(admin_id, admin_info).then((result) => {
+        req.flash('flash', {
+            'msg': result,
+            'type': 'success'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/admin');
+        })
+    }).catch((err) => {
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/admin');
+        })
+    })
 }
 
 exports.admin_delete = (req, res) => {

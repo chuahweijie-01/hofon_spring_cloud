@@ -90,5 +90,10 @@ app.use('/api/ads', ads);
 app.use('/api/mobile', mobile);
 app.use('/api/admin', admin);
 
+app.get('/api/react_native/user', (req, res) => {
+    console.log('HI EXPO');
+    res.send('THIS IS FORM SERVER')
+})
+
 var port = process.env.PORT || 3000
 app.listen(3000, () => console.log(`Listening to Port : ${port} ... `));

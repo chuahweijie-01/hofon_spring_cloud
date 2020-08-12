@@ -112,7 +112,7 @@ exports.company_update = (req, res) => {
 
     }
 
-    company_model.update_company(company_id, company_info).then((result) => {
+    company_model.company_update(company_id, company_info).then((result) => {
         req.flash('flash', {
             'msg': result,
             'type': 'success'
@@ -121,7 +121,6 @@ exports.company_update = (req, res) => {
             res.redirect('/api/company');
         })
     }).catch((err) => {
-        console.log(err);
         req.flash('flash', {
             'msg': err,
             'type': 'error'
