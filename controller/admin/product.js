@@ -33,7 +33,7 @@ exports.product_create = (req, res) => {
 }
 
 exports.product_display = (req, res) => {
-    product_model.category_list().then((category => {
+    product_model.category_list(req.session.company).then((category => {
         product_model.product(req.params.id, req.session.company).then((result) => {
             res.render('product_edit', {
                 title: "產品",
@@ -84,7 +84,7 @@ exports.product_display_list = (req, res) => {
 }
 
 exports.product_new = (req, res) => {
-    product_model.category_list().then((result => {
+    product_model.category_list(req.session.company).then((result => {
         res.render('product_add', {
             title: "產品",
             icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
@@ -127,7 +127,7 @@ exports.product_update = (req, res) => {
     }).catch((err) => {
         req.flash('flash', {
             'msg': err,
-            'type': 'success'
+            'type': 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/product');
@@ -147,7 +147,7 @@ exports.product_delete = (req, res) => {
     }).catch((err) => {
         req.flash('flash', {
             'msg': err,
-            'type': 'success'
+            'type': 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/product');

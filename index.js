@@ -8,6 +8,7 @@ const MySQLStore = require('express-mysql-session')(session);
 const connection = require('./conf/db');
 const cookieParser = require('cookie-parser');
 const methodOverride = require('method-override')
+const cors = require('cors');
 
 var sessionStore = new MySQLStore({}, connection);
 const passport = require('passport');
@@ -76,6 +77,8 @@ app.use((req, res, next) => {
     next();
 })
 
+app.use(cors());
+
 app.use('/', web_auth);
 app.use('/api/client', client);
 app.use('/api/company', company);
@@ -90,9 +93,9 @@ app.use('/api/ads', ads);
 app.use('/api/mobile', mobile);
 app.use('/api/admin', admin);
 
-app.get('/api/react_native/user', (req, res) => {
-    console.log('HI EXPO');
-    res.send('THIS IS FORM SERVER')
+app.post('/api/react_native/user', (req, res) => {
+    console.log(req.body);
+    res.send({message: 'This is from Express Server !'})
 })
 
 var port = process.env.PORT || 3000

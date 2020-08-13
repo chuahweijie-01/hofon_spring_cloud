@@ -36,27 +36,29 @@
                     <% var checked = 0; %>
                     <% for (var i=0; i< privileges.length; i++) { %>
                     <% for (var j=0; j< data.length; j++) { %>
-                        <% if (privileges[i].privileges_id === data[j].privileges_id ) { %>
-                        <% checked = 1; %>
-                        <% break; %>
-                        <% } %>
+                    <% if (privileges[i].privileges_id === data[j].privileges_id ) { %>
+                    <% checked = 1; %>
+                    <% break; %>
+                    <% } %>
                     <% } %>
 
                     <tr>
                       <td class="col-md-4">
                         <% if (checked == 1) { %>
-                        <input type="checkbox" name="privileges_id" id="<%= privileges[i].privileges_id%>" value="<%= privileges[i].privileges_id%>" checked>
+                        <input type="checkbox" name="privileges_id" id="<%= privileges[i].privileges_id%>"
+                          value="<%= privileges[i].privileges_id%>" checked>
                         <% } else { %>
-                        <input type="checkbox" name="privileges_id" id="<%= privileges[i].privileges_id%>" value="<%= privileges[i].privileges_id%>">
+                        <input type="checkbox" name="privileges_id" id="<%= privileges[i].privileges_id%>"
+                          value="<%= privileges[i].privileges_id%>">
                         <% } %>
                         <label for="<%= privileges[i].privileges_id%>"><%= privileges[i].privileges_name%></label></td>
                       <td class="col-md-8"><%= privileges[i].privileges_description%></td>
                     </tr>
-                    
+
                     <% checked = 0; %>
                     <% } %>
                     <% } %>
-                    
+
                   </tbody>
                 </table>
                 <br>

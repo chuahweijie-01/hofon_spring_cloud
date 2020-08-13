@@ -6,7 +6,7 @@ const connection = require('../../conf/db');
 exports.product_create = (product_info) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
-            if(connectionError) {
+            if (connectionError) {
                 reject('數據庫連接失敗');
             } else {
                 connection.query(`SELECT COUNT(*) as total_product FROM productdb.product WHERE category_id = ? AND company_id = ?`, [product_info.category_id, product_info.company_id], (error, result) => {
@@ -17,10 +17,10 @@ exports.product_create = (product_info) => {
                         reject("該類別已超過可以新增的產品上限")
                     } else {
                         connection.query(`INSERT INTO productdb.product SET ?`, product_info, (error, result) => {
-                            if(error) {
+                            if (error) {
                                 console.error('SQL Error : ', error);
                                 reject(error);
-                            } else if (result.affectedRows === 1){
+                            } else if (result.affectedRows === 1) {
                                 resolve(`已新增${product_info.product_name}`);
                             }
                         });
@@ -32,13 +32,17 @@ exports.product_create = (product_info) => {
     });
 };
 
-exports.category_list = () => {
+exports.category_list = (company_id) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
-            if(connectionError) {
+            if (connectionError) {
                 reject('數據庫連接失敗')
             } else {
-                connection.query(`SELECT category_id, category_name FROM productdb.category`, (error, result) => {
+                connection.query(`SELECT category.category_id, category.category_name
+                                  FROM productdb.category AS category
+                                  JOIN companydb.company_category AS company_category
+                                  ON category.category_id = company_category.category_id
+                                  WHERE company_category.company_id = ?`, [company_id], (error, result) => {
                     if (error) {
                         reject('資料選取失敗');
                     } else if (result.length > 0) {
@@ -56,7 +60,7 @@ exports.category_list = () => {
 exports.product_list = (company_id) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
-            if(connectionError) {
+            if (connectionError) {
                 reject('數據庫連接失敗')
             } else {
                 connection.query(`SELECT product.product_id, product.product_name, product.product_stock, category.category_name, DATE_FORMAT(product.last_update, '%W %M %Y %H:%i:%s') AS last_update
@@ -83,7 +87,7 @@ exports.product_list = (company_id) => {
 exports.product = (product_id, company_id) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
-            if(connectionError) {
+            if (connectionError) {
                 reject('數據庫連接失敗')
             } else {
                 connection.query(`SELECT product_id, product_name, product_stock, product_description, product_rating, product_price, category_id
@@ -106,7 +110,7 @@ exports.product = (product_id, company_id) => {
 exports.product_update = (product_id, product_info) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
-            if(connectionError) {
+            if (connectionError) {
                 reject('數據庫連接失敗');
             } else {
                 connection.query(`UPDATE productdb.product SET ? WHERE product_id = ?`, [product_info, product_id], (error, result) => {
@@ -115,6 +119,8 @@ exports.product_update = (product_id, product_info) => {
                         reject('資料更新失敗，請稍後再試');
                     } else if (result.message.match('Changed: 1')) {
                         resolve('資料更新成功');
+                    } else {
+                        resolve('資料無異動');
                     }
                     connection.release();
                 })
