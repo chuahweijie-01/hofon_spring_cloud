@@ -4,6 +4,12 @@ const connectionPool = require('../../conf/db');
 exports.add_company = (company_info) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
+            if (connectionError) reject(connectionError);
+            return connection.promise().query(``)
+
+
+
+
             if (connectionError) {
                 reject(connectionError);
             } else {
@@ -24,21 +30,18 @@ exports.add_company = (company_info) => {
 exports.company_list = () => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
-            if (connectionError) {
-                reject(connectionError);
-            } else {
-                connection.query('SELECT * FROM companydb.company', (error, result) => {
-                    if (error) {
-                        console.error('SQL Error : ', error);
-                        reject('資料選取失敗');
-                    } else if (result.length > 0) {
-                        resolve(result)
-                    } else {
-                        resolve(result);
-                    }
+            if (connectionError) reject(connectionError);
+            return connection.promise().query(`SELECT * FROM companydb.company`)
+                .then(([rows, field]) => {
+                    resolve(rows);
+                })
+                .catch((err) => {
+                    console.error('CATCH ERROR : ', err);
+                    reject('資料選取失敗');
+                })
+                .finally(() => {
                     connection.release();
-                });
-            }
+                })
         });
     });
 };
@@ -46,21 +49,18 @@ exports.company_list = () => {
 exports.company = (company_id) => {
     return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
-            if (connectionError) {
-                reject(connectionError);
-            } else {
-                connection.query('SELECT * FROM companydb.company WHERE company_id = ?', [company_id], (error, result) => {
-                    if (error) {
-                        console.error('SQL Error : ', error);
-                        reject('資料選取失敗');
-                    } else if (result.length > 0) {
-                        resolve(result)
-                    } else {
-                        resolve(result);
-                    }
-                    connection.release();
-                });
-            }
+            if (connectionError) reject(connectionError);
+            return connection.promise().query(`SELECT * FROM companydb.company WHERE company_id = ?`, [company_id])
+            .then(([rows, field]) => {
+                resolve(rows);
+            })
+            .catch((err) => {
+                console.error('CATCH ERROR : ', err);
+                reject('資料選取失敗');
+            })
+            .finally(() => {
+                connection.release();
+            })
         });
     });
 };

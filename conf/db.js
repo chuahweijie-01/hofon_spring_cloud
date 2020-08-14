@@ -1,6 +1,6 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
-var options = {
+const options = {
     host        : process.env.MYSQL_HOST,
     port        : process.env.MYSQL_PORT,
     user        : process.env.MYSQL_USER,
@@ -8,6 +8,6 @@ var options = {
     database    : 'companydb'
 }
 
-var connection = mysql.createPool(options);
+const connection = mysql.createPool(options);
 
 module.exports = connection;

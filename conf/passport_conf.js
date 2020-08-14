@@ -1,42 +1,35 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
-const mysql = require('mysql');
 const connectionPool = require('./db');
 
 module.exports = function (passport) {
-  const authenticateUser = async (req, username, password, done) => {
+  const authenticateUser = (req, username, password, done) => {
     connectionPool.getConnection((connectionError, connection) => {
-      if (connectionError) {
-        console.log(connectionError);
-      } else {
-        connection.query('SELECT * FROM companydb.admin WHERE admin_email = ?', [username], (error, results) => {
-          if (error) {
-            done('Error occured : ' + error);
-          } else if (!results.length) {
-            done(null, false);
-          } else {
-            bcrypt.compare(password, results[0].admin_password, (err, result) => {
-              if (result) {
-                req.session.role = results[0].admin_role;
-                req.session.username = results[0].admin_name;
-                req.session.company = results[0].company_id;
-
-                connection.query(`UPDATE companydb.admin SET last_login = NOW() WHERE admin_id = ?`, results[0].admin_id, (error, result) => {
-                  if(error) {
-                    done('Error occured : ' + error);
-                  } else if (result.affectedRows === 1) {
-                    done(null, results[0].admin_id);
+      if (connectionError) throw connectionError;
+      return connection.promise().query(`SELECT * FROM companydb.admin WHERE admin_email = ?`, [username])
+        .then(([rows, fields]) => {
+          if (!rows.length) done(null, false)
+          bcrypt.compare(password, rows[0].admin_password, (err, result) => {
+            if (result) {
+              req.session.role = rows[0].admin_role;
+              req.session.username = rows[0].admin_name;
+              req.session.company = rows[0].company_id;
+              return (rows, connection.promise().query(`UPDATE companydb.admin SET last_login = NOW() WHERE admin_id = ?`, rows[0].admin_id))
+                .then((result) => {
+                  if (result[0].affectedRows === 1) {
+                    done(null, rows[0].admin_id);
+                    connection.release()
                   }
                 })
-
-              } else {
-                done(null, false);
-              }
-            });
-          }
-          connection.release();
+            } else {
+              console.log(`Bcyypt Error ${err}`)
+              done(null, false);
+            }
+          });
         })
-      }
+        .catch((err) => {
+          done('Catch error occured : ' + err);
+        })
     })
   }
 
@@ -51,19 +44,15 @@ module.exports = function (passport) {
   });
 
   passport.deserializeUser(function (id, done) {
-    connectionPool.getConnection((connectionError, connection) => {
-      if (connectionError) {
-        console.log(connectionError);
-      } else {
-        connection.query('SELECT * FROM companydb.admin WHERE admin_id = ?', [id], (error, results) => {
-          if (error) {
-            done('Error occered : ' + error);
-          } else {
-            done(error, results[0].admin_id);
-          }
-          connection.release();
+    connectionPool.getConnection((err, connection) => {
+      return connection.promise().query(`SELECT * FROM companydb.admin WHERE admin_id = ?`, [id])
+        .then(([rows, fields]) => {
+          done(null, rows[0].admin_id);
+          connection.release()
         })
-      }
+        .catch((err) => {
+          done('Catch error occured : ' + err);
+        })
     })
   });
 }
