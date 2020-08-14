@@ -24,7 +24,6 @@ exports.company_create = (req, res) => {
     }
 
     company_model.add_company(company_info).then((result) => {
-        console.log(result)
         req.flash('flash', {
             'msg': result,
             'type': 'success'
@@ -33,7 +32,6 @@ exports.company_create = (req, res) => {
             res.redirect('/api/company');
         })
     }).catch((err) => {
-        console.log(err)
         req.flash('flash', {
             'msg': err,
             'type': 'error'
@@ -54,7 +52,13 @@ exports.company_display = (req, res) => {
             value: result
         })
     }).catch((err) => {
-
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/company');
+        })
     })
 }
 
@@ -68,13 +72,13 @@ exports.company_display_list = (req, res) => {
             data: result
         });
     }).catch((err) => {
-        res.render('company', {
-            title: "公司",
-            icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">公司</li>',
-            message: req.flash('flash'),
-            data: ''
+        req.flash('flash', {
+            'msg': err,
+            'type': 'error'
         });
+        req.session.save(function (err) {
+            res.redirect('/api/dashboard');
+        })
     })
 }
 
