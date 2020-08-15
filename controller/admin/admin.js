@@ -21,7 +21,7 @@ exports.admin_create = (req, res) => {
             })
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err,
+                'msg': err.message,
                 'type': 'error'
             });
             req.session.save(function (err) {
@@ -42,7 +42,7 @@ exports.admin_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -62,7 +62,7 @@ exports.admin_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -82,13 +82,12 @@ exports.admin_new = (req, res) => {
 
 
 exports.admin_update = (req, res) => {
-    admin_id = req.params.id
     admin_info = {
         admin_name : req.body.admin_name,
         admin_email : req.body.admin_email
     }
 
-    admin_model.admin_update(admin_id, admin_info).then((result) => {
+    admin_model.admin_update(req.params.id, admin_info).then((result) => {
         req.flash('flash', {
             'msg': result,
             'type': 'success'
@@ -98,7 +97,7 @@ exports.admin_update = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -118,7 +117,7 @@ exports.admin_delete = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {

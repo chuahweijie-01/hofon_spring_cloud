@@ -1,4 +1,3 @@
-const mysql = require('mysql');
 const connectionPool = require('../../conf/db');
 
 exports.insert = (user) => {

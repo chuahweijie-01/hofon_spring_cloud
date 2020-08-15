@@ -34,7 +34,7 @@ exports.client_create = (req, res) => {
             })
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err,
+                'msg': err.message,
                 'type': 'error'
             });
             req.session.save(function (err) {
@@ -47,7 +47,6 @@ exports.client_create = (req, res) => {
 exports.client_display = (req, res) => {
     client_model.privileges_list().then((privileges) => {
         client_model.client_display(req.params.id).then((result) => {
-            console.log(result)
             res.render('client_edit', {
                 title: "管理者",
                 icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
@@ -58,7 +57,7 @@ exports.client_display = (req, res) => {
             });
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err,
+                'msg': err.message,
                 'type': 'error'
             });
             req.session.save(function (err) {
@@ -67,7 +66,7 @@ exports.client_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -77,43 +76,23 @@ exports.client_display = (req, res) => {
 }
 
 exports.client_display_list = (req, res) => {
-    if (req.session.role == 1) {
-        client_model.client_display_list().then((result) => {
-            res.render('client', {
-                title: "管理者",
-                icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-                navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">管理者</li>',
-                message: req.flash('flash'),
-                data: result
-            });
-        }).catch((err) => {
-            req.flash('flash', {
-                'msg': err,
-                'type': 'error'
-            });
-            req.session.save(function (err) {
-                res.redirect('/api/client');
-            })
+    client_model.client_display_list(req.session.role, req.session.company).then((result) => {
+        res.render('client', {
+            title: "管理者",
+            icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
+            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">管理者</li>',
+            message: req.flash('flash'),
+            data: result
+        });
+    }).catch((err) => {
+        req.flash('flash', {
+            'msg': err.message,
+            'type': 'error'
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/dashboard');
         })
-    } else {
-        client_model.client_display_list_company(req.session.company).then((result) => {
-            res.render('client', {
-                title: "管理者",
-                icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-                navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">管理者</li>',
-                message: req.flash('flash'),
-                data: result
-            });
-        }).catch((err) => {
-            req.flash('flash', {
-                'msg': err,
-                'type': 'error'
-            });
-            req.session.save(function (err) {
-                res.redirect('/api/client');
-            })
-        })
-    }
+    })
 }
 
 exports.client_new = (req, res) => {
@@ -129,7 +108,7 @@ exports.client_new = (req, res) => {
             });
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err,
+                'msg': err.message,
                 'type': 'error'
             });
             req.session.save(function (err) {
@@ -138,7 +117,7 @@ exports.client_new = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -150,14 +129,12 @@ exports.client_new = (req, res) => {
 
 exports.client_update = (req, res) => {
 
-    client_id = req.params.id;
-
     client_info = {
-        admin_email : req.body.admin_email,
+        admin_email: req.body.admin_email,
         admin_name: req.body.admin_name,
     }
 
-    client_model.client_update(client_id, client_info, req.body.privileges_id).then((result) => {
+    client_model.client_update(req.params.id, client_info, req.body.privileges_id).then((result) => {
         req.flash('flash', {
             'msg': result,
             'type': 'success'
@@ -167,7 +144,7 @@ exports.client_update = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -187,7 +164,7 @@ exports.client_delete = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partial/header')-%>
+
+<body>
+  <section id="main">
+    <div class="container">
+      <div class="row">
+        <%- include('partial/sidemenu')-%>
+        <div class="col-md-9">
+          <%- include('partial/flash')-%>
+          <div class="panel panel-default">
+            <div class="panel-heading main-color-bg">
+              <h3 class="panel-title"><%= title%></h3>
+            </div>
+            <div class="panel-body">
+              <form action="/api/ads/<%= data[0].advertisement_id%>?_method=PUT" method='POST'>
+                <label style="font-size: 20px;"><%= title%>資料</label>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>名稱</label>
+                    <input type="text" name="advertisement_name" class="form-control" value="<%= data[0].advertisement_name%>">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>廣告</label>
+                    <div style="position:relative;">
+                      <input type="file" name="advertisement_image" id="real-file" class="hidden" />
+                      <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
+                      <span id="custom-text">圖檔尚未選擇</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>相關鏈接</label>
+                  <input type="text" name="advertisement_link" class="form-control" placeholder="http://" value="<%= data[0].advertisement_link%>">
+                </div>
+                <br>
+                <input type="submit" class="btn btn-danger" value="更新">
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('partial/footer')-%>
+
+</body>
+
+</html>

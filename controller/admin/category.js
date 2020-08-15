@@ -14,7 +14,7 @@ exports.category_create = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -36,7 +36,7 @@ exports.category_display = (req, res) => {
             });
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err,
+                'msg': err.message,
                 'type': 'error'
             });
             req.session.save(function (err) {
@@ -45,7 +45,7 @@ exports.category_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -66,7 +66,7 @@ exports.category_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -86,7 +86,7 @@ exports.category_new = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -96,15 +96,13 @@ exports.category_new = (req, res) => {
 }
 
 exports.category_update = (req, res) => {
-
-    company_id = req.body.company_id;
-
+    
     category_info = {
         category_id: req.params.id,
         category_name: req.body.category_name
     }
 
-    category_model.category_update(category_info, company_id).then((result) => {
+    category_model.category_update(category_info, req.body.company_id).then((result) => {
         req.flash('flash', {
             'msg': result,
             'type': 'success'
@@ -114,7 +112,7 @@ exports.category_update = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -134,7 +132,7 @@ exports.category_delete = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {

@@ -14,28 +14,28 @@
               <h3 class="panel-title"><%= title%></h3>
             </div>
             <div class="panel-body">
-              <form action="/api/award" method='POST'>
+              <form action="/api/ads" method='POST'>
                 <label style="font-size: 20px;"><%= title%>資料</label>
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>名稱</label>
-                    <input type="text" name="name" class="form-control" placeholder="">
+                    <input type="text" name="advertisement_name" class="form-control">
                   </div>
                   <div class="form-group col-md-6">
                     <label>廣告</label>
                     <div style="position:relative;">
-                      <input type="file" id="real-file" class="hidden" />
+                      <input type="file" name="advertisement_image" id="real-file" class="hidden" />
                       <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
                       <span id="custom-text">圖檔尚未選擇</span>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>簡介</label>
-                  <textarea class="form-control" rows="6" style="resize:none;"></textarea>
+                  <label>相關鏈接</label>
+                  <input type="text" name="advertisement_link" class="form-control" placeholder="http://">
                 </div>
                 <br>
-                <input type="submit" class="btn btn-danger" value="更新">
+                <input type="submit" class="btn btn-danger" value="新增">
               </form>
             </div>
           </div>

@@ -20,10 +20,12 @@ exports.product_create = (req, res) => {
             'msg' : result,
             'type': 'success'
         });
-        res.redirect('/api/product');
+        req.session.save(function (err) {
+            res.redirect('/api/product');
+        })
     }).catch((err) => {
         req.flash('flash', {
-            'msg' : err,
+            'msg' : err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -45,7 +47,7 @@ exports.product_display = (req, res) => {
             });
         }).catch((err) => {
             req.flash('flash', {
-                'msg' : err,
+                'msg' : err.message,
                 'type': 'error'
             });
             req.session.save(function (err) {
@@ -54,7 +56,7 @@ exports.product_display = (req, res) => {
         })
     })).catch((err) => {
         req.flash('flash', {
-            'msg' : err,
+            'msg' : err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -73,13 +75,13 @@ exports.product_display_list = (req, res) => {
             data: result
         });
     }).catch((err) => {
-        res.render('product', {
-            title: "產品",
-            icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">產品</li>',
-            message: req.flash('flash'),
-            data: ''
+        req.flash('flash', {
+            'msg': err.message,
+            'type': 'error'
         });
+        req.session.save(function (err) {
+            res.redirect('/api/dashboard');
+        })
     })
 }
 
@@ -93,13 +95,13 @@ exports.product_new = (req, res) => {
             data: result
         });
     })).catch((err) => {
-        res.render('product_add', {
-            title: "產品",
-            icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/product">產品</a></li><li class="active">新增產品</li>',
-            message: req.flash('flash'),
-            data: ''
+        req.flash('flash', {
+            'msg': err.message,
+            'type': 'error'
         });
+        req.session.save(function (err) {
+            res.redirect('/api/product');
+        })
     })
 }
 
@@ -126,7 +128,7 @@ exports.product_update = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -146,7 +148,7 @@ exports.product_delete = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {

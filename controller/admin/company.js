@@ -33,7 +33,7 @@ exports.company_create = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -53,7 +53,7 @@ exports.company_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -73,7 +73,7 @@ exports.company_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -126,7 +126,7 @@ exports.company_update = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -146,7 +146,7 @@ exports.company_delete = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
+            'msg': err.message,
             'type': 'error'
         });
         req.session.save(function (err) {

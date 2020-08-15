@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const methodOverride = require('method-override')
 const cors = require('cors');
 
-var sessionStore = new MySQLStore({}, connection.promise());
+var sessionStore = new MySQLStore({}, connection);
 const passport = require('passport');
 const flash = require('connect-flash');
 
