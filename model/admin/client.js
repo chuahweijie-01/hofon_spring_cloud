@@ -141,6 +141,7 @@ exports.client_update = (client_id, client_info, privileges_id) => {
                     else throw new Error(`資料更新失敗`);
                 })
                 .then((result) => {
+                    console.log(result)
                     if (result[0].info.match('Changed: 1')) return (`${client_info.admin_name} 資料更新成功`);
                     else return (`權限刷新成功`);
                 })

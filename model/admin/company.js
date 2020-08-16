@@ -23,7 +23,7 @@ exports.add_company = (company_info) => {
 exports.company_list = () => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT * FROM companydb.company`)
+            return connection.query(`SELECT * , DATE_FORMAT(created_date, '%W %M %Y %H:%i:%s') AS created_date FROM companydb.company`)
                 .then(([rows, field]) => {
                     return (rows);
                 })
@@ -40,7 +40,7 @@ exports.company_list = () => {
 exports.company = (company_id) => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT *  FROM companydb.company WHERE company_id = ?`, [company_id])
+            return connection.query(`SELECT * FROM companydb.company WHERE company_id = ?`, [company_id])
                 .then(([rows, field]) => {
                     return (rows);
                 })

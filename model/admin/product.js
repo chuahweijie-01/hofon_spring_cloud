@@ -1,7 +1,4 @@
-const mysql = require('mysql');
 const connectionPool = require('../../conf/db');
-const { promiseImpl } = require('ejs');
-const connection = require('../../conf/db');
 
 exports.product_create = (product_info) => {
     return connectionPool.getConnection()

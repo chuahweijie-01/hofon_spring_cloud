@@ -22,7 +22,7 @@ exports.logout = (req, res) => {
 exports.loginFailed = (req, res) => {
     if (!req.user) {
         req.flash('flash', {
-            'msg' : '登入失敗，請重新登入',
+            'msg': '登入失敗，請重新登入',
             'type': 'error'
         });
         req.session.save(function (err) {
@@ -40,38 +40,27 @@ exports.auth = (req, res) => {
 exports.register_admin = (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         user = {
-            username : req.body.username,
-            password : hash,
-            userrole : 1
+            username: req.body.username,
+            password: hash,
+            userrole: 1
         };
 
         web_auth_model.insert(user).then((result) => {
             req.flash('flash', {
-                'msg' : '注冊成功',
+                'msg': result,
                 'type': 'success'
             });
             req.session.save(function (err) {
                 res.redirect('/');
             })
         }).catch((err) => {
-            if (err === 1) {
-                req.flash('flash', {
-                    'msg' : '該用戶已存在',
-                    'type': 'error'
-                });
-                req.session.save(function (err) {
-                    res.redirect('/register');
-                })
-            } else {
-                req.flash('flash', {
-                    'msg' : '伺服器正在繁忙，請稍後再試',
-                    'type': 'error'
-                });
-                req.session.save(function (err) {
-                    res.redirect('/register');
-                })
-            }
-            
+            req.flash('flash', {
+                'msg': err.message,
+                'type': 'error'
+            });
+            req.session.save(function (err) {
+                res.redirect('/register');
+            })
         })
     })
 }

@@ -1,30 +1,23 @@
 const connectionPool = require('../../conf/db');
 
 exports.insert = (user) => {
-    return new Promise((resolve, reject) => {
-        connectionPool.getConnection((connectionError, connection) => {
-            if (connectionError) {
-                reject(connectionError);
-            } else {
-                connection.query('SELECT * FROM expressdb.user WHERE username = ?', user.username, function (error, results, fields) {
-                    if (results.length > 0) {
-                        reject(1);
-                    } else {
-                        connection.query('INSERT INTO user SET ?', user, (error, result) => {
-                            if (error) {
-                                console.error('SQL error: ', error);
-                                reject(error);
-                            } else if (result.affectedRows === 1) {
-                                resolve(result);
-                            } else {
-                                reject(error);
-                            }
-                        });
-                    }
+    return connectionPool.getConnection()
+        .then((connection) => {
+            return connection.query(`SELECT * FROM companydb.admin WHERE admin_email = ? AND admin_role = 1`, user.username)
+                .then(([rows, field]) => {
+                    if (rows.length) throw new Error(`該郵箱已存在，請使用新的郵箱注冊`);
+                    else return connection.query(`INSERT INTO companydb.admin SET ?`, [user])
+                })
+                .then((result) => {
+                    if (result[0].affectedRows === 1) return (`${user.username} 注冊成功`);
+                    else throw new Error(`資料新增失敗`);
+                })
+                .finally(() => {
                     connection.release();
                 })
-
-            }
-        });
-    });
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(`資料新增失敗`);
+        })
 };

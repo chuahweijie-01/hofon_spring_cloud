@@ -67,6 +67,8 @@ exports.product_display = (req, res) => {
 
 exports.product_display_list = (req, res) => {
     product_model.product_list(req.session.company).then((result) => {
+        console.log(result)
+
         res.render('product', {
             title: "產品",
             icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',

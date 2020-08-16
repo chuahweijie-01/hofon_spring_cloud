@@ -18,7 +18,7 @@ exports.admin_create = (admin_info) => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error('資料新增失敗');
+            throw new Error(`資料新增失敗`);
         })
 };
 
@@ -35,7 +35,7 @@ exports.admin_display = (admin_id) => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error('系統暫時無法運行該功能');
+            throw new Error(`系統暫時無法運行該功能`);
         })
 };
 
@@ -52,7 +52,7 @@ exports.admin_display_list = () => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error('系統暫時無法運行該功能');
+            throw new Error(`系統暫時無法運行該功能`);
         })
 };
 
@@ -70,7 +70,7 @@ exports.admin_update = (admin_id, admin_info) => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error('資料更新失敗');
+            throw new Error(`資料更新失敗`);
         })
 };
 
@@ -88,6 +88,6 @@ exports.admin_delete = (admin_id) => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error('資料刪除失敗');
+            throw new Error(`資料刪除失敗`);
         })
 };

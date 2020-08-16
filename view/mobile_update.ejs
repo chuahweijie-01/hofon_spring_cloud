@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partial/header')-%>
+
+<body>
+  <section id="main">
+    <div class="container">
+      <div class="row">
+        <%- include('partial/sidemenu')-%>
+          <div class="col-md-9">
+            <%- include('partial/flash')-%>
+              <div class="panel panel-default">
+                <div class="panel-heading main-color-bg">
+                  <h3 class="panel-title"><%= title%></h3>
+                </div>
+                <div class="panel-body">
+                  <form action="/api/mobile" method='POST'>
+                    <label style="font-size: 20px;">軟體頁面 色彩客制化</label>
+                      <div class="row">
+                        <div class="form-group col-md-6">
+                          <label>標頭區域</label>
+                          <input type="text" name="header_color" class="form-control hidden header_color_real">
+                          <input type="text" class="form-control header_color" readonly>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-6">
+                          <label>底圖</label>
+                          <input type="text" name="body_color" class="form-control hidden body_color_real">
+                          <input type="text" class="form-control body_color" readonly>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-6">
+                          <label>頁尾區域</label>
+                          <input type="text" name="footer_color" class="form-control hidden footer_color_real">
+                          <input type="text" class="form-control footer_color" readonly>
+                        </div>
+                      </div>
+                    <hr>
+                    <input type="submit" class="btn btn-danger" value="更新">
+                  </form>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
+  <script src="js/color_picker.js" id="color_picker" data-header_color="<%= data[0].header_color%>" data-body_color="<%= data[0].body_color%>" data-footer_color="<%= data[0].footer_color%>"></script>
+
+  <%- include('partial/footer')-%>
+
+</body>
+
+</html>
