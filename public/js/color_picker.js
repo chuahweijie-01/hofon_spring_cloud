@@ -18,12 +18,20 @@ const header_pickr = Pickr.create({
         interaction: {
             hex: true,
             input: true,
-            save: true
+            save: true,
+            cancel: true
         }
+    },
+
+    i18n: {
+       'btn:save': '保存',
+       'btn:cancel': '關閉',
     }
+    
 }).on('init', header_pickr => {
     header_color_real.value = header_pickr.getSelectedColor().toHEXA().toString(0);
     header_color.style.backgroundColor = header_pickr.getSelectedColor().toHEXA().toString(0);
+
 }).on('save', color => {
     header_color_real.value = color.toHEXA().toString(0);
     header_color.style.backgroundColor = color.toHEXA().toString(0);
@@ -42,9 +50,16 @@ const body_pickr = Pickr.create({
         interaction: {
             hex: true,
             input: true,
-            save: true
+            save: true,
+            cancel: true
         }
+    },
+
+    i18n: {
+       'btn:save': '保存',
+       'btn:cancel': '關閉',
     }
+
 }).on('init', body_pickr => {
     body_color_real.value = body_pickr.getSelectedColor().toHEXA().toString(0);
     body_color.style.backgroundColor = body_pickr.getSelectedColor().toHEXA().toString(0);
@@ -66,9 +81,16 @@ const footer_pickr = Pickr.create({
         interaction: {
             hex: true,
             input: true,
-            save: true
+            save: true,
+            cancel: true
         }
+    },
+
+    i18n: {
+       'btn:save': '保存',
+       'btn:cancel': '關閉',
     }
+    
 }).on('init', footer_pickr => {
     footer_color_real.value = footer_pickr.getSelectedColor().toHEXA().toString(0);
     footer_color.style.backgroundColor = footer_pickr.getSelectedColor().toHEXA().toString(0);

@@ -1,8 +1,10 @@
 const category_model = require('../../model/admin/category')
 
 exports.category_create = (req, res) => {
+    
+    var company_id;
     category_name = req.body.category_name;
-    company_id = req.body.company_id;
+    Array.isArray(req.body.company_id)? company_id = req.body.company_id : company_id = [req.body.company_id];
 
     category_model.category_create(category_name, company_id).then((result) => {
         req.flash('flash', {
@@ -27,9 +29,9 @@ exports.category_display = (req, res) => {
     category_model.company_list().then((company) => {
         category_model.category_display(req.params.id).then((category) => {
             res.render('category_edit', {
-                title: "類別",
+                title: "產品屬性",
                 icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
-                navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/category">類別</a></li><li class="active">更新類別</li>',
+                navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/category">產品屬性</a></li><li class="active">更新產品屬性</li>',
                 message: req.flash('flash'),
                 data: category,
                 company: company
@@ -58,9 +60,9 @@ exports.category_display = (req, res) => {
 exports.category_display_list = (req, res) => {
     category_model.category_display_list().then((result) => {
         res.render('category', {
-            title: "類別",
+            title: "產品屬性",
             icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">類別</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">產品屬性</li>',
             message: req.flash('flash'),
             data: result
         });
@@ -78,9 +80,9 @@ exports.category_display_list = (req, res) => {
 exports.category_new = (req, res) => {
     category_model.company_list().then((result) => {
         res.render('category_add', {
-            title: "類別",
+            title: "產品屬性",
             icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/category">類別</a></li><li class="active">新增類別</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/category">產品屬性</a></li><li class="active">新增產品屬性</li>',
             message: req.flash('flash'),
             data: result
         });
@@ -102,7 +104,10 @@ exports.category_update = (req, res) => {
         category_name: req.body.category_name
     }
 
-    category_model.category_update(category_info, req.body.company_id).then((result) => {
+    var company_id;
+    Array.isArray(req.body.company_id)? company_id = req.body.company_id : company_id = [req.body.company_id];
+
+    category_model.category_update(category_info, company_id).then((result) => {
         req.flash('flash', {
             'msg': result,
             'type': 'success'

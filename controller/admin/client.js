@@ -50,7 +50,7 @@ exports.client_display = (req, res) => {
             res.render('client_edit', {
                 title: "管理者",
                 icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-                navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/client">管理者</a></li><li class="active">更新管理者</li>',
+                navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/client">管理者</a></li><li class="active">更新管理者</li>',
                 message: req.flash('flash'),
                 data: result,
                 privileges: privileges
@@ -80,7 +80,7 @@ exports.client_display_list = (req, res) => {
         res.render('client', {
             title: "管理者",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">管理者</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">管理者</li>',
             message: req.flash('flash'),
             data: result
         });
@@ -101,7 +101,7 @@ exports.client_new = (req, res) => {
             res.render('client_add', {
                 title: "管理者",
                 icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-                navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/client">管理者</a></li><li class="active">新增管理者</li>',
+                navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/client">管理者</a></li><li class="active">新增管理者</li>',
                 message: req.flash('flash'),
                 data: company,
                 privileges: privileges

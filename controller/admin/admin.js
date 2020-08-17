@@ -36,7 +36,7 @@ exports.admin_display = (req, res) => {
         res.render('admin_edit', {
             title: "禾豐春總管",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/admin">禾豐春總管</a></li><li class="active">更新禾豐春總管</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/admin">禾豐春總管</a></li><li class="active">更新禾豐春總管</li>',
             message: req.flash('flash'),
             value: result
         })
@@ -56,7 +56,7 @@ exports.admin_display_list = (req, res) => {
         res.render('admin', {
             title: "禾豐春總管",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">禾豐春總管</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">禾豐春總管</li>',
             message: req.flash('flash'),
             data: result
         });
@@ -75,7 +75,7 @@ exports.admin_new = (req, res) => {
     res.render('admin_add', {
         title: "禾豐春總管",
         icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/admin">禾豐春總管</a></li><li class="active">新增禾豐春總管</li>',
+        navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/admin">禾豐春總管</a></li><li class="active">新增禾豐春總管</li>',
         message: req.flash('flash')
     });
 }

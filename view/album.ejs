@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partial/header')-%>
+
+<body>
+  <section id="main">
+    <div class="container">
+      <div class="row">
+        <%- include('partial/sidemenu')-%>
+        <div class="col-md-9">
+          <%- include('partial/flash')-%>
+          <div class="jumbotron">
+            <h2>歡迎使用相簿功能</h2>
+            <p>Some information here please</p>
+          </div>
+          
+          <div class="row">
+            <div class="col-sm-6 col-md-4">
+              <div class="thumbnail">
+                <img src="/image/company_logo.jpg" alt="image" />
+                <div class="caption">
+                  <p><a href="#" class="btn btn-danger" role="button">刪除</a></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                  <img src="/image/company_logo.jpg" alt="image" />
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-danger" role="button">刪除</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                  <img src="/image/company_logo.jpg" alt="image" />
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-danger" role="button">刪除</a></p>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!--<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>-->
+  <script src="js/pickr.min.js"></script>
+
+  <%- include('partial/footer')-%>
+
+</body>
+
+</html>

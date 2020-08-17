@@ -14,7 +14,7 @@ exports.user_display_list = (req, res) => {
     res.render('user',{
         title: "消費者",
         icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
-        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">消費者</li>'
+        navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">消費者</li>'
     });
 }
 

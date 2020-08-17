@@ -33,7 +33,7 @@ exports.ads_display = (req, res) => {
         res.render('ads_edit', {
             title: "廣告",
             icon: '<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/ads">廣告</a></li><li class="active">更新廣告</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/ads">廣告管理</a></li><li class="active">更新廣告</li>',
             message: req.flash('flash'),
             data: result
         })
@@ -54,7 +54,7 @@ exports.ads_display_list = (req, res) => {
         res.render('ads', {
             title: "廣告",
             icon: '<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">廣告</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">廣告管理</li>',
             message: req.flash('flash'),
             data: result
         });
@@ -73,7 +73,7 @@ exports.ads_new = (req, res) => {
     res.render('ads_add', {
         title: "廣告",
         icon: '<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>',
-        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/ads">廣告</a></li><li class="active">新增廣告</li>',
+        navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/ads">廣告管理</a></li><li class="active">新增廣告</li>',
         message: req.flash('flash')
     });
 }

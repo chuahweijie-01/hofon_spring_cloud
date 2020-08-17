@@ -27,6 +27,7 @@ const order = require('./route/admin/order');
 const ads = require('./route/admin/ads');
 const mobile = require('./route/admin/mobile')
 const admin = require('./route/admin/admin')
+const album = require('./route/admin/album')
 
 const middlewares = require('./middleware/middlewares');
 
@@ -92,10 +93,11 @@ app.use('/api/order', order);
 app.use('/api/ads', ads);
 app.use('/api/mobile', mobile);
 app.use('/api/admin', admin);
+app.use('/api/album', album);
 
 app.post('/api/react_native/user', (req, res) => {
     console.log(req.body);
-    res.send({message: 'This is from Express Server !'})
+    res.send({ message: 'This is from Express Server !' })
 })
 
 var port = process.env.PORT || 3000

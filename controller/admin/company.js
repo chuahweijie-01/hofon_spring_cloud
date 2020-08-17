@@ -47,7 +47,7 @@ exports.company_display = (req, res) => {
         res.render('company_edit', {
             title: "公司",
             icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/company">公司</a></li><li class="active">更新公司</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/company">公司</a></li><li class="active">更新公司</li>',
             message: req.flash('flash'),
             value: result
         })
@@ -67,7 +67,7 @@ exports.company_display_list = (req, res) => {
         res.render('company', {
             title: "公司",
             icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">公司</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">公司</li>',
             message: req.flash('flash'),
             data: result
         });
@@ -86,7 +86,7 @@ exports.company_new = (req, res) => {
     res.render('company_add', {
         title: "公司",
         icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
-        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/company">公司</a></li><li class="active">新增公司</li>',
+        navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/company">公司</a></li><li class="active">新增公司</li>',
         message: req.flash('flash'),
         value: ''
     });
@@ -95,26 +95,30 @@ exports.company_new = (req, res) => {
 exports.company_update = (req, res) => {
 
     company_id = req.params.id;
-    company_info = {
+    company_info = {}
 
-        company_name: req.body.company_name,
-        company_logo: req.body.company_logo,
-        company_phone: req.body.company_phone,
-        company_address: req.body.company_address,
-        company_description: req.body.company_description,
+    if (req.session.role == 1) {
+        company_info = {
 
-        company_contact_fax: req.body.company_contact_fax,
-        company_contact_name: req.body.company_contact_name,
-        company_contact_phone: req.body.company_contact_phone,
-        company_contact_position: req.body.company_contact_position,
-
-        company_bank_image: req.body.company_bank_image,
-        company_bank_name: req.body.company_bank_name,
-        company_bank_branch: req.body.company_bank_branch,
-        company_bank_account: req.body.company_bank_account,
-        company_bank_account_holder: req.body.company_bank_account_holder
-
-    }
+            company_name: req.body.company_name,
+            company_logo: req.body.company_logo,
+            company_phone: req.body.company_phone,
+            company_address: req.body.company_address,
+            company_description: req.body.company_description,
+    
+            company_contact_fax: req.body.company_contact_fax,
+            company_contact_name: req.body.company_contact_name,
+            company_contact_phone: req.body.company_contact_phone,
+            company_contact_position: req.body.company_contact_position,
+    
+            company_bank_image: req.body.company_bank_image,
+            company_bank_name: req.body.company_bank_name,
+            company_bank_branch: req.body.company_bank_branch,
+            company_bank_account: req.body.company_bank_account,
+            company_bank_account_holder: req.body.company_bank_account_holder
+    
+        }
+    } else company_info = { company_description: req.body.company_description }
 
     company_model.company_update(company_id, company_info).then((result) => {
         req.flash('flash', {

@@ -40,7 +40,7 @@ exports.product_display = (req, res) => {
             res.render('product_edit', {
                 title: "產品",
                 icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
-                navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/product">產品</a></li><li class="active">更新產品</li>',
+                navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/product">產品</a></li><li class="active">更新產品</li>',
                 message: req.flash('flash'),
                 data: result,
                 category: category
@@ -72,7 +72,7 @@ exports.product_display_list = (req, res) => {
         res.render('product', {
             title: "產品",
             icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">產品</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">產品</li>',
             message: req.flash('flash'),
             data: result
         });
@@ -92,7 +92,7 @@ exports.product_new = (req, res) => {
         res.render('product_add', {
             title: "產品",
             icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/product">產品</a></li><li class="active">新增產品</li>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/product">產品</a></li><li class="active">新增產品</li>',
             message: req.flash('flash'),
             data: result
         });

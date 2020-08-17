@@ -7,7 +7,7 @@ exports.add_company = (company_info) => {
         .then((connection) => {
             return connection.query(`INSERT INTO companydb.company SET ?`, [company_info])
                 .then((result) => {
-                    if (result[0].affectedRows === 1) return (`${company_info.company_name} 注冊成功`);
+                    if (result[0].affectedRows === 1) return (`${company_info.company_name} 新增成功`);
                     else throw new Error(`資料新增失敗`);
                 })
                 .finally(() => {
@@ -59,7 +59,7 @@ exports.company_update = (company_id, company_info) => {
         .then((connection) => {
             return connection.query(`UPDATE companydb.company SET ? WHERE company_id = ?`, [company_info, company_id])
                 .then((result) => {
-                    if (result[0].info.match('Changed: 1')) return (`${company_info.company_name} 資料更新成功`);
+                    if (result[0].info.match('Changed: 1')) return (`資料更新成功`);
                     else return (`資料沒有異動`);
                 })
                 .finally(() => {

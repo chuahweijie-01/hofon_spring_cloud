@@ -12,7 +12,7 @@ exports.order_display_list = (req, res) => {
     res.render('order',{
         title: "訂單",
         icon: '<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>',
-        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li class="active">訂單</li>'
+        navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">訂單</li>'
     });
 }
 
@@ -20,7 +20,7 @@ exports.order_new = (req, res) => {
     res.render('order_view',{
         title: "訂單",
         icon: '<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>',
-        navigation: '<li><a href="/api/dashboard">儀表版面</a></li><li><a href="/api/order">訂單</a></li><li class="active">訂單詳情</li>'
+        navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/order">訂單</a></li><li class="active">訂單詳情</li>'
     });
 }
 

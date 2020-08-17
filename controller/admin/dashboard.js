@@ -1,8 +1,8 @@
 exports.dashboard = (req, res) => {
     res.render('dashboard',{
-        title: '儀表版面',
+        title: '管理總表',
         icon: '<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>',
-        navigation: '<li class="active">儀表版面</li>',
+        navigation: '<li class="active">管理總表</li>',
         message: req.flash('flash')
     });
 }

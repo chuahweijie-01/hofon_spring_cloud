@@ -18,7 +18,10 @@
                 <label style="font-size: 20px;">負責人資料</label>
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label>姓名</label>
+                    <label>姓名
+                      <a style="color:#e74c3c"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                          data-placement="right" data-original-title="寫入一些資料"></span></a>
+                    </label>
                     <input type="text" name="company_contact_name" class="form-control">
                   </div>
                   <div class="form-group col-md-6">
@@ -54,6 +57,10 @@
                 </div>
                 <div class="row">
                   <div class="form-group col-md-6">
+                    <label>統編 六碼</label>
+                    <input type="text" name="company_contact_phone" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
                     <label>聯絡號碼</label>
                     <input type="text" name="company_phone" class="form-control">
                   </div>
@@ -63,11 +70,51 @@
                   <textarea name="company_description" class="form-control" rows="6" style="resize:none;"></textarea>
                 </div>
                 <div class="form-group">
-                  <label>地址</label>
-                  <input type="text" name="company_address" class="form-control" value="">
+                  <label>登記地址</label>
+                  <input type="text" name="company_address" id="company_address" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>通訊地址</label>
+                  <input type="text" name="company_address_another" id="company_address_another" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="checkbox" name="same_address" id="same_address">
+                  <label for="same_address">與登記地址相同</label>
                 </div>
                 <hr>
                 <label style="font-size: 20px;">銀行戶口</label>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>帳號</label>
+                    <input type="text" name="company_bank_account" class="form-control">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>戶名</label>
+                    <input type="text" name="company_bank_account_holder" class="form-control">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label>銀行</label>
+                    <input type="text" name="company_bank_name" class="form-control">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label>代號 三碼</label>
+                    <input type="text" name="company_bank_name" class="form-control">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label>分行</label>
+                    <input type="text" name="company_bank_branch" class="form-control">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label>代號 四碼</label>
+                    <input type="text" name="company_bank_branch" class="form-control">
+                  </div>
+                </div>
+
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>存摺封面影本</label>
@@ -78,28 +125,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label>銀行</label>
-                    <input type="text" name="company_bank_name" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label>分行</label>
-                    <input type="text" name="company_bank_branch" class="form-control">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label>賬號</label>
-                    <input type="text" name="company_bank_account" class="form-control">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label>戶名</label>
-                    <input type="text" name="company_bank_account_holder" class="form-control">
-                  </div>
-                </div>
                 <hr>
-                <input type="submit" class="btn btn-danger" value="新增">
+                <input type="submit" class="btn btn-danger" value="儲存">
               </form>
             </div>
           </div>

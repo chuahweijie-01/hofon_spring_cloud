@@ -5,11 +5,11 @@ exports.client_create = (client_info, privileges_id) => {
         .then((connection) => {
             return connection.query(`SELECT COUNT(*) AS total_client FROM companydb.admin WHERE company_id = ?`, [client_info.company_id])
                 .then(([rows, field]) => {
-                    if (rows[0].total_client >= 10) throw new Error(`已超過可注冊的管理者上限`);
+                    if (rows[0].total_client >= 10) throw new Error(`已超過可註冊的管理者上限`);
                     else return connection.query(`SELECT * FROM companydb.admin WHERE admin_email = ?`, [client_info.admin_email])
                 })
                 .then(([rows, field]) => {
-                    if (rows.length) throw new Error(`該郵箱已存在數據庫，請使用新的郵箱注冊`);
+                    if (rows.length) throw new Error(`該郵箱已存在數據庫，請使用新的郵箱註冊`);
                     else return connection.query(`INSERT INTO companydb.admin SET ?`, [client_info])
                 })
                 .then((result) => {
@@ -23,7 +23,7 @@ exports.client_create = (client_info, privileges_id) => {
                     else throw new Error(`資料新增失敗`);
                 })
                 .then((result) => {
-                    if (result[0].affectedRows >= 1) return (`${client_info.admin_name} 注冊成功`);
+                    if (result[0].affectedRows >= 1) return (`${client_info.admin_name} 註冊成功`);
                     else throw new Error(`資料新增失敗`);
                 })
                 .finally(() => {

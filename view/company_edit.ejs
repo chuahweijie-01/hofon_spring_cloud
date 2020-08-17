@@ -19,21 +19,21 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>姓名</label>
-                    <input type="text" name="company_contact_name" class="form-control" value="<%= value[0].company_contact_name%>">
+                    <input type="text" name="company_contact_name" class="form-control role_determine" value="<%= value[0].company_contact_name%>">
                   </div>
                   <div class="form-group col-md-6">
                     <label>職銜</label>
-                    <input type="text" name="company_contact_position" class="form-control" value="<%= value[0].company_contact_position%>">
+                    <input type="text" name="company_contact_position" class="form-control role_determine" value="<%= value[0].company_contact_position%>">
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>聯絡號碼</label>
-                    <input type="text" name="company_contact_phone" class="form-control" value="<%= value[0].company_contact_phone%>">
+                    <input type="text" name="company_contact_phone" class="form-control role_determine" value="<%= value[0].company_contact_phone%>">
                   </div>
                   <div class="form-group col-md-6">
                     <label>分機</label>
-                    <input type="text" name="company_contact_fax" class="form-control" value="<%= value[0].company_contact_fax%>">
+                    <input type="text" name="company_contact_fax" class="form-control role_determine" value="<%= value[0].company_contact_fax%>">
                   </div>
                 </div>
                 <hr>
@@ -41,13 +41,13 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>名稱</label>
-                    <input type="text" name="company_name" class="form-control" value="<%= value[0].company_name%>">
+                    <input type="text" name="company_name" class="form-control role_determine" value="<%= value[0].company_name%>">
                   </div>
                   <div class="form-group col-md-6">
                     <label>商標</label>
                     <div style="position:relative;">
                       <input type="file" name="company_logo" id="real-file" class="hidden" />
-                      <button type="button" id="custom-button" class="btn btn-danger">上傳商標</button>
+                      <button type="button" id="custom-button" class="btn btn-danger role_determine">上傳商標</button>
                       <span id="custom-text">圖檔尚未選擇</span>
                     </div>
                   </div>
@@ -55,7 +55,7 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>聯絡號碼</label>
-                    <input type="text" name="company_phone" class="form-control" value="<%= value[0].company_phone%>">
+                    <input type="text" name="company_phone" class="form-control role_determine" value="<%= value[0].company_phone%>">
                   </div>
                 </div>
                 <div class="form-group">
@@ -64,7 +64,7 @@
                 </div>
                 <div class="form-group">
                   <label>地址</label>
-                  <input type="text" name="company_address" class="form-control"  value="<%= value[0].company_address%>">
+                  <input type="text" name="company_address" class="form-control role_determine"  value="<%= value[0].company_address%>">
                 </div>
                 <hr>
                 <label style="font-size: 20px;">銀行戶口</label>
@@ -73,7 +73,7 @@
                     <label>存摺封面影本</label>
                     <div style="position:relative;">
                       <input type="file" name="bank_image" id="real-file2" class="hidden" />
-                      <button type="button" id="custom-button2" class="btn btn-danger">上傳影本</button>
+                      <button type="button" id="custom-button2" class="btn btn-danger role_determine">上傳影本</button>
                       <span id="custom-text2">圖檔尚未選擇</span>
                     </div>
                   </div>
@@ -81,21 +81,21 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>銀行</label>
-                    <input type="text" name="company_bank_name" class="form-control" value="<%= value[0].company_bank_name%>">
+                    <input type="text" name="company_bank_name" class="form-control role_determine" value="<%= value[0].company_bank_name%>">
                   </div>
                   <div class="form-group col-md-6">
                     <label>分行</label>
-                    <input type="text" name="company_bank_branch" class="form-control" value="<%= value[0].company_bank_branch%>">
+                    <input type="text" name="company_bank_branch" class="form-control role_determine" value="<%= value[0].company_bank_branch%>">
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label>賬號</label>
-                    <input type="text" name="company_bank_account" class="form-control" value="<%= value[0].company_bank_account%>">
+                    <label>帳號</label>
+                    <input type="text" name="company_bank_account" class="form-control role_determine" value="<%= value[0].company_bank_account%>">
                   </div>
                   <div class="form-group col-md-6">
                     <label>戶名</label>
-                    <input type="text" name="company_bank_account_holder" class="form-control" value="<%= value[0].company_bank_account_holder%>">
+                    <input type="text" name="company_bank_account_holder" class="form-control role_determine" value="<%= value[0].company_bank_account_holder%>">
                   </div>
                 </div>
                 <hr>
@@ -109,6 +109,15 @@
   </section>
 
   <%- include('partial/footer')-%>
+
+  <script>
+    $(function () {
+      user_role = "<%= locals.role%>"
+      if( "<%= locals.role%>" == 0) {
+        $(".role_determine").prop("disabled", true)
+      } 
+    })
+  </script>
 
 </body>
 
