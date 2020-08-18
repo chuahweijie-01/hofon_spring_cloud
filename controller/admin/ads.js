@@ -50,7 +50,6 @@ exports.ads_display = (req, res) => {
 
 exports.ads_display_list = (req, res) => {
     ads_model.ads_display_list(req.session.company).then((result) => {
-        console.log(result)
         res.render('ads', {
             title: "廣告",
             icon: '<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>',

@@ -5,7 +5,7 @@ exports.product_create = (product_info) => {
         .then((connection) => {
             return connection.query(`SELECT COUNT(*) as total_product FROM productdb.product WHERE category_id = ? AND company_id = ?`, [product_info.category_id, product_info.company_id])
                 .then(([rows, field]) => {
-                    if (rows[0].total_client >= 8) throw new Error(`該類別已超過可以新增的產品上限`);
+                    if (rows[0].total_product >= 8) throw new Error(`該類別已超過可以新增的產品上限`);
                     else return connection.query(`INSERT INTO productdb.product SET ?`, [product_info])
                 })
                 .then((result) => {
@@ -15,8 +15,7 @@ exports.product_create = (product_info) => {
                 .finally(() => {
                     connection.release();
                 })
-        })
-        .catch((err) => {
+        }, err => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('資料新增失敗');
         })

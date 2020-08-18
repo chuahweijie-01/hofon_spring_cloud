@@ -70,9 +70,7 @@ $(function () {
   $('#same_address').on('click', function () {
     if($('#same_address').is(":checked")) {
       $('#company_address_another').val($('#company_address').val());
-      $('#company_address_another').attr('disabled', 'disabled');
     } else {
-      $('#company_address_another').removeAttr('disabled');
       $('#company_address_another').val('');
     }
   })

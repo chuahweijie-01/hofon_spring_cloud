@@ -15,8 +15,7 @@ exports.admin_create = (admin_info) => {
                 .finally(() => {
                     connection.release();
                 })
-        })
-        .catch((err) => {
+        }, err => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error(`資料新增失敗`);
         })

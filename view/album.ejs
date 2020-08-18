@@ -13,24 +13,23 @@
             <h2>歡迎使用相簿功能</h2>
             <p>Some information here please</p>
           </div>
-          
+
           <div class="row">
+            <% if (data.length) { %>
+            <% for (var i=0; i< data.length; i++) { %>
             <div class="col-sm-6 col-md-4">
               <div class="thumbnail">
-                <img src="/image/company_logo.jpg" alt="image" />
-                <div class="caption">
-                  <p><a href="#" class="btn btn-danger" role="button">刪除</a></p>
+                <div style="text-align: center; padding: 60px 25px;">
+                  <h2 style="margin-top: 10px;"><%= data[i].category_name%></h2>
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                  <img src="/image/company_logo.jpg" alt="image" />
-                  <div class="caption">
-                    <p><a href="#" class="btn btn-danger" role="button">刪除</a></p>
-                  </div>
-                </div>
-              </div>
+
+            <% } %>
+            <% } %>
+          </div>
+
+          <!--
               <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                   <img src="/image/company_logo.jpg" alt="image" />
@@ -39,7 +38,7 @@
                   </div>
                 </div>
               </div>
-          </div>
+              -->
 
         </div>
       </div>

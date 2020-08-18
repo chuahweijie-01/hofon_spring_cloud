@@ -80,13 +80,21 @@ app.use((req, res, next) => {
 
 app.use(cors());
 
+app.use(function (req, res, next) {
+    res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    next();
+});
+
 app.use('/', web_auth);
+
+app.use('*', middlewares.checkAuthenticated)
+
 app.use('/api/client', client);
 app.use('/api/company', company);
 app.use('/api/user', user);
 app.use('/api/product', product);
 app.use('/api/discount', discount);
-app.use('/api/dashboard', middlewares.checkAuthenticated, dashboard);
+app.use('/api/dashboard', dashboard);
 app.use('/api/category', category);
 app.use('/api/award', award);
 app.use('/api/order', order);

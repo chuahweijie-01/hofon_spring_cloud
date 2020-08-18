@@ -1,13 +1,17 @@
 const award_model = require('../../model/admin/award')
 
 exports.award_create = (req, res) => {
+
+    var product_id;
+    Array.isArray(req.body.product_id)? product_id = req.body.product_id : product_id = [req.body.product_id];
+    
     award_info = {
         company_id: req.session.company,
         award_name: req.body.award_name,
         award_description: req.body.award_description
     }
 
-    award_model.award_create(award_info, req.body.product_id).then((result) => {
+    award_model.award_create(award_info, product_id).then((result) => {
         req.flash('flash', {
             'msg': '注冊成功',
             'type': 'success'
@@ -100,12 +104,16 @@ exports.award_new = (req, res) => {
 
 exports.award_update = (req, res) => {
 
+    var product_id;
+    Array.isArray(req.body.product_id)? product_id = req.body.product_id : product_id = [req.body.product_id];
+    
+
     award_info = {
         award_name: req.body.award_name,
         award_description: req.body.award_description
     }
 
-    award_model.award_update(req.params.id, award_info, req.body.product_id).then((result) => {
+    award_model.award_update(req.params.id, award_info, product_id).then((result) => {
         req.flash('flash', {
             'msg': result,
             'type': 'success'

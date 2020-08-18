@@ -3,6 +3,9 @@ const client_model = require('../../model/admin/client');
 
 exports.client_create = (req, res) => {
 
+    var privileges_id;
+    Array.isArray(req.body.privileges_id)? privileges_id = req.body.privileges_id : privileges_id = [req.body.privileges_id];
+
     bcrypt.hash(req.body.admin_password, 10, (err, hash) => {
 
         client_info = {};
@@ -24,7 +27,7 @@ exports.client_create = (req, res) => {
         }
 
 
-        client_model.client_create(client_info, req.body.privileges_id).then((result) => {
+        client_model.client_create(client_info, privileges_id).then((result) => {
             req.flash('flash', {
                 'msg': result,
                 'type': 'success'
@@ -103,6 +106,7 @@ exports.client_new = (req, res) => {
                 icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
                 navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/client">管理者</a></li><li class="active">新增管理者</li>',
                 message: req.flash('flash'),
+                validation: req.flash('validation'),
                 data: company,
                 privileges: privileges
             });

@@ -11,8 +11,7 @@ exports.ads_create = (advertisement_info) => {
                 .finally(() => {
                     connection.release();
                 })
-        })
-        .catch((err) => {
+        }, err => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('資料新增失敗');
         })
@@ -29,8 +28,7 @@ exports.ads_display_list = (company_id) => {
                 .finally(() => {
                     connection.release();
                 })
-        })
-        .catch((err) => {
+        }, err => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('系統暫時無法運行該功能');
         })
@@ -46,8 +44,7 @@ exports.ads_display = (advertisement_id) => {
                 .finally(() => {
                     connection.release();
                 })
-        })
-        .catch((err) => {
+        }, err => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('系統暫時無法運行該功能');
         })
@@ -64,8 +61,7 @@ exports.ads_update = (advertisement_id, advertisement_info) => {
                 .finally(() => {
                     connection.release();
                 })
-        })
-        .catch((err) => {
+        }, err => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('資料更新失敗');
         })
@@ -82,8 +78,7 @@ exports.ads_delete = (advertisement_id) => {
                 .finally(() => {
                     connection.release();
                 })
-        })
-        .catch((err) => {
+        }, err => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('資料刪除失敗');
         })

@@ -26,8 +26,7 @@ exports.category_create = (category_name, company_id) => {
                 .finally(() => {
                     connection.release();
                 })
-        })
-        .catch((err) => {
+        }, err => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('資料新增失敗');
         })

@@ -1,11 +1,12 @@
 const express = require('express');
-const client_controller = require('../../controller/admin/client')
+const client_controller = require('../../controller/admin/client');
+const middlewares = require('../../middleware/middlewares');
 
 router = express.Router();
 router.use(express.static('./public/'));
 
 //Create new admin information
-router.post('/', client_controller.client_create)
+router.post('/', middlewares.client_info_input, client_controller.client_create)
 
 //Direct to new admin page
 router.get('/new', client_controller.client_new);

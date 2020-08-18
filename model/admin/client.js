@@ -29,8 +29,7 @@ exports.client_create = (client_info, privileges_id) => {
                 .finally(() => {
                     connection.release();
                 })
-        })
-        .catch((err) => {
+        }, err => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('資料新增失敗');
         })
