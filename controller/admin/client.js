@@ -4,7 +4,7 @@ const client_model = require('../../model/admin/client');
 exports.client_create = (req, res) => {
 
     var privileges_id;
-    Array.isArray(req.body.privileges_id)? privileges_id = req.body.privileges_id : privileges_id = [req.body.privileges_id];
+    Array.isArray(req.body.privileges_id) ? privileges_id = req.body.privileges_id : privileges_id = [req.body.privileges_id];
 
     bcrypt.hash(req.body.admin_password, 10, (err, hash) => {
 
@@ -59,19 +59,13 @@ exports.client_display = (req, res) => {
                 privileges: privileges
             });
         }).catch((err) => {
-            req.flash('flash', {
-                'msg': err.message,
-                'type': 'error'
-            });
+            req.flash('flash', { 'msg': err.message, 'type': 'error' });
             req.session.save(function (err) {
                 res.redirect('/api/client');
             })
         })
     }).catch((err) => {
-        req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
-        });
+        req.flash('flash', { 'msg': err.message, 'type': 'error' });
         req.session.save(function (err) {
             res.redirect('/api/client');
         })
@@ -101,6 +95,8 @@ exports.client_display_list = (req, res) => {
 exports.client_new = (req, res) => {
     client_model.company_list().then((company) => {
         client_model.privileges_list().then((privileges) => {
+            var client_info = req.session.client_info;
+            req.session.client_info = null;
             res.render('client_add', {
                 title: "管理者",
                 icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
@@ -108,7 +104,8 @@ exports.client_new = (req, res) => {
                 message: req.flash('flash'),
                 validation: req.flash('validation'),
                 data: company,
-                privileges: privileges
+                privileges: privileges,
+                client_info: client_info
             });
         }).catch((err) => {
             req.flash('flash', {

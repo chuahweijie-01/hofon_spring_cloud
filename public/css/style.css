@@ -584,3 +584,8 @@ select.minimal:focus {
       page-break-before: always
   }
 }
+
+.validation {
+  font-weight: bold;
+  color: #CC0000;
+}

@@ -14,7 +14,7 @@
               <h3 class="panel-title"><%= title%></h3>
             </div>
             <div class="panel-body">
-              <form action="/api/company/<%= value[0].company_id%>?_method=PUT" method='POST'>
+              <form action="/api/company/<%= data[0].company_id%>?_method=PUT" method='POST'>
                 <label style="font-size: 20px;">負責人資料</label>
 
                 <div class="row">
@@ -27,15 +27,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_contact_name")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_contact_name" class="form-control" placeholder="請輸入負責人姓名" value="<%= value[0].company_contact_name%>">
+                      <input type="text" name="company_contact_name" class="form-control" placeholder="請輸入負責人姓名"
+                        value="<%= company_info.company_contact_name %>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_contact_name"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_name"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_contact_name" class="form-control" placeholder="請輸入負責人姓名" value="<%= value[0].company_contact_name%>">
+                    <input type="text" name="company_contact_name" class="form-control" placeholder="請輸入負責人姓名"
+                      value="<%= company_info.company_contact_name %>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_contact_name" class="form-control" placeholder="請輸入負責人姓名" value="<%= value[0].company_contact_name%>">
+                    <input type="text" name="company_contact_name" class="form-control" placeholder="請輸入負責人姓名"
+                      value="<%= data[0].company_contact_name%>">
                     <% } %>
 
 
@@ -46,15 +49,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_contact_position")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_contact_position" class="form-control" placeholder="請輸入負責人職銜" value="<%= value[0].company_contact_position%>">
+                      <input type="text" name="company_contact_position" class="form-control" placeholder="請輸入負責人職銜"
+                        value="<%= company_info.company_contact_position%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_contact_position"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_position"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_contact_position" class="form-control" placeholder="請輸入負責人職銜" value="<%= value[0].company_contact_position%>">
+                    <input type="text" name="company_contact_position" class="form-control" placeholder="請輸入負責人職銜"
+                      value="<%= company_info.company_contact_position%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_contact_position" class="form-control" placeholder="請輸入負責人職銜" value="<%= value[0].company_contact_position%>">
+                    <input type="text" name="company_contact_position" class="form-control" placeholder="請輸入負責人職銜"
+                      value="<%= data[0].company_contact_position%>">
                     <% } %>
 
                   </div>
@@ -67,15 +73,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_contact_phone")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_contact_phone" class="form-control" placeholder="請輸入聯絡號碼" value="<%= value[0].company_contact_phone%>">
+                      <input type="text" name="company_contact_phone" class="form-control" placeholder="請輸入聯絡號碼"
+                        value="<%= company_info.company_contact_phone%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_contact_phone"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_phone"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_contact_phone" class="form-control" placeholder="請輸入聯絡號碼" value="<%= value[0].company_contact_phone%>">
+                    <input type="text" name="company_contact_phone" class="form-control" placeholder="請輸入聯絡號碼"
+                      value="<%= company_info.company_contact_phone%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_contact_phone" class="form-control" placeholder="請輸入聯絡號碼" value="<%= value[0].company_contact_phone%>">
+                    <input type="text" name="company_contact_phone" class="form-control" placeholder="請輸入聯絡號碼"
+                      value="<%= data[0].company_contact_phone%>">
                     <% } %>
 
                   </div>
@@ -85,15 +94,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_contact_fax")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_contact_fax" class="form-control" placeholder="請輸入聯絡分機" value="<%= value[0].company_contact_fax%>">
+                      <input type="text" name="company_contact_fax" class="form-control" placeholder="請輸入聯絡分機"
+                        value="<%= company_info.company_contact_fax%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_contact_fax"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_fax"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_contact_fax" class="form-control" placeholder="請輸入聯絡分機" value="<%= value[0].company_contact_fax%>">
+                    <input type="text" name="company_contact_fax" class="form-control" placeholder="請輸入聯絡分機"
+                      value="<%= company_info.company_contact_fax%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_contact_fax" class="form-control" placeholder="請輸入聯絡分機" value="<%= value[0].company_contact_fax%>">
+                    <input type="text" name="company_contact_fax" class="form-control" placeholder="請輸入聯絡分機"
+                      value="<%= data[0].company_contact_fax%>">
                     <% } %>
 
                   </div>
@@ -109,15 +121,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_name")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_name" class="form-control" placeholder="請輸入公司名稱" value="<%= value[0].company_name%>">
+                      <input type="text" name="company_name" class="form-control" placeholder="請輸入公司名稱"
+                        value="<%= company_info.company_name%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_name"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_name"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_name" class="form-control" placeholder="請輸入公司名稱" value="<%= value[0].company_name%>">
+                    <input type="text" name="company_name" class="form-control" placeholder="請輸入公司名稱"
+                      value="<%= company_info.company_name%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_name" class="form-control" placeholder="請輸入公司名稱" value="<%= value[0].company_name%>">
+                    <input type="text" name="company_name" class="form-control" placeholder="請輸入公司名稱"
+                      value="<%= data[0].company_name%>">
                     <% } %>
 
                   </div>
@@ -138,15 +153,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_official_id")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_official_id" class="form-control" placeholder="請輸入公司統編號碼" value="<%= value[0].company_official_id%>">
+                      <input type="text" name="company_official_id" class="form-control" placeholder="請輸入公司統編號碼"
+                        value="<%= company_info.company_official_id%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_official_id"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_official_id"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_official_id" class="form-control" placeholder="請輸入公司統編號碼" value="<%= value[0].company_official_id%>">
+                    <input type="text" name="company_official_id" class="form-control" placeholder="請輸入公司統編號碼"
+                      value="<%= company_info.company_official_id%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_official_id" class="form-control" placeholder="請輸入公司統編號碼" value="<%= value[0].company_official_id%>">
+                    <input type="text" name="company_official_id" class="form-control" placeholder="請輸入公司統編號碼"
+                      value="<%= data[0].company_official_id%>">
                     <% } %>
 
                   </div>
@@ -156,15 +174,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_phone")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_phone" class="form-control" placeholder="請輸入公司聯絡號碼" value="<%= value[0].company_phone%>">
+                      <input type="text" name="company_phone" class="form-control" placeholder="請輸入公司聯絡號碼"
+                        value="<%= company_info.company_phone%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_phone"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_phone"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_phone" class="form-control" placeholder="請輸入公司聯絡號碼" value="<%= value[0].company_phone%>">
+                    <input type="text" name="company_phone" class="form-control" placeholder="請輸入公司聯絡號碼"
+                      value="<%= company_info.company_phone%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_phone" class="form-control" placeholder="請輸入公司聯絡號碼" value="<%= value[0].company_phone%>">
+                    <input type="text" name="company_phone" class="form-control" placeholder="請輸入公司聯絡號碼"
+                      value="<%= data[0].company_phone%>">
                     <% } %>
 
                   </div>
@@ -175,15 +196,18 @@
                   <% if (validation.length > 0) { %>
                   <% if (validation.find(element => element.param == "company_description")) { %>
                   <div class="has-error">
-                    <textarea name="company_description" class="form-control" rows="6" style="resize:none;" placeholder="請輸入公司簡介"><%= value[0].company_description%></textarea>
+                    <textarea name="company_description" class="form-control" rows="6" style="resize:none;"
+                      placeholder="請輸入公司簡介"><%= company_info.company_description%></textarea>
                     <span
-                      class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_description"))].msg; %></span>
+                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_description"))].msg; %></span>
                   </div>
                   <% } else { %>
-                  <textarea name="company_description" class="form-control" rows="6" style="resize:none;" placeholder="請輸入公司簡介"><%= value[0].company_description%></textarea>
+                  <textarea name="company_description" class="form-control" rows="6" style="resize:none;"
+                    placeholder="請輸入公司簡介"><%= company_info.company_description%></textarea>
                   <% } %>
                   <% } else { %>
-                  <textarea name="company_description" class="form-control" rows="6" style="resize:none;" placeholder="請輸入公司簡介"><%= value[0].company_description%></textarea>
+                  <textarea name="company_description" class="form-control" rows="6" style="resize:none;"
+                    placeholder="請輸入公司簡介"><%= data[0].company_description%></textarea>
                   <% } %>
 
                 </div>
@@ -193,15 +217,18 @@
                   <% if (validation.length > 0) { %>
                   <% if (validation.find(element => element.param == "company_address")) { %>
                   <div class="has-error">
-                    <input type="text" name="company_address" id="company_address" class="form-control" placeholder="請輸入公司登記地址" value="<%= value[0].company_address%>">
+                    <input type="text" name="company_address" id="company_address" class="form-control"
+                      placeholder="請輸入公司登記地址" value="<%= company_info.company_address%>">
                     <span
-                      class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_address"))].msg; %></span>
+                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_address"))].msg; %></span>
                   </div>
                   <% } else { %>
-                  <input type="text" name="company_address" id="company_address" class="form-control" placeholder="請輸入公司登記地址" value="<%= value[0].company_address%>">
+                  <input type="text" name="company_address" id="company_address" class="form-control"
+                    placeholder="請輸入公司登記地址" value="<%= company_info.company_address%>">
                   <% } %>
                   <% } else { %>
-                  <input type="text" name="company_address" id="company_address" class="form-control" placeholder="請輸入公司登記地址" value="<%= value[0].company_address%>">
+                  <input type="text" name="company_address" id="company_address" class="form-control"
+                    placeholder="請輸入公司登記地址" value="<%= data[0].company_address%>">
                   <% } %>
 
                 </div>
@@ -211,15 +238,18 @@
                   <% if (validation.length > 0) { %>
                   <% if (validation.find(element => element.param == "company_address_another")) { %>
                   <div class="has-error">
-                    <input type="text" name="company_address_another" id="company_address_another" class="form-control" placeholder="請輸入公司通訊地址" value="<%= value[0].company_address_another%>">
+                    <input type="text" name="company_address_another" id="company_address_another" class="form-control"
+                      placeholder="請輸入公司通訊地址" value="<%= company_info.company_address_another%>">
                     <span
-                      class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_address_another"))].msg; %></span>
+                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_address_another"))].msg; %></span>
                   </div>
                   <% } else { %>
-                  <input type="text" name="company_address_another" id="company_address_another" class="form-control" placeholder="請輸入公司通訊地址" value="<%= value[0].company_address_another%>">
+                  <input type="text" name="company_address_another" id="company_address_another" class="form-control"
+                    placeholder="請輸入公司通訊地址" value="<%= company_info.company_address_another%>">
                   <% } %>
                   <% } else { %>
-                  <input type="text" name="company_address_another" id="company_address_another" class="form-control" placeholder="請輸入公司通訊地址" value="<%= value[0].company_address_another%>">
+                  <input type="text" name="company_address_another" id="company_address_another" class="form-control"
+                    placeholder="請輸入公司通訊地址" value="<%= data[0].company_address_another%>">
                   <% } %>
 
                 </div>
@@ -238,15 +268,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_bank_account")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_bank_account" class="form-control" placeholder="請輸入銀行帳號" value="<%= value[0].company_bank_account%>">
+                      <input type="text" name="company_bank_account" class="form-control" placeholder="請輸入銀行帳號"
+                        value="<%= company_info.company_bank_account%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_bank_account"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_account"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_bank_account" class="form-control" placeholder="請輸入銀行帳號" value="<%= value[0].company_bank_account%>">
+                    <input type="text" name="company_bank_account" class="form-control" placeholder="請輸入銀行帳號"
+                      value="<%= company_info.company_bank_account%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_bank_account" class="form-control" placeholder="請輸入銀行帳號" value="<%= value[0].company_bank_account%>">
+                    <input type="text" name="company_bank_account" class="form-control" placeholder="請輸入銀行帳號"
+                      value="<%= data[0].company_bank_account%>">
                     <% } %>
 
                   </div>
@@ -256,15 +289,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_bank_account_holder")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_bank_account_holder" class="form-control" placeholder="請輸入銀行戶名" value="<%= value[0].company_bank_account_holder%>">
+                      <input type="text" name="company_bank_account_holder" class="form-control" placeholder="請輸入銀行戶名"
+                        value="<%= company_info.company_bank_account_holder%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_bank_account_holder"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_account_holder"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_bank_account_holder" class="form-control" placeholder="請輸入銀行戶名" value="<%= value[0].company_bank_account_holder%>">
+                    <input type="text" name="company_bank_account_holder" class="form-control" placeholder="請輸入銀行戶名"
+                      value="<%= company_info.company_bank_account_holder%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_bank_account_holder" class="form-control" placeholder="請輸入銀行戶名" value="<%= value[0].company_bank_account_holder%>">
+                    <input type="text" name="company_bank_account_holder" class="form-control" placeholder="請輸入銀行戶名"
+                      value="<%= data[0].company_bank_account_holder%>">
                     <% } %>
 
                   </div>
@@ -277,15 +313,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_bank_name")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_bank_name" class="form-control" placeholder="請輸入銀行名稱" value="<%= value[0].company_bank_name%>">
+                      <input type="text" name="company_bank_name" class="form-control" placeholder="請輸入銀行名稱"
+                        value="<%= company_info.company_bank_name%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_bank_name"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_name"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_bank_name" class="form-control" placeholder="請輸入銀行名稱" value="<%= value[0].company_bank_name%>">
+                    <input type="text" name="company_bank_name" class="form-control" placeholder="請輸入銀行名稱"
+                      value="<%= company_info.company_bank_name%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_bank_name" class="form-control" placeholder="請輸入銀行名稱" value="<%= value[0].company_bank_name%>">
+                    <input type="text" name="company_bank_name" class="form-control" placeholder="請輸入銀行名稱"
+                      value="<%= data[0].company_bank_name%>">
                     <% } %>
 
                   </div>
@@ -295,15 +334,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_bank_name_code")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_bank_name_code" class="form-control" placeholder="請輸入銀行代號" value="<%= value[0].company_bank_name_code%>">
+                      <input type="text" name="company_bank_name_code" class="form-control" placeholder="請輸入銀行代號"
+                        value="<%= company_info.company_bank_name_code%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_bank_name_code"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_name_code"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_bank_name_code" class="form-control" placeholder="請輸入銀行代號" value="<%= value[0].company_bank_name_code%>">
+                    <input type="text" name="company_bank_name_code" class="form-control" placeholder="請輸入銀行代號"
+                      value="<%= company_info.company_bank_name_code%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_bank_name_code" class="form-control" placeholder="請輸入銀行代號" value="<%= value[0].company_bank_name_code%>">
+                    <input type="text" name="company_bank_name_code" class="form-control" placeholder="請輸入銀行代號"
+                      value="<%= data[0].company_bank_name_code%>">
                     <% } %>
 
                   </div>
@@ -316,15 +358,18 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_bank_branch")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_bank_branch" class="form-control" placeholder="請輸入分行名稱" value="<%= value[0].company_bank_branch%>">
+                      <input type="text" name="company_bank_branch" class="form-control" placeholder="請輸入分行名稱"
+                        value="<%= company_info.company_bank_branch%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_bank_branch"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_branch"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_bank_branch" class="form-control" placeholder="請輸入分行名稱" value="<%= value[0].company_bank_branch%>">
+                    <input type="text" name="company_bank_branch" class="form-control" placeholder="請輸入分行名稱"
+                      value="<%= company_info.company_bank_branch%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_bank_branch" class="form-control" placeholder="請輸入分行名稱" value="<%= value[0].company_bank_branch%>">
+                    <input type="text" name="company_bank_branch" class="form-control" placeholder="請輸入分行名稱"
+                      value="<%= data[0].company_bank_branch%>">
                     <% } %>
 
                   </div>
@@ -334,15 +379,16 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "company_bank_branch_code")) { %>
                     <div class="has-error">
-                      <input type="text" name="company_bank_branch_code" class="form-control" placeholder="請輸入分行代號" value="<%= value[0].company_bank_branch_code%>">
+                      <input type="text" name="company_bank_branch_code" class="form-control" placeholder="請輸入分行代號"
+                        value="<%= company_info.company_bank_branch_code%>">
                       <span
-                        class="error text-danger"><%= validation[(validation.findIndex(element => element.param == "company_bank_branch_code"))].msg; %></span>
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_branch_code"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="company_bank_branch_code" class="form-control" placeholder="請輸入分行代號" value="<%= value[0].company_bank_branch_code%>">
+                    <input type="text" name="company_bank_branch_code" class="form-control" placeholder="請輸入分行代號" value="<%= company_info.company_bank_branch_code%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="company_bank_branch_code" class="form-control" placeholder="請輸入分行代號" value="<%= value[0].company_bank_branch_code%>">
+                    <input type="text" name="company_bank_branch_code" class="form-control" placeholder="請輸入分行代號" value="<%= data[0].company_bank_branch_code%>">
                     <% } %>
 
                   </div>

@@ -28,10 +28,7 @@ exports.company_create = (req, res) => {
     }
 
     company_model.add_company(company_info).then((result) => {
-        req.flash('flash', {
-            'msg': result,
-            'type': 'success'
-        });
+        req.flash('flash', { 'msg': result, 'type': 'success' });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
@@ -48,26 +45,23 @@ exports.company_create = (req, res) => {
 
 exports.company_display = (req, res) => {
     company_model.company(req.params.id).then((result) => {
-        if (req.session.role === 1) {
-            res.render('company_edit', {
-                title: "公司",
-                icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
-                navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/company">公司</a></li><li class="active">更新公司</li>',
-                message: req.flash('flash'),
-                validation: req.flash('validation'),
-                value: result
-            })
-        } else {
-            res.render('company_edit_client', {
-                title: "公司",
-                icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
-                navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/company">公司</a></li><li class="active">更新公司</li>',
-                message: req.flash('flash'),
-                validation: req.flash('validation'),
-                value: result
-            })
-        }
 
+        var company_edit_page;
+        var company_info = req.session.company_info;
+        req.session.company_info = null;
+
+        if (req.session.role === 1) company_edit_page = 'company_edit'
+        else company_edit_page = 'company_edit_client'
+
+        res.render(company_edit_page, {
+            title: "公司",
+            icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
+            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/company">公司</a></li><li class="active">更新公司</li>',
+            message: req.flash('flash'),
+            validation: req.flash('validation'),
+            data: result,
+            company_info: company_info
+        })
     }).catch((err) => {
         req.flash('flash', {
             'msg': err.message,
@@ -89,10 +83,7 @@ exports.company_display_list = (req, res) => {
             data: result
         });
     }).catch((err) => {
-        req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
-        });
+        req.flash('flash', { 'msg': err.message, 'type': 'error' });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
         })
@@ -105,8 +96,7 @@ exports.company_new = (req, res) => {
         icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
         navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/company">公司</a></li><li class="active">新增公司</li>',
         message: req.flash('flash'),
-        validation: req.flash('validation'),
-        value: ''
+        validation: req.flash('validation')
     });
 }
 
@@ -119,18 +109,12 @@ exports.company_update = (req, res) => {
     else company_info = req.body;
 
     company_model.company_update(company_id, company_info).then((result) => {
-        req.flash('flash', {
-            'msg': result,
-            'type': 'success'
-        });
+        req.flash('flash', { 'msg': result, 'type': 'success' });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
     }).catch((err) => {
-        req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
-        });
+        req.flash('flash', { 'msg': err.message, 'type': 'error' });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
@@ -139,18 +123,12 @@ exports.company_update = (req, res) => {
 
 exports.company_delete = (req, res) => {
     company_model.company_delete(req.params.id).then((result) => {
-        req.flash('flash', {
-            'msg': result,
-            'type': 'success'
-        });
+        req.flash('flash', { 'msg': result, 'type': 'success' });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
     }).catch((err) => {
-        req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
-        });
+        req.flash('flash', { 'msg': err.message, 'type': 'error' });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })

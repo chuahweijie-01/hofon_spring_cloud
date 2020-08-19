@@ -1,55 +1,55 @@
 $(function () {
   //SIDE MENU DROP DOWN
-  $(".list-group-tree").on('click', "[data-toggle=collapse]", function () {
+  $('.list-group-tree').on('click', '[data-toggle=collapse]', function () {
     $(this).toggleClass('in')
-    $(this).next(".list-group.collapse").collapse('toggle');
+    $(this).next('.list-group.collapse').collapse('toggle');
     return false;
   })
 
   //FRONT-END SEARCH
-  $("#tableSearch").on("keyup", function () {
+  $('#tableSearch').on('keyup', function () {
     var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function () {
+    $('#myTable tr').filter(function () {
       $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
   });
 
   //CUSTOMIZE FILE HANDLE BUTTON
-  $("#custom-button").on('click', function () {
-    $("#real-file").trigger("click");
+  $('#custom-button').on('click', function () {
+    $('#real-file').trigger('click');
   })
 
   //CUSTOMIZE FILE HANDLE BUTTON
-  $("#real-file").on("change", function () {
-    if ($("#real-file").val()) {
-      $("#custom-text").text($("#real-file").val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+  $('#real-file').on('change', function () {
+    if ($('#real-file').val()) {
+      $('#custom-text').text($('#real-file').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
     } else {
-      $("#custom-text").text("圖檔尚未選擇");
+      $('#custom-text').text('圖檔尚未選擇');
     }
   });
 
   //CUSTOMIZE FILE HANDLE BUTTON
-  $("#custom-button2").on('click', function () {
-    $("#real-file2").trigger("click");
+  $('#custom-button2').on('click', function () {
+    $('#real-file2').trigger('click');
   })
 
   //CUSTOMIZE FILE HANDLE BUTTON
-  $("#real-file2").on("change", function () {
-    if ($("#real-file2").val()) {
-      $("#custom-text2").text($("#real-file2").val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+  $('#real-file2').on('change', function () {
+    if ($('#real-file2').val()) {
+      $('#custom-text2').text($('#real-file2').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
     } else {
-      $("#custom-text2").text("圖檔尚未選擇");
+      $('#custom-text2').text('圖檔尚未選擇');
     }
   });
 
   //PASSWORD SIMILIARITY CHECK
   $('#password, #confirmed_password').on('keyup', function () {
     if (!$('#password').val() || !$('#confirmed_password').val()) {
-      $('#message').html('請輸入密碼').css('color', 'red');
+      $('#message').html('Please Enter Your Password Again').css({ 'font-weight': 'Bold', 'color': '#CC0000' });
     } else if ($('#password').val() == $('#confirmed_password').val()) {
-      $('#message').html('密碼一致').css('color', 'green');
+      $('#message').html('Password Matched').css({ 'font-weight': 'Bold', 'color': '#007E33' });
     } else {
-      $('#message').html('密碼不一致').css('color', 'red');
+      $('#message').html('Password Not Matched').css({ 'font-weight': 'Bold', 'color': '#CC0000' });
     }
   });
 
@@ -68,7 +68,7 @@ $(function () {
 
   //SAME ADDRESS
   $('#same_address').on('click', function () {
-    if($('#same_address').is(":checked")) {
+    if ($('#same_address').is(':checked')) {
       $('#company_address_another').val($('#company_address').val());
     } else {
       $('#company_address_another').val('');

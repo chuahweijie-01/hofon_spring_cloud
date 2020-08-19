@@ -10,6 +10,9 @@ const cookieParser = require('cookie-parser');
 const methodOverride = require('method-override')
 const cors = require('cors');
 
+const pdf = require('html-pdf')
+const options = { format: 'a4', base: 'http://localhost:3000' };
+
 var sessionStore = new MySQLStore({}, connection);
 const passport = require('passport');
 const flash = require('connect-flash');
@@ -85,6 +88,27 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.post('/api/react_native/user', (req, res) => {
+    console.log(req.body);
+    res.send({ message: 'This is from Express Server !' })
+})
+
+app.get('/download', (req, res) => {
+    res.render('login', {
+        title: "登入頁面",
+        message: req.flash('flash')
+    }, (err, html) => {
+        pdf.create(html, options).toStream((err, stream_file) => {
+            if(err) console.log(err);
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'attachment; filename=file_download.pdf;');
+            stream_file.pipe(res)
+        })
+        //res.send(html)
+    });
+    //res.download("./public/image/pdf_file_download.pdf")
+})
+
 app.use('/', web_auth);
 
 app.use('*', middlewares.checkAuthenticated)
@@ -103,10 +127,7 @@ app.use('/api/mobile', mobile);
 app.use('/api/admin', admin);
 app.use('/api/album', album);
 
-app.post('/api/react_native/user', (req, res) => {
-    console.log(req.body);
-    res.send({ message: 'This is from Express Server !' })
-})
+
 
 var port = process.env.PORT || 3000
 app.listen(3000, () => console.log(`Listening to Port : ${port} ... `));

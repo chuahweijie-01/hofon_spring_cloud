@@ -14,16 +14,43 @@
               <h3 class="panel-title"><%= title%></h3>
             </div>
             <div class="panel-body">
-              <form action="/api/admin/<%= value[0].admin_id%>?_method=PUT" method='POST'>
+              <form action="/api/admin/<%= data[0].admin_id%>?_method=PUT" method='POST'>
                 <label style="font-size: 20px;"><%= title%>資料</label>
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>帳號</label>
-                    <input type="text" name="admin_email" class="form-control" value="<%= value[0].admin_email%>">
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "admin_email")) { %>
+                    <div class="has-error">
+                      <input type="text" name="admin_email" class="form-control" value="<%= admin_info.admin_email%>">
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_email"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                    <input type="text" name="admin_email" class="form-control" value="<%= admin_info.admin_email%>">
+                    <% } %>
+                    <% } else { %>
+                    <input type="text" name="admin_email" class="form-control" value="<%= data[0].admin_email%>">
+                    <% } %>
+
                   </div>
+
                   <div class="form-group col-md-6">
                     <label>名稱</label>
-                    <input type="text" name="admin_name" class="form-control" value="<%= value[0].admin_name%>">
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "admin_name")) { %>
+                    <div class="has-error">
+                      <input type="text" name="admin_name" class="form-control" value="<%= admin_info.admin_name%>">
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_name"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                    <input type="text" name="admin_name" class="form-control" value="<%= admin_info.admin_name%>">
+                    <% } %>
+                    <% } else { %>
+                    <input type="text" name="admin_name" class="form-control" value="<%= data[0].admin_name%>">
+                    <% } %>
+
                   </div>
                 </div>
                 <hr>

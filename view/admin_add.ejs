@@ -16,27 +16,90 @@
             <div class="panel-body">
               <form action="/api/admin" method='POST'>
                 <label style="font-size: 20px;"><%= title%>資料</label>
+                
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>帳號</label>
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "admin_email")) { %>
+                    <div class="has-error">
+                      <input type="text" name="admin_email" class="form-control" value="<%= admin_info.admin_email %>">
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_email"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                    <input type="text" name="admin_email" class="form-control" value="<%= admin_info.admin_email %>">
+                    <% } %>
+                    <% } else { %>
                     <input type="text" name="admin_email" class="form-control" placeholder="">
+                    <% } %>
+
                   </div>
+
                   <div class="form-group col-md-6">
                     <label>名稱</label>
-                    <input type="text" name="admin_name" class="form-control" placeholder="">
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "admin_name")) { %>
+                    <div class="has-error">
+                      <input type="text" name="admin_name" class="form-control" value="<%= admin_info.admin_name %>">
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_name"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                      <input type="text" name="admin_name" class="form-control" value="<%= admin_info.admin_name %>">
+                    <span class="error text-danger validation"></span>
+                    <% } %>
+                    <% } else { %>
+                      <input type="text" name="admin_name" class="form-control" placeholder="">
+                    <span class="error text-danger"></span>
+                    <% } %>
+
                   </div>
                 </div>
+
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>密碼</label>
-                    <input type="password" name="admin_password" id="password" class="form-control" placeholder="">
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "admin_password")) { %>
+                    <div class="has-error">
+                      <input type="password" name="admin_password" id="password" class="form-control" placeholder="">
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_password"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                      <input type="password" name="admin_password" id="password" class="form-control" placeholder="">
+                    <span class="error text-danger"></span>
+                    <% } %>
+                    <% } else { %>
+                      <input type="password" name="admin_password" id="password" class="form-control" placeholder="">
+                    <span class="error text-danger"></span>
+                    <% } %>
+
                   </div>
+
                   <div class="form-group col-md-6">
-                    <label>請再次輸入密碼</label><span id='message' style="padding-left: 20px;"></span>
-                    <input type="password" id="confirmed_password" class="form-control" placeholder="">
+                    <label>請再次輸入密碼</label>
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "confirmed_password")) { %>
+                    <div class="has-error">
+                      <input type="password" name="confirmed_password" id="confirmed_password" class="form-control" placeholder="">
+                      <span class="error text-danger validation" id="message"><%= validation[(validation.findIndex(element => element.param == "confirmed_password"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                    <input type="password" name="confirmed_password" id="confirmed_password" class="form-control" placeholder="">
+                    <span class="error text-danger validation" id="message"></span>
+                    <% } %>
+                    <% } else { %>
+                    <input type="password" name="confirmed_password" id="confirmed_password" class="form-control" placeholder="">
+                    <span class="error text-danger" id="message"></span>
+                    <% } %>
+
                   </div>
                 </div>
                 <hr>
+
                 <input type="submit" class="btn btn-danger" value="新增">
               </form>
             </div>
