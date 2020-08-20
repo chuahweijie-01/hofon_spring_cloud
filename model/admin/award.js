@@ -79,7 +79,8 @@ exports.award_display_list = (company_id) => {
 exports.product_list = (company_id) => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT product_id, product_name FROM productdb.product WHERE company_id = ? AND product_status = 1`, [company_id])
+            return connection.query(`SELECT product_id, product_name FROM productdb.product
+                                     WHERE company_id = ? AND product_delete = 0`, [company_id])
                 .then(([rows, field]) => {
                     return (rows);
                 })

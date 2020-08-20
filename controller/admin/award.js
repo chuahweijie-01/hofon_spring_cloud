@@ -83,12 +83,16 @@ exports.award_display_list = (req, res) => {
 
 exports.award_new = (req, res) => {
     award_model.product_list(req.session.company).then((result) => {
+        var award_info = req.session.award_info;
+        req.session.award_info = null;
         res.render('award_add', {
             title: "暢銷排行榜",
             icon: '<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>',
             navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/award">暢銷排行榜</a></li><li class="active">新增暢銷排行榜</li>',
             message: req.flash('flash'),
-            data: result
+            validation: req.flash('validation'),
+            data: result,
+            award_info: award_info
         });
     }).catch((err) => {
         req.flash('flash', {

@@ -45,13 +45,14 @@ exports.category_list = (company_id) => {
 exports.product_list = (company_id) => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT product.product_id, product.product_name, product.product_stock, category.category_name, DATE_FORMAT(product.last_update, '%W %M %Y %H:%i:%s') AS last_update
+            return connection.query(`SELECT product.product_id, product.product_name, product.product_stock, product.product_status, category.category_id, category.category_name, 
+                                     DATE_FORMAT(product.last_update, '%W %M %Y %H:%i:%s') AS last_update
                                      FROM productdb.product AS product
                                      JOIN productdb.category AS category
                                      ON product.category_id = category.category_id
                                      JOIN companydb.company AS company
                                      ON product.company_id = company.company_id
-                                     WHERE company.company_id = ? AND product.product_status = 1`, [company_id])
+                                     WHERE company.company_id = ? AND product_delete = 0`, [company_id])
                 .then(([rows, field]) => {
                     return (rows);
                 })
@@ -68,7 +69,7 @@ exports.product_list = (company_id) => {
 exports.product = (product_id, company_id) => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT product_id, product_name, product_stock, product_description, product_rating, product_price, category_id
+            return connection.query(`SELECT product_id, product_name, product_stock, product_description, product_rating, product_price, product_member_price, category_id
                                      FROM productdb.product
                                      WHERE product.product_id = ? AND company_id = ?`, [product_id, company_id])
                 .then(([rows, field]) => {
@@ -117,5 +118,44 @@ exports.product_delete = (product_id) => {
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('資料刪除失敗');
+        })
+}
+
+exports.product_unpublish = (product_id, company_id) => {
+    return connectionPool.getConnection()
+        .then((connection) => {
+            return connection.query(`UPDATE productdb.product SET product_status = 0 WHERE product_id = ? AND company_id = ?`, [product_id, company_id])
+                .then((result) => {
+                    if (result[0].info.match('Changed: 1')) return (`資料更新成功`);
+                    else return (`資料沒有異動`);
+                })
+                .finally(() => {
+                    connection.release();
+                })
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(`資料更新失敗`);
+        })
+}
+
+exports.product_publish = (product_id, category_id, company_id) => {
+    return connectionPool.getConnection()
+        .then((connection) => {
+            return connection.query(`SELECT COUNT(*) as total_product FROM productdb.product WHERE category_id = ? AND company_id = ? AND product_status = 1`, [category_id, company_id])
+                .then(([rows, field]) => {
+                    if (rows[0].total_product >= 2) throw new Error(`該產品屬性已超過可以發佈的產品上限`);
+                    else return connection.query(`UPDATE productdb.product SET product_status = 1 WHERE product_id = ? AND company_id = ?`, [product_id, company_id])
+                })
+                .then((result) => {
+                    if (result[0].info.match('Changed: 1')) return (`資料更新成功`);
+                    else return (`資料沒有異動`);
+                })
+                .finally(() => {
+                    connection.release();
+                })
+        }, err => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(`資料更新失敗`);
         })
 }

@@ -50,22 +50,32 @@ exports.client_create = (req, res) => {
 exports.client_display = (req, res) => {
     client_model.privileges_list().then((privileges) => {
         client_model.client_display(req.params.id).then((result) => {
+            var client_info = req.session.client_info;
+            req.session.client_info = null;
             res.render('client_edit', {
                 title: "管理者",
                 icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
                 navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/client">管理者</a></li><li class="active">更新管理者</li>',
                 message: req.flash('flash'),
+                validation: req.flash('validation'),
                 data: result,
-                privileges: privileges
+                privileges: privileges,
+                client_info: client_info
             });
         }).catch((err) => {
-            req.flash('flash', { 'msg': err.message, 'type': 'error' });
+            req.flash('flash', {
+                'msg': err.message,
+                'type': 'error'
+            });
             req.session.save(function (err) {
                 res.redirect('/api/client');
             })
         })
     }).catch((err) => {
-        req.flash('flash', { 'msg': err.message, 'type': 'error' });
+        req.flash('flash', {
+            'msg': err.message,
+            'type': 'error'
+        });
         req.session.save(function (err) {
             res.redirect('/api/client');
         })

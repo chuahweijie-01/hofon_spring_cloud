@@ -143,6 +143,7 @@
 
                   </tbody>
                 </table>
+
                 <% if (validation.length > 0) { %>
                 <% if (validation.find(element => element.param == "privileges_id")) { %>
                 <div class="has-error" style="padding-bottom: 10px;">
@@ -151,6 +152,7 @@
                 </div>
                 <% } %>
                 <% } %>
+                
                 <br>
                 <input type="submit" class="btn btn-danger" value="新增">
               </form>

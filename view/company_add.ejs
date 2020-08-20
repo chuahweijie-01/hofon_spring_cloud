@@ -28,8 +28,7 @@
                     <% if (validation.find(element => element.param == "company_contact_name")) { %>
                     <div class="has-error">
                       <input type="text" name="company_contact_name" class="form-control" placeholder="請輸入負責人姓名">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_name"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_name"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_contact_name" class="form-control" placeholder="請輸入負責人姓名">
@@ -47,8 +46,7 @@
                     <% if (validation.find(element => element.param == "company_contact_position")) { %>
                     <div class="has-error">
                       <input type="text" name="company_contact_position" class="form-control" placeholder="請輸入負責人職銜">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_position"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_position"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_contact_position" class="form-control" placeholder="請輸入負責人職銜">
@@ -68,8 +66,7 @@
                     <% if (validation.find(element => element.param == "company_contact_phone")) { %>
                     <div class="has-error">
                       <input type="text" name="company_contact_phone" class="form-control" placeholder="請輸入聯絡號碼">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_phone"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_phone"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_contact_phone" class="form-control" placeholder="請輸入聯絡號碼">
@@ -86,8 +83,7 @@
                     <% if (validation.find(element => element.param == "company_contact_fax")) { %>
                     <div class="has-error">
                       <input type="text" name="company_contact_fax" class="form-control" placeholder="請輸入聯絡分機">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_fax"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_contact_fax"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_contact_fax" class="form-control" placeholder="請輸入聯絡分機">
@@ -110,8 +106,7 @@
                     <% if (validation.find(element => element.param == "company_name")) { %>
                     <div class="has-error">
                       <input type="text" name="company_name" class="form-control" placeholder="請輸入公司名稱">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_name"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_name"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_name" class="form-control" placeholder="請輸入公司名稱">
@@ -139,8 +134,7 @@
                     <% if (validation.find(element => element.param == "company_official_id")) { %>
                     <div class="has-error">
                       <input type="text" name="company_official_id" class="form-control" placeholder="請輸入公司統編號碼">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_official_id"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_official_id"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_official_id" class="form-control" placeholder="請輸入公司統編號碼">
@@ -157,8 +151,7 @@
                     <% if (validation.find(element => element.param == "company_phone")) { %>
                     <div class="has-error">
                       <input type="text" name="company_phone" class="form-control" placeholder="請輸入公司聯絡號碼">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_phone"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_phone"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_phone" class="form-control" placeholder="請輸入公司聯絡號碼">
@@ -177,8 +170,7 @@
                   <div class="has-error">
                     <textarea name="company_description" class="form-control" rows="6" style="resize:none;"
                       placeholder="請輸入公司簡介"></textarea>
-                    <span
-                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_description"))].msg; %></span>
+                    <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_description"))].msg; %></span>
                   </div>
                   <% } else { %>
                   <textarea name="company_description" class="form-control" rows="6" style="resize:none;"
@@ -198,8 +190,7 @@
                   <div class="has-error">
                     <input type="text" name="company_address" id="company_address" class="form-control"
                       placeholder="請輸入公司登記地址">
-                    <span
-                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_address"))].msg; %></span>
+                    <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_address"))].msg; %></span>
                   </div>
                   <% } else { %>
                   <input type="text" name="company_address" id="company_address" class="form-control"
@@ -219,12 +210,10 @@
                   <div class="has-error">
                     <input type="text" name="company_address_another" id="company_address_another" class="form-control"
                       placeholder="請輸入公司通訊地址">
-                    <span
-                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_address_another"))].msg; %></span>
+                    <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_address_another"))].msg; %></span>
                   </div>
                   <% } else { %>
-                  <input type="text" name="company_address_another" id="company_address_another" class="form-control"
-                    placeholder="請輸入公司通訊地址">
+                  <input type="text" name="company_address_another" id="company_address_another" class="form-control" placeholder="請輸入公司通訊地址">
                   <% } %>
                   <% } else { %>
                   <input type="text" name="company_address_another" id="company_address_another" class="form-control"
@@ -248,8 +237,7 @@
                     <% if (validation.find(element => element.param == "company_bank_account")) { %>
                     <div class="has-error">
                       <input type="text" name="company_bank_account" class="form-control" placeholder="請輸入銀行帳號">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_account"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_account"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_bank_account" class="form-control" placeholder="請輸入銀行帳號">
@@ -266,8 +254,7 @@
                     <% if (validation.find(element => element.param == "company_bank_account_holder")) { %>
                     <div class="has-error">
                       <input type="text" name="company_bank_account_holder" class="form-control" placeholder="請輸入銀行戶名">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_account_holder"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_account_holder"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_bank_account_holder" class="form-control" placeholder="請輸入銀行戶名">
@@ -287,8 +274,7 @@
                     <% if (validation.find(element => element.param == "company_bank_name")) { %>
                     <div class="has-error">
                       <input type="text" name="company_bank_name" class="form-control" placeholder="請輸入銀行名稱">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_name"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_name"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_bank_name" class="form-control" placeholder="請輸入銀行名稱">
@@ -305,8 +291,7 @@
                     <% if (validation.find(element => element.param == "company_bank_name_code")) { %>
                     <div class="has-error">
                       <input type="text" name="company_bank_name_code" class="form-control" placeholder="請輸入銀行代號">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_name_code"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_name_code"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_bank_name_code" class="form-control" placeholder="請輸入銀行代號">
@@ -326,8 +311,7 @@
                     <% if (validation.find(element => element.param == "company_bank_branch")) { %>
                     <div class="has-error">
                       <input type="text" name="company_bank_branch" class="form-control" placeholder="請輸入分行名稱">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_branch"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_branch"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_bank_branch" class="form-control" placeholder="請輸入分行名稱">
@@ -344,8 +328,7 @@
                     <% if (validation.find(element => element.param == "company_bank_branch_code")) { %>
                     <div class="has-error">
                       <input type="text" name="company_bank_branch_code" class="form-control" placeholder="請輸入分行代號">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_branch_code"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_branch_code"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_bank_branch_code" class="form-control" placeholder="請輸入分行代號">

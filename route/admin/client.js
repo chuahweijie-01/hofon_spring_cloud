@@ -18,7 +18,7 @@ router.get('/', client_controller.client_display_list);
 router.get('/:id', client_controller.client_display)
 
 //Update admin information
-router.put('/:id', client_controller.client_update)
+router.put('/:id', client_validation.client_info_input_edit, client_controller.client_update)
 
 //Delete admin information
 router.delete('/:id', client_controller.client_delete)

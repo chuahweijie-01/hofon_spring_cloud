@@ -28,7 +28,10 @@ exports.company_create = (req, res) => {
     }
 
     company_model.add_company(company_info).then((result) => {
-        req.flash('flash', { 'msg': result, 'type': 'success' });
+        req.flash('flash', {
+            'msg': result,
+            'type': 'success'
+        });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
@@ -83,7 +86,10 @@ exports.company_display_list = (req, res) => {
             data: result
         });
     }).catch((err) => {
-        req.flash('flash', { 'msg': err.message, 'type': 'error' });
+        req.flash('flash', {
+            'msg': err.message,
+            'type': 'error'
+        });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
         })
@@ -109,12 +115,18 @@ exports.company_update = (req, res) => {
     else company_info = req.body;
 
     company_model.company_update(company_id, company_info).then((result) => {
-        req.flash('flash', { 'msg': result, 'type': 'success' });
+        req.flash('flash', {
+            'msg': result,
+            'type': 'success'
+        });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
     }).catch((err) => {
-        req.flash('flash', { 'msg': err.message, 'type': 'error' });
+        req.flash('flash', {
+            'msg': err.message,
+            'type': 'error'
+        });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
@@ -123,12 +135,18 @@ exports.company_update = (req, res) => {
 
 exports.company_delete = (req, res) => {
     company_model.company_delete(req.params.id).then((result) => {
-        req.flash('flash', { 'msg': result, 'type': 'success' });
+        req.flash('flash', {
+            'msg': result,
+            'type': 'success'
+        });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
     }).catch((err) => {
-        req.flash('flash', { 'msg': err.message, 'type': 'error' });
+        req.flash('flash', {
+            'msg': err.message,
+            'type': 'error'
+        });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })

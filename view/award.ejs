@@ -24,11 +24,12 @@
               <table class="table table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>代號</th>
+                    <th></th>
                     <th>名稱</th>
                     <th>產品總數</th>
                     <th>更新日期</th>
-                    <th></th>
+                    <th class="col-md-1"></th>
+                    <th class="col-md-1"></th>
                   </tr>
                   <tr>
                 </thead>
@@ -37,12 +38,12 @@
                   <% if (data.length) { %>
                   <% for (var i=0; i< data.length; i++) { %>
                   <tr>
-                    <td><%= data[i].award_id %></td>
+                    <td><%= i + 1; %></td>
                     <td><%= data[i].award_name %></td>
                     <td><%= data[i].total_award %></td>
                     <td><%= data[i].last_update %></td>
-                    <td><a class="btn btn-default" href="/api/award/<%= data[i].award_id%>">編輯</a> <a
-                        class="btn btn-danger" href="#awardDeleteModal_<%= data[i].award_id %>"
+                    <td><a class="btn btn-default" href="/api/award/<%= data[i].award_id%>">編輯</a></td>
+                    <td><a class="btn btn-danger" href="#awardDeleteModal_<%= data[i].award_id %>"
                         data-toggle="modal">刪除</a></td>
                   </tr>
 

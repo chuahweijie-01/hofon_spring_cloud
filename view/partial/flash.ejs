@@ -1,13 +1,15 @@
 <% if (message.length > 0) { %>
-  <% message.forEach(function(info) { %>
-    <% if(info.type == 'error') { %>
-      <div class="alert alert-danger">
-        <strong><%= info.msg%></strong>
-      </div>
-    <% } else if (info.type == 'success'){ %>
-      <div class="alert alert-success">
-        <strong><%= info.msg%></strong>
-      </div>
-    <% } %>
-  <% }) %>
+<% message.forEach(function(info) { %>
+<% if(info.type == 'error') { %>
+<div class="alert alert-danger alert-dismissible fade in">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong><%= info.msg%></strong>
+</div>
+<% } else if (info.type == 'success'){ %>
+<div class="alert alert-success alert-dismissible fade in">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong><%= info.msg%></strong>
+</div>
+<% } %>
+<% }) %>
 <% } %>

@@ -19,32 +19,120 @@
 
                 <div class="form-group">
                   <label>名稱</label>
-                  <input type="text" name="product_name" class="form-control" placeholder="請輸入產品名稱" value="<%= data[0].product_name%>">
+
+                  <% if (validation.length > 0) { %>
+                  <% if (validation.find(element => element.param == "product_name")) { %>
+                  <div class="has-error">
+                    <input type="text" name="product_name" class="form-control" placeholder="請輸入產品名稱"
+                      value="<%= product_info.product_name %>">
+                    <span
+                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_name"))].msg; %></span>
+                  </div>
+                  <% } else { %>
+                  <input type="text" name="product_name" class="form-control" placeholder="請輸入產品名稱"
+                    value="<%= product_info.product_name %>">
+                  <% } %>
+                  <% } else { %>
+                  <input type="text" name="product_name" class="form-control" placeholder="請輸入產品名稱"
+                    value="<%= data[0].product_name%>">
+                  <% } %>
+
                 </div>
 
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label>售價</label>
-                    <input type="text" name="product_price" class="form-control" placeholder="請輸入產品價格" value="<%= data[0].product_price%>">
+                    <label>建議售價</label>
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "product_price")) { %>
+                    <div class="has-error">
+                      <input type="text" name="product_price" class="form-control" placeholder="請輸入建議售價"
+                        value="<%= product_info.product_price %>">
+                      <span
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_price"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                    <input type="text" name="product_price" class="form-control" placeholder="請輸入建議售價"
+                      value="<%= product_info.product_price %>">
+                    <% } %>
+                    <% } else { %>
+                    <input type="text" name="product_price" class="form-control" placeholder="請輸入建議售價"
+                      value="<%= data[0].product_price%>">
+                    <% } %>
+
                   </div>
                   <div class="form-group col-md-6">
-                    <label>庫存</label>
-                    <input type="text" name="product_stock" class="form-control" placeholder="請輸入產品庫存" value="<%= data[0].product_stock%>">
+                    <label>會員價</label>
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "product_member_price")) { %>
+                    <div class="has-error">
+                      <input type="text" name="product_member_price" class="form-control" placeholder="請輸入會員價"
+                        value="<%= product_info.product_member_price %>">
+                      <span
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_member_price"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                    <input type="text" name="product_member_price" class="form-control" placeholder="請輸入會員價"
+                      value="<%= product_info.product_member_price %>">
+                    <% } %>
+                    <% } else { %>
+                    <input type="text" name="product_member_price" class="form-control" placeholder="請輸入會員價"
+                      value="<%= data[0].product_member_price%>">
+                    <% } %>
+
                   </div>
                 </div>
 
-                <div class="form-group">
-                  <label>類別</label>
-                  <div>
-                    <select class="form-control minimal" name="category_id">
-                      
-                      <% if (category.length) { %>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>庫存</label>
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "product_stock")) { %>
+                    <div class="has-error">
+                      <input type="text" name="product_stock" class="form-control" placeholder="請輸入庫存"
+                        value="<%= product_info.product_stock %>">
+                      <span
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_stock"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                    <input type="text" name="product_stock" class="form-control" placeholder="請輸入庫存"
+                      value="<%= product_info.product_stock %>">
+                    <% } %>
+                    <% } else { %>
+                    <input type="text" name="product_stock" class="form-control" placeholder="請輸入庫存"
+                      value="<%= data[0].product_stock%>">
+                    <% } %>
+
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>產品屬性</label>
+                    <div>
+                      <select class="form-control minimal" name="category_id">
+
+                        <% if (category.length) { %>
                         <% for (var i=0; i< category.length; i++) { %>
+                        <% if (category[i].category_id === data[0].category_id) { %>
+                        <option value="<%= category[i].category_id%>" selected><%= category[i].category_name%></option>
+                        <% } else { %>
                         <option value="<%= category[i].category_id%>"><%= category[i].category_name%></option>
                         <% } %>
                         <% } %>
+                        <% } %>
 
-                    </select>
+                      </select>
+                    </div>
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "category_id")) { %>
+                    <div class="has-error" style="padding-bottom: 10px;">
+                      <span
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "category_id"))].msg; %></span>
+                    </div>
+                    <% } %>
+                    <% } %>
+
                   </div>
                 </div>
 
@@ -52,7 +140,7 @@
                   <div class="form-group col-md-6">
                     <label>圖片</label>
                     <div style="position:relative;">
-                      <input type="file" name="image_path" id="real-file" class="hidden" multiple/>
+                      <input type="file" name="image_path" id="real-file" class="hidden" multiple />
                       <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
                       <span id="custom-text">圖檔尚未選擇</span>
                     </div>
@@ -62,30 +150,57 @@
                     <label>評分</label>
                     <div style="height: 30px;">
                       <div class="rating">
-                        
+
                         <% for (var i=1; i <=5; i++) { %>
-                          <label>
-                            <% if (data[0].product_rating === i) { %>
-                              <input type="radio" name="product_rating" value="<%= i%>" checked/>
-                            <% } else { %>
-                              <input type="radio" name="product_rating" value="<%= i%>" />
-                            <% } %>
-                            <% var j=0;%>
-                            <% while (j < i) { %>
-                            <span class="icon">★</span>
-                            <% j++; %>
-                            <% } %>
-                          </label>
+                        <label>
+                          <% if(data[0].product_rating === i) { %>
+                          <input type="radio" name="product_rating" value="<%= i%>" checked/>
+                          <% } else { %>
+                          <input type="radio" name="product_rating" value="<%= i%>" />
+                          <% } %>
+                          <% var j=0;%>
+                          <% while (j < i) { %>
+                          <span class="icon">★</span>
+                          <% j++; %>
+                          <% } %>
+                        </label>
                         <% } %>
-                        
+
                       </div>
                     </div>
+
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "product_rating")) { %>
+                    <div class="has-error" style="padding-bottom: 10px;">
+                      <span
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_rating"))].msg; %></span>
+                    </div>
+                    <% } %>
+                    <% } %>
+
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label>簡介</label>
-                  <textarea class="form-control" name="product_description" placeholder="產品介紹" rows="6" style="resize:none;"><%= data[0].product_description%></textarea>
+
+                  <% if (validation.length > 0) { %>
+                  <% if (validation.find(element => element.param == "product_description")) { %>
+                  <div class="has-error">
+                    <textarea class="form-control" name="product_description" placeholder="產品介紹" rows="6"
+                      style="resize:none;"><%= product_info.product_description %></textarea>
+                    <span
+                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_description"))].msg; %></span>
+                  </div>
+                  <% } else { %>
+                  <textarea class="form-control" name="product_description" placeholder="產品介紹" rows="6"
+                    style="resize:none;"><%= product_info.product_description %></textarea>
+                  <% } %>
+                  <% } else { %>
+                  <textarea class="form-control" name="product_description" placeholder="產品介紹" rows="6"
+                    style="resize:none;"><%= data[0].product_description%></textarea>
+                  <% } %>
+
                 </div>
 
                 <input type="submit" class="btn btn-danger" value="更新">

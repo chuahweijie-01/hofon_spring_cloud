@@ -27,7 +27,8 @@
                     <th></th>
                     <th>用戶</th>
                     <th>最後一次登入</th>
-                    <th></th>
+                    <th class="col-md-1"></th>
+                    <th class="col-md-1"></th>
                   </tr>
                   <tr>
                 </thead>
@@ -39,7 +40,8 @@
                     <td><%= i + 1 %></td>
                     <td><%= data[i].admin_name %></td>
                     <td><%= data[i].last_login %></td>
-                    <td><a class="btn btn-default" href="/api/admin/<%= data[i].admin_id%>">編輯</a> <a class="btn btn-danger" href="#adminDeleteModal_<%= data[i].admin_id %>" data-toggle="modal">刪除</a></td>
+                    <td><a class="btn btn-default" href="/api/admin/<%= data[i].admin_id%>">編輯</a></td>
+                    <td><a class="btn btn-danger" href="#adminDeleteModal_<%= data[i].admin_id %>" data-toggle="modal">刪除</a></td>
                   </tr>
 
                   <div id="adminDeleteModal_<%= data[i].admin_id %>" class="modal fade">

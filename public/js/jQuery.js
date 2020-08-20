@@ -77,5 +77,46 @@ $(function () {
 
   //TOOLTIP
   $('[data-toggle="tooltip"]').tooltip();
+
+  //PUBLISH STATUS
+  $('.publish_status_group').mousedown('click', function () {
+
+    var publish_status_id = '#' + $(this).attr('id');
+    var product_id = $(publish_status_id).data('product_id');
+    var category_id = $(publish_status_id).data('category_id');
+
+    if ($(publish_status_id).text() === '未發佈') {
+      $.ajax({
+        type: "POST",
+        url: `/api/product/publish/${product_id}/${category_id}`
+      }).done((result) => {
+        $(publish_status_id).text('已發佈').removeClass('btn-warning').addClass('btn-success');
+      }).fail((err) => {
+        $("#status_message").show();
+        $('#status_message').addClass('alert alert-danger alert-dismissible').html('<a href="#" class="close" aria-label="close">&times;</a><strong>該產品屬性已超過可以發佈的產品上限</strong>');
+      })
+    } else {
+      $.ajax({
+        type: "POST",
+        url: `/api/product/unpublish/${product_id}`
+      }).done((result) => {
+        $(publish_status_id).text('未發佈').removeClass('btn-success').addClass('btn-warning');
+      }).fail((err) => {
+        $("#status_message").show();
+        $('#status_message').addClass('alert alert-danger alert-dismissible').html('<a href="#" class="close" aria-label="close">&times;</a><strong>暫時無法設定該產品的發佈狀態</strong>');
+      })
+
+    }
+  });
+
+  $("#status_message").on("click", () => {
+    console.log('in')
+    $("#status_message").fadeOut(500);
+  });
+
+  $('#order_status').on('click', () => {
+    $('#order_status').text('交易已完成').removeClass('btn-warning').addClass('btn-success disabled');
+  })
+
 });
 
