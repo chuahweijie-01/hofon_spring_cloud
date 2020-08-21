@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  
 <%- include('partial/header')-%>
 
 <body>
@@ -62,27 +63,21 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>簡介 <a style="color:#e74c3c"><span class="glyphicon glyphicon-question-sign"
+                  <label>簡介<a style="color:#e74c3c"><span class="glyphicon glyphicon-question-sign"
                         data-toggle="tooltip" data-placement="right" data-original-title="寫入一些資料"></span></a>
                   </label>
-
                   <% if (validation.length > 0) { %>
                   <% if (validation.find(element => element.param == "company_description")) { %>
                   <div class="has-error">
-                    <textarea name="company_description" class="form-control" rows="6"
-                      style="resize:none;"><%= company_info.company_description%></textarea>
-                    <span
-                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_description"))].msg; %></span>
+                    <textarea name="company_description" class="form-control" rows="6" placeholder="請輸入公司簡介"><%= company_info.company_description%></textarea>
+                    <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_description"))].msg; %></span>
                   </div>
                   <% } else { %>
-                  <textarea name="company_description" class="form-control" rows="6"
-                    style="resize:none;"><%= company_info.company_description%></textarea>
+                  <textarea name="company_description" class="form-control" rows="6" placeholder="請輸入公司簡介"><%= company_info.company_description%></textarea>
                   <% } %>
                   <% } else { %>
-                  <textarea name="company_description" class="form-control" rows="6"
-                    style="resize:none;"><%= data[0].company_description%></textarea>
+                  <textarea name="company_description" class="form-control" rows="6" placeholder="請輸入公司簡介"><%= data[0].company_description%></textarea>
                   <% } %>
-
                 </div>
                 <div class="form-group">
                   <label>登記地址</label>
@@ -104,7 +99,6 @@
                     <input type="text" class="form-control" value="<%= data[0].company_bank_account_holder%>" disabled>
                   </div>
                 </div>
-
                 <div class="row">
                   <div class="form-group col-md-4">
                     <label>銀行</label>
@@ -115,7 +109,6 @@
                     <input type="text" class="form-control" value="<%= data[0].company_bank_name_code%>" disabled>
                   </div>
                 </div>
-
                 <div class="row">
                   <div class="form-group col-md-4">
                     <label>分行</label>
@@ -126,7 +119,6 @@
                     <input type="text" class="form-control" value="<%= data[0].company_bank_branch_code%>" disabled>
                   </div>
                 </div>
-
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>存摺封面影本</label>
@@ -148,15 +140,5 @@
 
   <%- include('partial/footer')-%>
 
-  <script>
-    $(function () {
-      user_role = "<%= locals.role%>"
-      if ("<%= locals.role%>" == 0) {
-        $(".role_determine").prop("disabled", true)
-      }
-    })
-  </script>
-
 </body>
-
 </html>

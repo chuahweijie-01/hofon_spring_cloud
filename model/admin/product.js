@@ -42,19 +42,45 @@ exports.category_list = (company_id) => {
         })
 }
 
-exports.product_list = (company_id) => {
+exports.product_list = (company_id, page_info) => {
+    var page_size = 10;
+    var number_of_rows, number_of_pages;
+    var number_per_page = parseInt(page_size, 10) || 1;
+    var page = parseInt(page_info.page, 10) || 1;
+    var skip = (page - 1) * number_per_page;
+    var limit = `${skip} , ${number_per_page}`;
+
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT product.product_id, product.product_name, product.product_stock, product.product_status, category.category_id, category.category_name, 
-                                     DATE_FORMAT(product.last_update, '%W %M %Y %H:%i:%s') AS last_update
-                                     FROM productdb.product AS product
-                                     JOIN productdb.category AS category
-                                     ON product.category_id = category.category_id
-                                     JOIN companydb.company AS company
-                                     ON product.company_id = company.company_id
-                                     WHERE company.company_id = ? AND product_delete = 0`, [company_id])
+            return connection.query(`SELECT COUNT(*) AS total_product FROM productdb.product
+                                     WHERE company_id = ?`, [company_id])
                 .then(([rows, field]) => {
-                    return (rows);
+                    number_of_rows = rows[0].total_product;
+                    number_of_pages = Math.ceil(number_of_rows / number_per_page);
+                    return connection.query(`SELECT product.product_id, product.product_name, product.product_stock, product.product_status, category.category_id, category.category_name, 
+                                             DATE_FORMAT(product.last_update, '%D %M %Y %H:%i:%s') AS last_update
+                                             FROM productdb.product AS product
+                                             JOIN productdb.category AS category
+                                             ON product.category_id = category.category_id
+                                             JOIN companydb.company AS company
+                                             ON product.company_id = company.company_id
+                                             WHERE company.company_id = ? AND product_delete = 0
+                                             LIMIT ${limit}`, [company_id])
+                })
+                .then(([rows, field]) => {
+                    result = {
+                        rows: rows,
+                        pagination: {
+                            current: page,
+                            number_per_page: number_per_page,
+                            has_previous: page > 1,
+                            previous: page - 1,
+                            has_next: page < number_of_pages,
+                            next: page + 1,
+                            last_page: Math.ceil(number_of_rows / page_size)
+                        }
+                    }
+                    return (result);
                 })
                 .finally(() => {
                     connection.release();

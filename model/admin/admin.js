@@ -41,7 +41,7 @@ exports.admin_display = (admin_id) => {
 exports.admin_display_list = () => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT admin_id, admin_name, DATE_FORMAT(last_login, '%W %M %Y %H:%i:%s') AS last_login FROM companydb.admin WHERE admin_role = 1`)
+            return connection.query(`SELECT admin_id, admin_name, DATE_FORMAT(last_login, '%D %M %Y %H:%i:%s') AS last_login FROM companydb.admin WHERE admin_role = 1`)
                 .then(([rows, field]) => {
                     return (rows);
                 })

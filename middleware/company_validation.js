@@ -30,12 +30,12 @@ exports.company_info_input = [
         .notEmpty().withMessage('* 不可空缺'),
     check('company_bank_name_code')
         .notEmpty().withMessage('* 不可空缺')
-        .isLength({ min: 3, max: 3 }).withMessage('* 代號只允許四碼'),
+        .isLength({ min: 3, max: 3 }).withMessage('* 代號只允許三碼'),
     check('company_bank_branch')
         .notEmpty().withMessage('* 不可空缺'),
     check('company_bank_branch_code')
         .notEmpty().withMessage('* 不可空缺')
-        .isLength({ min: 4, max: 4 }).withMessage('* 代號只允許三碼'),
+        .isLength({ min: 4, max: 4 }).withMessage('* 代號只允許四碼'),
 
     (req, res, next) => {
         req.session.company_info = req.body;

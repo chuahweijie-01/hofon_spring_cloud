@@ -20,10 +20,20 @@ exports.add_company = (company_info) => {
         })
 };
 
-exports.company_list = () => {
+exports.company_list = (page_info) => {
+    var page_size = 10;
+    var number_of_rows, number_of_pages;
+    var number_per_page = parseInt(page_size, 10) || 1;
+    var page = parseInt(page_info.page, 10) || 1;
+    var skip = (page - 1) * number_per_page;
+    var limit = `${skip} , ${number_per_page}`;
+
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT company_id, company_official_id, company_name, DATE_FORMAT(created_date, '%W %M %Y %H:%i:%s') AS created_date FROM companydb.company`)
+            return connection.query(`SELECT company_id, company_official_id, company_name,
+                                     DATE_FORMAT(created_date, '%D %M %Y %H:%i:%s') AS created_date
+                                     FROM companydb.company
+                                     `)
                 .then(([rows, field]) => {
                     return (rows);
                 })

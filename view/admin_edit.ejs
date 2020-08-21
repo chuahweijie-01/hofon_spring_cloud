@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <%- include('partial/header')-%>
 
 <body>
@@ -19,38 +20,33 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>帳號</label>
-
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "admin_email")) { %>
                     <div class="has-error">
-                      <input type="text" name="admin_email" class="form-control" value="<%= admin_info.admin_email%>">
+                      <input type="text" name="admin_email" class="form-control" placeholder="電子郵件地址" value="<%= admin_info.admin_email%>">
                       <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_email"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="admin_email" class="form-control" value="<%= admin_info.admin_email%>">
+                    <input type="text" name="admin_email" class="form-control" placeholder="電子郵件地址" value="<%= admin_info.admin_email%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="admin_email" class="form-control" value="<%= data[0].admin_email%>">
+                    <input type="text" name="admin_email" class="form-control" placeholder="電子郵件地址" value="<%= data[0].admin_email%>">
                     <% } %>
-
                   </div>
-
                   <div class="form-group col-md-6">
                     <label>名稱</label>
-
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "admin_name")) { %>
                     <div class="has-error">
-                      <input type="text" name="admin_name" class="form-control" value="<%= admin_info.admin_name%>">
+                      <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱" value="<%= admin_info.admin_name%>">
                       <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_name"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="admin_name" class="form-control" value="<%= admin_info.admin_name%>">
+                    <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱" value="<%= admin_info.admin_name%>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="admin_name" class="form-control" value="<%= data[0].admin_name%>">
+                    <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱" value="<%= data[0].admin_name%>">
                     <% } %>
-
                   </div>
                 </div>
                 <hr>
@@ -66,5 +62,4 @@
   <%- include('partial/footer')-%>
 
 </body>
-
 </html>

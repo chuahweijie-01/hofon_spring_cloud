@@ -1,6 +1,7 @@
 body{
   background:#f4f4f4;
   margin-bottom: 100px;
+  overflow: overlay
 }
 
 /* NAVBAR */
@@ -588,4 +589,8 @@ select.minimal:focus {
 .validation {
   font-weight: bold;
   color: #CC0000;
+}
+
+textarea{
+  resize: none;
 }

@@ -19,23 +19,18 @@
                 <label style="font-size: 20px;"><%= title%>資料</label>
                 <div class="form-group">
                   <label>名稱</label>
-
                   <% if (validation.length > 0) { %>
                   <% if (validation.find(element => element.param == "category_name")) { %>
                   <div class="has-error">
-                    <input type="text" name="category_name" class="form-control" placeholder="email@hofonspring.com"
-                      value="<%= category_info.category_name %>">
-                    <span
-                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "category_name"))].msg; %></span>
+                    <input type="text" name="category_name" class="form-control" placeholder="名稱" value="<%= category_info.category_name %>">
+                    <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "category_name"))].msg; %></span>
                   </div>
                   <% } else { %>
-                  <input type="text" name="category_name" class="form-control" placeholder="email@hofonspring.com"
-                    value="<%= category_info.category_name %>">
+                  <input type="text" name="category_name" class="form-control" placeholder="名稱" value="<%= category_info.category_name %>">
                   <% } %>
                   <% } else { %>
-                  <input type="text" name="category_name" class="form-control" value="<%= data[0].category_name%>">
+                  <input type="text" name="category_name" class="form-control" placeholder="名稱" value="<%= data[0].category_name%>">
                   <% } %>
-
                 </div>
                 <hr>
                 <label style="font-size: 20px; margin-bottom: 10px;">選擇公司</label>
@@ -47,7 +42,6 @@
                 <br>
                 <table class="table table-striped table-hover">
                   <tbody id="myTable">
-
                     <% if (company.length) { %>
                     <% var checked = 0; %>
                     <% for (var i=0; i< company.length; i++) { %>
@@ -57,35 +51,27 @@
                     <% break; %>
                     <% } %>
                     <% } %>
-
                     <tr>
                       <td>
                         <% if (checked == 1) { %>
-                        <input type="checkbox" name="company_id" id="<%= company[i].company_id%>"
-                          value="<%= company[i].company_id%>" checked>
+                        <input type="checkbox" name="company_id" id="<%= company[i].company_id%>" value="<%= company[i].company_id%>" checked>
                         <% } else { %>
-                        <input type="checkbox" name="company_id" id="<%= company[i].company_id%>"
-                          value="<%= company[i].company_id%>">
+                        <input type="checkbox" name="company_id" id="<%= company[i].company_id%>" value="<%= company[i].company_id%>">
                         <% } %>
-                        <label for="<%= company[i].company_id%>"><%= company[i].company_name%></label></td>
+                        <label for="<%= company[i].company_id%>"><%= company[i].company_official_id %>&nbsp;&nbsp;&nbsp;<%= company[i].company_name %></label></td>
                     </tr>
-
                     <% checked = 0; %>
                     <% } %>
                     <% } %>
-
                   </tbody>
                 </table>
-
                 <% if (validation.length > 0) { %>
                 <% if (validation.find(element => element.param == "company_id")) { %>
                 <div class="has-error" style="padding-bottom: 10px;">
-                  <span
-                    class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_id"))].msg; %></span>
+                  <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_id"))].msg; %></span>
                 </div>
                 <% } %>
                 <% } %>
-
                 <br>
                 <input type="submit" class="btn btn-danger" value="更新">
               </form>
@@ -99,5 +85,4 @@
   <%- include('partial/footer')-%>
 
 </body>
-
 </html>

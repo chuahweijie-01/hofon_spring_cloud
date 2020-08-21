@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <%- include('partial/header')-%>
 
 <body>
@@ -31,10 +32,8 @@
                     <th class="col-md-1"></th>
                     <th class="col-md-1"></th>
                   </tr>
-
                 </thead>
                 <tbody id="myTable">
-
                   <% if (data.length) { %>
                   <% for (var i=0; i< data.length; i++) { %>
                   <tr>
@@ -45,7 +44,6 @@
                     <td><a class="btn btn-default" href="/api/company/<%= data[i].company_id%>">編輯</a></td>
                     <td><a class="btn btn-danger" href="#companyDeleteModal_<%= data[i].company_id %>" data-toggle="modal">刪除</a></td>
                   </tr>
-
                   <div id="companyDeleteModal_<%= data[i].company_id %>" class="modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
@@ -66,15 +64,12 @@
                       </div>
                     </div>
                   </div>
-
                   <% } %>
                   <% } %>
-
                 </tbody>
               </table>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -83,5 +78,4 @@
   <%- include('partial/footer')-%>
 
 </body>
-
 </html>

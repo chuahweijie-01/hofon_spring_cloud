@@ -30,12 +30,16 @@ exports.ads_create = (req, res) => {
 
 exports.ads_display = (req, res) => {
     ads_model.ads_display(req.params.id).then((result) => {
+        var ads_info = req.session.ads_info;
+        req.session.ads_info = null;
         res.render('ads_edit', {
             title: "廣告",
             icon: '<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>',
             navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/ads">廣告管理</a></li><li class="active">更新廣告</li>',
             message: req.flash('flash'),
-            data: result
+            validation: req.flash('validation'),
+            data: result,
+            ads_info: ads_info
         })
     }).catch((err) => {
         req.flash('flash', {
@@ -69,11 +73,15 @@ exports.ads_display_list = (req, res) => {
 }
 
 exports.ads_new = (req, res) => {
+    var ads_info = req.session.ads_info;
+    req.session.ads_info = null;
     res.render('ads_add', {
         title: "廣告",
         icon: '<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>',
         navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/ads">廣告管理</a></li><li class="active">新增廣告</li>',
-        message: req.flash('flash')
+        message: req.flash('flash'),
+        validation: req.flash('validation'),
+        ads_info: ads_info
     });
 }
 

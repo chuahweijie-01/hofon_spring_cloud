@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <%- include('partial/header')-%>
 
 <body>
@@ -27,7 +28,10 @@
                     <th></th>
                     <th>名稱</th>
                     <% if (locals.role === 1) { %>
+                    <th>統編</th>
                     <th>所屬公司</th>
+                    <% } else { %>
+                    <th>電郵</th>
                     <% } %>
                     <th>最後一次登入</th>
                     <th class="col-md-1"></th>
@@ -36,22 +40,21 @@
                   <tr>
                 </thead>
                 <tbody id="myTable">
-
                   <% if (data.length) { %>
                   <% for (var i=0; i< data.length; i++) { %>
                   <tr>
                     <td><%= i + 1; %></td>
                     <td><%= data[i].admin_name %></td>
                     <% if (locals.role === 1) { %>
+                    <td><%= data[i].company_official_id %></td>
                     <td><%= data[i].company_name %></td>
+                    <% } else { %>
+                    <td><%= data[i].admin_email %></td>
                     <% } %>
                     <td><%= data[i].last_login %></td>
-
                     <td><a class="btn btn-default" href="/api/client/<%= data[i].admin_id%>">編輯</a></td>
-                    <td><a class="btn btn-danger" href="#clientDeleteModal_<%= data[i].admin_id %>"
-                        data-toggle="modal">刪除</a></td>
+                    <td><a class="btn btn-danger" href="#clientDeleteModal_<%= data[i].admin_id %>" data-toggle="modal">刪除</a></td>
                   </tr>
-
                   <div id="clientDeleteModal_<%= data[i].admin_id %>" class="modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
@@ -68,21 +71,17 @@
                         </div>
                         <div class="modal-footer justify-content-center">
                           <a type="button" class="btn btn-secondary" data-dismiss="modal" style="color: white;">取消</a>
-                          <a type="button" class="btn btn-danger"
-                            href="/api/client/<%= data[i].admin_id%>?_method=DELETE" style="color: white;">刪除</a>
+                          <a type="button" class="btn btn-danger" href="/api/client/<%= data[i].admin_id%>?_method=DELETE" style="color: white;">刪除</a>
                         </div>
                       </div>
                     </div>
                   </div>
-
                   <% } %>
                   <% } %>
-
                 </tbody>
               </table>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -91,5 +90,4 @@
   <%- include('partial/footer')-%>
 
 </body>
-
 </html>

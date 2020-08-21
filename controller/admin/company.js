@@ -77,7 +77,7 @@ exports.company_display = (req, res) => {
 }
 
 exports.company_display_list = (req, res) => {
-    company_model.company_list().then((result) => {
+    company_model.company_list(req.query).then((result) => {
         res.render('company', {
             title: "公司",
             icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
@@ -97,12 +97,15 @@ exports.company_display_list = (req, res) => {
 }
 
 exports.company_new = (req, res) => {
+    var company_info = req.session.company_info;
+    req.session.company_info = null;
     res.render('company_add', {
         title: "公司",
         icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
         navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/company">公司</a></li><li class="active">新增公司</li>',
         message: req.flash('flash'),
-        validation: req.flash('validation')
+        validation: req.flash('validation'),
+        company_info: company_info
     });
 }
 

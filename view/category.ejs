@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <%- include('partial/header')-%>
 
 <body>
@@ -34,7 +35,6 @@
                   <tr>
                 </thead>
                 <tbody id="myTable">
-
                   <% if (data.length) { %>
                   <% for (var i=0; i< data.length; i++) { %>
                   <tr>
@@ -43,10 +43,8 @@
                     <td><%= data[i].total_company %></td>
                     <td><%= data[i].last_update %></td>
                     <td><a class="btn btn-default" href="/api/category/<%= data[i].category_id%>">編輯</a></td>
-                    <td><a class="btn btn-danger" href="#categoryDeleteModal_<%= data[i].category_id %>"
-                        data-toggle="modal">刪除</a></td>
+                    <td><a class="btn btn-danger" href="#categoryDeleteModal_<%= data[i].category_id %>" data-toggle="modal">刪除</a></td>
                   </tr>
-
                   <div id="categoryDeleteModal_<%= data[i].category_id %>" class="modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
@@ -62,21 +60,17 @@
                         </div>
                         <div class="modal-footer justify-content-center">
                           <a type="button" class="btn btn-secondary" data-dismiss="modal" style="color: white;">取消</a>
-                          <a type="button" class="btn btn-danger"
-                            href="/api/category/<%= data[i].category_id%>?_method=DELETE" style="color: white;">刪除</a>
+                          <a type="button" class="btn btn-danger" href="/api/category/<%= data[i].category_id%>?_method=DELETE" style="color: white;">刪除</a>
                         </div>
                       </div>
                     </div>
                   </div>
-
                   <% } %>
                   <% } %>
-
                 </tbody>
               </table>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -85,5 +79,4 @@
   <%- include('partial/footer')-%>
 
 </body>
-
 </html>

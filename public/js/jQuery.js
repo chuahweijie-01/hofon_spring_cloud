@@ -91,6 +91,7 @@ $(function () {
         url: `/api/product/publish/${product_id}/${category_id}`
       }).done((result) => {
         $(publish_status_id).text('已發佈').removeClass('btn-warning').addClass('btn-success');
+        $("#status_message").click();
       }).fail((err) => {
         $("#status_message").show();
         $('#status_message').addClass('alert alert-danger alert-dismissible').html('<a href="#" class="close" aria-label="close">&times;</a><strong>該產品屬性已超過可以發佈的產品上限</strong>');
@@ -101,6 +102,7 @@ $(function () {
         url: `/api/product/unpublish/${product_id}`
       }).done((result) => {
         $(publish_status_id).text('未發佈').removeClass('btn-success').addClass('btn-warning');
+        $("#status_message").click();
       }).fail((err) => {
         $("#status_message").show();
         $('#status_message').addClass('alert alert-danger alert-dismissible').html('<a href="#" class="close" aria-label="close">&times;</a><strong>暫時無法設定該產品的發佈狀態</strong>');
@@ -110,8 +112,7 @@ $(function () {
   });
 
   $("#status_message").on("click", () => {
-    console.log('in')
-    $("#status_message").fadeOut(500);
+    $("#status_message").fadeOut(400);
   });
 
   $('#order_status').on('click', () => {

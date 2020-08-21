@@ -87,13 +87,14 @@ exports.product_unpublish = (req, res) => {
 }
 
 exports.product_display_list = (req, res) => {
-    product_model.product_list(req.session.company).then((result) => {
+    product_model.product_list(req.session.company, req.query).then((result) => {
         res.render('product', {
             title: "產品",
             icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
             navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">產品</li>',
             message: req.flash('flash'),
-            data: result
+            data: result.rows,
+            pagination: result.pagination
         });
     }).catch((err) => {
         req.flash('flash', {

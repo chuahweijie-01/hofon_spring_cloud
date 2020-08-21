@@ -20,49 +20,40 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label>帳號</label>
-
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "admin_email")) { %>
                     <div class="has-error">
-                      <input type="text" name="admin_email" class="form-control" placeholder="email@hofonspring.com"
-                        value="<%= client_info.admin_email %>">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_email"))].msg; %></span>
+                      <input type="text" name="admin_email" class="form-control" placeholder="電子郵件地址" value="<%= client_info.admin_email %>">
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_email"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="admin_email" class="form-control" placeholder="email@hofonspring.com"
-                      value="<%= client_info.admin_email %>">
+                    <input type="text" name="admin_email" class="form-control" placeholder="電子郵件地址" value="<%= client_info.admin_email %>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="admin_email" class="form-control" placeholder="email@hofonspring.com"
-                      value="<%= data[0].admin_email%>">
+                    <input type="text" name="admin_email" class="form-control" placeholder="電子郵件地址" value="<%= data[0].admin_email%>">
                     <% } %>
-
                   </div>
                   <div class="form-group col-md-6">
                     <label>名稱</label>
-
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "admin_name")) { %>
                     <div class="has-error">
-                      <input type="text" name="admin_name" class="form-control" value="<%= client_info.admin_name %>">
+                      <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱" value="<%= client_info.admin_name %>">
                       <span
                         class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_name"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="admin_name" class="form-control" value="<%= client_info.admin_name %>">
+                    <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱" value="<%= client_info.admin_name %>">
                     <% } %>
                     <% } else { %>
-                    <input type="text" name="admin_name" class="form-control" value="<%= data[0].admin_name%>">
+                    <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱" value="<%= data[0].admin_name%>">
                     <% } %>
-
                   </div>
                 </div>
                 <hr>
                 <label style="font-size: 20px; padding-bottom: 10px;">權限管理</label>
                 <table class="table table-striped table-hover">
                   <tbody id="myTable">
-
                     <% if (privileges.length) { %>
                     <% var checked = 0; %>
                     <% for (var i=0; i< privileges.length; i++) { %>
@@ -72,36 +63,28 @@
                     <% break; %>
                     <% } %>
                     <% } %>
-
                     <tr>
                       <td class="col-md-4">
                         <% if (checked == 1) { %>
-                        <input type="checkbox" name="privileges_id" id="<%= privileges[i].privileges_id%>"
-                          value="<%= privileges[i].privileges_id%>" checked>
+                        <input type="checkbox" name="privileges_id" id="<%= privileges[i].privileges_id%>" value="<%= privileges[i].privileges_id%>" checked>
                         <% } else { %>
-                        <input type="checkbox" name="privileges_id" id="<%= privileges[i].privileges_id%>"
-                          value="<%= privileges[i].privileges_id%>">
+                        <input type="checkbox" name="privileges_id" id="<%= privileges[i].privileges_id%>" value="<%= privileges[i].privileges_id%>">
                         <% } %>
                         <label for="<%= privileges[i].privileges_id%>"><%= privileges[i].privileges_name%></label></td>
                       <td class="col-md-8"><%= privileges[i].privileges_description%></td>
                     </tr>
-
                     <% checked = 0; %>
                     <% } %>
                     <% } %>
-
                   </tbody>
                 </table>
-
                 <% if (validation.length > 0) { %>
                 <% if (validation.find(element => element.param == "privileges_id")) { %>
                 <div class="has-error" style="padding-bottom: 10px;">
-                  <span
-                    class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "privileges_id"))].msg; %></span>
+                  <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "privileges_id"))].msg; %></span>
                 </div>
                 <% } %>
                 <% } %>
-
                 <br>
                 <input type="submit" class="btn btn-danger" value="更新">
               </form>
@@ -115,5 +98,4 @@
   <%- include('partial/footer')-%>
 
 </body>
-
 </html>

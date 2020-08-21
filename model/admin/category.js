@@ -35,7 +35,7 @@ exports.category_create = (category_name, company_id) => {
 exports.company_list = () => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT company_id, company_name FROM companydb.company`)
+            return connection.query(`SELECT company_id, company_official_id, company_name FROM companydb.company`)
                 .then(([rows, field]) => {
                     return (rows);
                 })
@@ -76,7 +76,7 @@ exports.category_display_list = () => {
     return connectionPool.getConnection()
         .then((connection) => {
             return connection.query(`SELECT COUNT(*) AS total_company, company_category.category_id, category.category_name,
-                                     DATE_FORMAT(category.last_update, '%W %M %Y %H:%i:%s') AS last_update
+                                     DATE_FORMAT(category.last_update, '%D %M %Y %H:%i:%s') AS last_update
                                      FROM companydb.company_category AS company_category
                                      JOIN productdb.category AS category
                                      ON company_category.category_id = category.category_id

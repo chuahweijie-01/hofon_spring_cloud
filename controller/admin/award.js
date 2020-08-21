@@ -3,8 +3,8 @@ const award_model = require('../../model/admin/award')
 exports.award_create = (req, res) => {
 
     var product_id;
-    Array.isArray(req.body.product_id)? product_id = req.body.product_id : product_id = [req.body.product_id];
-    
+    Array.isArray(req.body.product_id) ? product_id = req.body.product_id : product_id = [req.body.product_id];
+
     award_info = {
         company_id: req.session.company,
         award_name: req.body.award_name,
@@ -33,13 +33,17 @@ exports.award_create = (req, res) => {
 exports.award_display = (req, res) => {
     award_model.product_list(req.session.company).then((product) => {
         award_model.award_display(req.params.id).then((award) => {
+            var award_info = req.session.award_info;
+            req.session.award_info = null;
             res.render('award_edit', {
                 title: "暢銷排行榜",
                 icon: '<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>',
                 navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/award">暢銷排行榜</a></li><li class="active">新增暢銷排行榜</li>',
                 message: req.flash('flash'),
+                validation: req.flash('validation'),
                 data: award,
-                product: product
+                product: product,
+                award_info: award_info
             });
         }).catch((err) => {
             req.flash('flash', {
@@ -109,8 +113,8 @@ exports.award_new = (req, res) => {
 exports.award_update = (req, res) => {
 
     var product_id;
-    Array.isArray(req.body.product_id)? product_id = req.body.product_id : product_id = [req.body.product_id];
-    
+    Array.isArray(req.body.product_id) ? product_id = req.body.product_id : product_id = [req.body.product_id];
+
 
     award_info = {
         award_name: req.body.award_name,
