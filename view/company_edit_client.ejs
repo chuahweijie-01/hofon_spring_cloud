@@ -88,6 +88,20 @@
                   <input type="text" class="form-control" value="<%= data[0].company_address_another%>" disabled>
                 </div>
                 <hr>
+                <label style="font-size: 20px;">產品</label>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label>發佈上限
+                      <a style="color:#e74c3c"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" data-original-title="寫入一些資料"></span></a>
+                    </label>
+                    <div class="input-group spinner">
+                      <span class="input-group-addon">-</span>
+                      <input type="text" id="result_limit" class="form-control" placeholder="產品發佈上限數量" value="<%= data[0].company_product_max%>" disabled>
+                      <span class="input-group-addon">+</span>
+                    </div>
+                  </div>
+                </div>
+                <hr>
                 <label style="font-size: 20px;">銀行戶口</label>
                 <div class="row">
                   <div class="form-group col-md-6">

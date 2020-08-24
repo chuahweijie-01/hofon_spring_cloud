@@ -94,7 +94,8 @@ exports.product_display_list = (req, res) => {
             navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">產品</li>',
             message: req.flash('flash'),
             data: result.rows,
-            pagination: result.pagination
+            pagination: result.pagination,
+            pagination_path: 'product'
         });
     }).catch((err) => {
         req.flash('flash', {

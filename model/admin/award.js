@@ -51,20 +51,46 @@ exports.award_display = (award_id) => {
         })
 }
 
-exports.award_display_list = (company_id) => {
+exports.award_display_list = (company_id, page_info) => {
+    var page_size = 10;
+    var number_of_rows, number_of_pages;
+    var number_per_page = parseInt(page_size, 10) || 1;
+    var page = parseInt(page_info.page, 10) || 1;
+    var skip = (page - 1) * number_per_page;
+    var limit = `${skip} , ${number_per_page}`;
+
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT COUNT(*) AS total_award, award.award_id, award.award_name,
-                                     DATE_FORMAT(award.last_update, '%D %M %Y %H:%i:%s') AS last_update
-                                     FROM productdb.award AS award
-                                     LEFT JOIN productdb.product_award AS product_award
-                                     ON award.award_id = product_award.award_id
-                                     LEFT JOIN productdb.product AS product
-                                     ON product_award.product_id = product.product_id
-                                     WHERE product.company_id = ?
-                                     GROUP BY award.award_name`, [company_id])
+            return connection.query(`SELECT COUNT(*) AS total_award FROM productdb.award
+                                     WHERE company_id = ${company_id}`)
                 .then(([rows, field]) => {
-                    return (rows);
+                    number_of_rows = rows[0].total_product;
+                    number_of_pages = Math.ceil(number_of_rows / number_per_page);
+                    return connection.query(`SELECT COUNT(*) AS total_award, award.award_id, award.award_name,
+                                             DATE_FORMAT(award.last_update, '%D %M %Y %H:%i:%s') AS last_update
+                                             FROM productdb.award AS award
+                                             LEFT JOIN productdb.product_award AS product_award
+                                             ON award.award_id = product_award.award_id
+                                             LEFT JOIN productdb.product AS product
+                                             ON product_award.product_id = product.product_id
+                                             WHERE product.company_id = ?
+                                             GROUP BY award.award_name
+                                             LIMIT ${limit}`, [company_id])
+                })
+                .then(([rows, field]) => {
+                    result = {
+                        rows: rows,
+                        pagination: {
+                            current: page,
+                            number_per_page: number_per_page,
+                            has_previous: page > 1,
+                            previous: page - 1,
+                            has_next: page < number_of_pages,
+                            next: page + 1,
+                            last_page: Math.ceil(number_of_rows / page_size)
+                        }
+                    }
+                    return (result);
                 })
                 .finally(() => {
                     connection.release();

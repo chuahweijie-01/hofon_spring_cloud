@@ -30,12 +30,29 @@ exports.company_list = (page_info) => {
 
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT company_id, company_official_id, company_name,
-                                     DATE_FORMAT(created_date, '%D %M %Y %H:%i:%s') AS created_date
-                                     FROM companydb.company
-                                     `)
+            return connection.query(`SELECT COUNT(*) AS total_company FROM companydb.company`)
                 .then(([rows, field]) => {
-                    return (rows);
+                    number_of_rows = rows[0].total_company;
+                    number_of_pages = Math.ceil(number_of_rows / number_per_page);
+                    return connection.query(`SELECT company_id, company_official_id, company_name,
+                                             DATE_FORMAT(created_date, '%D %M %Y %H:%i:%s') AS created_date
+                                             FROM companydb.company
+                                             LIMIT ${limit}`)
+                })
+                .then(([rows, field]) => {
+                    result = {
+                        rows: rows,
+                        pagination: {
+                            current: page,
+                            number_per_page: number_per_page,
+                            has_previous: page > 1,
+                            previous: page - 1,
+                            has_next: page < number_of_pages,
+                            next: page + 1,
+                            last_page: Math.ceil(number_of_rows / page_size)
+                        }
+                    }
+                    return (result);
                 })
                 .finally(() => {
                     connection.release();

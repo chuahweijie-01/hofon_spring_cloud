@@ -62,13 +62,15 @@ exports.category_display = (req, res) => {
 }
 
 exports.category_display_list = (req, res) => {
-    category_model.category_display_list().then((result) => {
+    category_model.category_display_list(req.query).then((result) => {
         res.render('category', {
             title: "產品屬性",
             icon: '<span class="glyphicon glyphicon-search" aria-hidden="true"></span>',
             navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">產品屬性</li>',
             message: req.flash('flash'),
-            data: result
+            data: result.rows,
+            pagination: result.pagination,
+            pagination_path: 'category'
         });
     }).catch((err) => {
         req.flash('flash', {

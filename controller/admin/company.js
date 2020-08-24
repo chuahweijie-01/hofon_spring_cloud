@@ -1,4 +1,5 @@
-const company_model = require('../../model/admin/company')
+const company_model = require('../../model/admin/company');
+const connection = require('../../conf/db');
 
 exports.company_create = (req, res) => {
 
@@ -11,6 +12,8 @@ exports.company_create = (req, res) => {
         company_address_another: req.body.company_address_another,
         company_description: req.body.company_description,
         company_official_id: req.body.company_official_id,
+
+        company_product_max: req.body.company_product_max,
 
         company_contact_fax: req.body.company_contact_fax,
         company_contact_name: req.body.company_contact_name,
@@ -83,7 +86,9 @@ exports.company_display_list = (req, res) => {
             icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
             navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">公司</li>',
             message: req.flash('flash'),
-            data: result
+            data: result.rows,
+            pagination: result.pagination,
+            pagination_path: 'company'
         });
     }).catch((err) => {
         req.flash('flash', {

@@ -13,7 +13,8 @@ exports.company_info_input = [
         .notEmpty().withMessage('* 不可空缺'),
     check('company_official_id')
         .notEmpty().withMessage('* 不可空缺')
-        .isLength({ min: 6, max: 6 }).withMessage('* 統編只允許六碼'),
+        .isInt().withMessage('* 該欄位只接受數字格式')
+        .isLength({ min: 8, max: 10 }).withMessage('* 統編只允許八或十碼'),
     check('company_phone')
         .notEmpty().withMessage('* 不可空缺'),
     check('company_description')
@@ -22,6 +23,10 @@ exports.company_info_input = [
         .notEmpty().withMessage('* 不可空缺'),
     check('company_address_another')
         .notEmpty().withMessage('* 不可空缺'),
+    check('company_product_max')
+        .trim()
+        .notEmpty().withMessage('* 不可空缺')
+        .isInt().withMessage('* 該欄位只接受數字格式'),
     check('company_bank_account')
         .notEmpty().withMessage('* 不可空缺'),
     check('company_bank_account_holder')
@@ -30,11 +35,14 @@ exports.company_info_input = [
         .notEmpty().withMessage('* 不可空缺'),
     check('company_bank_name_code')
         .notEmpty().withMessage('* 不可空缺')
+        .isInt().withMessage('* 該欄位只接受數字格式')
         .isLength({ min: 3, max: 3 }).withMessage('* 代號只允許三碼'),
     check('company_bank_branch')
         .notEmpty().withMessage('* 不可空缺'),
     check('company_bank_branch_code')
+        .trim()
         .notEmpty().withMessage('* 不可空缺')
+        .isInt().withMessage('* 該欄位只接受數字格式')
         .isLength({ min: 4, max: 4 }).withMessage('* 代號只允許四碼'),
 
     (req, res, next) => {

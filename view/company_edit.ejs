@@ -194,6 +194,26 @@
                   <label for="same_address">與登記地址相同</label>
                 </div>
                 <hr>
+                <label style="font-size: 20px;">產品</label>
+                <div class="row">
+                  <div class="form-group col-md-4">
+                    <label>發佈上限
+                      <a style="color:#e74c3c"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" data-original-title="寫入一些資料"></span></a>
+                    </label>
+                    <div class="input-group spinner">
+                      <span class="btn input-group-addon product_limit" id="decrease_limit">-</span>
+                      <input type="text" id="result_limit" name="company_product_max" class="form-control" placeholder="產品發佈上限數量" value="<%= data[0].company_product_max%>" readonly>
+                      <span class="btn input-group-addon product_limit" id="increase_limit">+</span>
+                    </div>
+                    <span class="error text-danger validation" id="reach_minimum"></span>
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "company_product_max")) { %>
+                    <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_product_max"))].msg; %></span>
+                    <% } %>
+                    <% } %>
+                  </div>
+                </div>
+                <hr>
                 <label style="font-size: 20px;">銀行戶口</label>
                 <div class="row">
                   <div class="form-group col-md-6">

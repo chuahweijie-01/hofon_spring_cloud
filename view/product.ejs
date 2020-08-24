@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <%- include('partial/header')-%>
 
 <body>
@@ -9,9 +10,7 @@
         <%- include('partial/sidemenu')-%>
         <div class="col-md-9">
           <%- include('partial/flash')-%>
-
           <div id="status_message"></div>
-
           <a class="btn btn-danger" href="/api/product/new" style="margin-bottom: 10px;">新增<%= title%></a>
           <div class="panel panel-default">
             <div class="panel-heading main-color-bg">
@@ -39,7 +38,6 @@
                   <tr>
                 </thead>
                 <tbody id="myTable">
-
                   <% if (data.length) { %>
                   <% for (var i=0; i< data.length; i++) { %>
                   <tr>
@@ -48,7 +46,6 @@
                     <td><%= data[i].product_stock %></td>
                     <td><%= data[i].category_name %></td>
                     <td><%= data[i].last_update %></td>
-
                     <% if (data[i].product_status === 1) { %>
                     <td><a class="btn btn-success publish_status_group" id="publish_status_<%= data[i].product_id%>"
                         data-button_id="<%= data[i].product_id%>" data-product_id="<%= data[i].product_id%>"
@@ -62,7 +59,6 @@
                     <td> <a class="btn btn-danger" href="#productDeleteModal_<%= data[i].product_id %>"
                         data-toggle="modal">停止銷售</a></td>
                   </tr>
-
                   <div id="productDeleteModal_<%= data[i].product_id %>" class="modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
@@ -89,36 +85,9 @@
                   <% } %>
                 </tbody>
               </table>
-              <div class="text-center">
-                <ul class="pagination">
-                  <% if(pagination.has_previous) { %>
-                    <li class="page-item"><a class="page-link" href="/api/product/?page=1" aria-label="First page"><span aria-hidden="true">首頁</span></a></li>
-                    <li class="page-item"><a class="page-link" href="/api/product/?page=<%= pagination.previous %>" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-                    <% if ((pagination.previous - 1) !== 0 ) { %>
-                      <li class="page-item"><a class="page-link" href="/api/product/?page=<%= pagination.previous - 1 %>"><%= pagination.previous - 1 %></a></li>
-                    <% } %>
-                    <li class="page-item"><a class="page-link" href="/api/product/?page=<%= pagination.previous %>"><%= pagination.previous%></a></li>
-                  <% } else { %>
-                    <li class="page-item disabled"><a class="page-link" aria-label="First page"><span aria-hidden="true">首頁</span></a></li>
-                    <li class="page-item disabled"><a class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-                  <% } %>
-                  <li class="page-item active"><a class="page-link" href="/api/product/?page=<%= pagination.current %>"><%= pagination.current %></a></li>
-                  <% if (pagination.has_next) { %>
-                    <li class="page-item"><a class="page-link" href="/api/product/?page=<%= pagination.next %>"><%= pagination.next%></a></li>
-                    <% if ((pagination.next + 1) <= pagination.last_page) { %>
-                      <li class="page-item"><a class="page-link" href="/api/product/?page=<%= pagination.next + 1 %>"><%= pagination.next + 1 %></a></li>
-                    <% } %>
-                    <li class="page-item"><a class="page-link" href="/api/product/?page=<%= pagination.next %>" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-                    <li class="page-item"><a class="page-link" href="/api/product/?page=<%= pagination.last_page %>" aria-label="Last page"><span aria-hidden="true">尾頁</span></a></li>
-                  <% } else { %>
-                    <li class="page-item disabled"><a class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
-                    <li class="page-item disabled"><a class="page-link" aria-label="Last page"><span aria-hidden="true">尾頁</span></a></li>
-                  <% } %>
-                </ul>
-              </div>
+              <%- include('partial/pagination')-%>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -127,5 +96,4 @@
   <%- include('partial/footer')-%>
 
 </body>
-
 </html>

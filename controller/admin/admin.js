@@ -57,13 +57,15 @@ exports.admin_display = (req, res) => {
 }
 
 exports.admin_display_list = (req, res) => {
-    admin_model.admin_display_list().then((result) => {
+    admin_model.admin_display_list(req.query).then((result) => {
         res.render('admin', {
             title: "禾豐春總管",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
             navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">禾豐春總管</li>',
             message: req.flash('flash'),
-            data: result
+            data: result.rows,
+            pagination: result.pagination,
+            pagination_path: 'admin'
         });
     }).catch((err) => {
         req.flash('flash', {

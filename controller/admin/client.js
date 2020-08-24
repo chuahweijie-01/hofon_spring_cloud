@@ -83,13 +83,16 @@ exports.client_display = (req, res) => {
 }
 
 exports.client_display_list = (req, res) => {
-    client_model.client_display_list(req.session.role, req.session.company).then((result) => {
+    client_model.client_display_list(req.session.role, req.session.company, req.query).then((result) => {
+        console.log(result.pagination)
         res.render('client', {
             title: "管理者",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
             navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">管理者</li>',
             message: req.flash('flash'),
-            data: result
+            data: result.rows,
+            pagination: result.pagination,
+            pagination_path: 'client'
         });
     }).catch((err) => {
         req.flash('flash', {

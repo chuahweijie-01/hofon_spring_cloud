@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <%- include('partial/header')-%>
 
 <body>
@@ -46,7 +47,6 @@
                     <td><a class="btn btn-danger" href="#awardDeleteModal_<%= data[i].award_id %>"
                         data-toggle="modal">刪除</a></td>
                   </tr>
-
                   <div id="awardDeleteModal_<%= data[i].award_id %>" class="modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
@@ -68,12 +68,11 @@
                       </div>
                     </div>
                   </div>
-
                   <% } %>
                   <% } %>
-
                 </tbody>
               </table>
+              <%- include('partial/pagination')-%>
             </div>
           </div>
 
@@ -82,10 +81,7 @@
     </div>
   </section>
 
-  <%- include('partial/delete_modal')-%>
-
   <%- include('partial/footer')-%>
 
 </body>
-
 </html>

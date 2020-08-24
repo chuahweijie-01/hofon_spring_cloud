@@ -75,25 +75,59 @@ exports.client_display = (client_id) => {
         })
 };
 
-exports.client_display_list = (role, company_id) => {
+exports.client_display_list = (role, company_id, page_info) => {
+    var page_size = 10;
+    var number_of_rows, number_of_pages;
+    var number_per_page = parseInt(page_size, 10) || 1;
+    var page = parseInt(page_info.page, 10) || 1;
+    var skip = (page - 1) * number_per_page;
+    var limit = `${skip} , ${number_per_page}`;
+    var query;
+
     return connectionPool.getConnection()
         .then((connection) => {
-            var query;
             if (role == 1) {
-                query = `SELECT admin.admin_id, admin.admin_name, company.company_name, company.company_official_id, DATE_FORMAT(last_login, '%D %M %Y %H:%i:%s') AS last_login
-                         FROM companydb.admin AS admin
-                         JOIN companydb.company AS company
-                         ON admin.company_id = company.company_id
+                query = `SELECT COUNT(*) AS total_client
+                         FROM companydb.admin
                          WHERE admin_role = 0`;
             } else {
-                query = `SELECT admin_id, admin_name, admin_email, DATE_FORMAT(last_login, '%D %M %Y %H:%i:%s') AS last_login
+                query = `SELECT COUNT(*) AS total_client
                          FROM companydb.admin
-                         WHERE company_id = ${company_id}`;
+                         WHERE admin_role = 0 AND company_id = ${company_id}`;
             }
-
             return connection.query(query)
                 .then(([rows, field]) => {
-                    return (rows);
+                    number_of_rows = rows[0].total_client;
+                    number_of_pages = Math.ceil(number_of_rows / number_per_page);
+                    if (role == 1) {
+                        query = `SELECT admin.admin_id, admin.admin_name, company.company_name, company.company_official_id, DATE_FORMAT(last_login, '%D %M %Y %H:%i:%s') AS last_login
+                                 FROM companydb.admin AS admin
+                                 JOIN companydb.company AS company
+                                 ON admin.company_id = company.company_id
+                                 WHERE admin_role = 0
+                                 LIMIT ${limit}`;
+                    } else {
+                        query = `SELECT admin_id, admin_name, admin_email, DATE_FORMAT(last_login, '%D %M %Y %H:%i:%s') AS last_login
+                                 FROM companydb.admin
+                                 WHERE company_id = ${company_id}
+                                 LIMIT ${limit}`;
+                    }
+                    return connection.query(query)
+                })
+                .then(([rows, field]) => {
+                    result = {
+                        rows: rows,
+                        pagination: {
+                            current: page,
+                            number_per_page: number_per_page,
+                            has_previous: page > 1,
+                            previous: page - 1,
+                            has_next: page < number_of_pages,
+                            next: page + 1,
+                            last_page: Math.ceil(number_of_rows / page_size)
+                        }
+                    }
+                    return (result);
                 })
                 .finally(() => {
                     connection.release();

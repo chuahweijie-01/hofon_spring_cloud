@@ -1,0 +1,30 @@
+<div class="text-center">
+<ul class="pagination">
+    <% if(pagination.has_previous) { %>
+    <li class="page-item"><a class="page-link" href="/api/<%= pagination_path%>/?page=1" aria-label="First page"><span aria-hidden="true">首頁</span></a></li>
+    <li class="page-item"><a class="page-link" href="/api/<%= pagination_path%>/?page=<%= pagination.previous %>" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+    <% if ((pagination.previous - 1) !== 0 ) { %>
+    <li class="page-item"><a class="page-link" href="/api/<%= pagination_path%>/?page=<%= pagination.previous - 1 %>"><%= pagination.previous - 1 %></a></li>
+    <% } %>
+    <li class="page-item"><a class="page-link" href="/api/<%= pagination_path%>/?page=<%= pagination.previous %>"><%= pagination.previous%></a></li>
+    <% } else { %>
+    <li class="page-item disabled"><a class="page-link" aria-label="First page"><span aria-hidden="true">首頁</span></a>
+    </li>
+    <li class="page-item disabled"><a class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+    <% } %>
+    <li class="page-item active"><a class="page-link" href="/api/<%= pagination_path%>/?page=<%= pagination.current %>"><%= pagination.current %></a></li>
+    <% if (pagination.has_next) { %>
+    <li class="page-item"><a class="page-link" href="/api/<%= pagination_path%>/?page=<%= pagination.next %>"><%= pagination.next%></a></li>
+    <% if ((pagination.next + 1) <= pagination.last_page) { %>
+    <li class="page-item"><a class="page-link" href="/api/<%= pagination_path%>/?page=<%= pagination.next + 1 %>"><%= pagination.next + 1 %></a></li>
+    <% } %>
+    <li class="page-item"><a class="page-link" href="/api/<%= pagination_path%>/?page=<%= pagination.next %>" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
+    <li class="page-item"><a class="page-link" href="/api/<%= pagination_path%>/?page=<%= pagination.last_page %>" aria-label="Last page"><span aria-hidden="true">尾頁</span></a></li>
+    <% } else { %>
+    <li class="page-item disabled"><a class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    <li class="page-item disabled"><a class="page-link" aria-label="Last page"><span aria-hidden="true">尾頁</span></a>
+    </li>
+    <% } %>
+</ul>
+</div>

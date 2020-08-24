@@ -72,17 +72,42 @@ exports.category_display = (category_id) => {
         })
 };
 
-exports.category_display_list = () => {
+exports.category_display_list = (page_info) => {
+    var page_size = 10;
+    var number_of_rows, number_of_pages;
+    var number_per_page = parseInt(page_size, 10) || 1;
+    var page = parseInt(page_info.page, 10) || 1;
+    var skip = (page - 1) * number_per_page;
+    var limit = `${skip} , ${number_per_page}`;
+
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT COUNT(*) AS total_company, company_category.category_id, category.category_name,
-                                     DATE_FORMAT(category.last_update, '%D %M %Y %H:%i:%s') AS last_update
-                                     FROM companydb.company_category AS company_category
-                                     JOIN productdb.category AS category
-                                     ON company_category.category_id = category.category_id
-                                     GROUP BY category.category_name`)
+            return connection.query(`SELECT COUNT(*) AS total_category FROM productdb.category`)
                 .then(([rows, field]) => {
-                    return (rows);
+                    number_of_rows = rows[0].total_product;
+                    number_of_pages = Math.ceil(number_of_rows / number_per_page);
+                    return connection.query(`SELECT COUNT(*) AS total_company, company_category.category_id, category.category_name,
+                                             DATE_FORMAT(category.last_update, '%D %M %Y %H:%i:%s') AS last_update
+                                             FROM companydb.company_category AS company_category
+                                             JOIN productdb.category AS category
+                                             ON company_category.category_id = category.category_id
+                                             GROUP BY category.category_name
+                                             LIMIT ${limit}`)
+                })
+                .then(([rows, field]) => {
+                    result = {
+                        rows: rows,
+                        pagination: {
+                            current: page,
+                            number_per_page: number_per_page,
+                            has_previous: page > 1,
+                            previous: page - 1,
+                            has_next: page < number_of_pages,
+                            next: page + 1,
+                            last_page: Math.ceil(number_of_rows / page_size)
+                        }
+                    }
+                    return (result);
                 })
                 .finally(() => {
                     connection.release();

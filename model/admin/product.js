@@ -3,11 +3,7 @@ const connectionPool = require('../../conf/db');
 exports.product_create = (product_info) => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT COUNT(*) as total_product FROM productdb.product WHERE category_id = ? AND company_id = ?`, [product_info.category_id, product_info.company_id])
-                .then(([rows, field]) => {
-                    if (rows[0].total_product >= 8) throw new Error(`該類別已超過可以新增的產品上限`);
-                    else return connection.query(`INSERT INTO productdb.product SET ?`, [product_info])
-                })
+            return connection.query(`INSERT INTO productdb.product SET ?`, [product_info])
                 .then((result) => {
                     if (result[0].affectedRows >= 1) return (`${product_info.product_name} 新增成功`);
                     else throw new Error(`資料新增失敗`);
@@ -168,9 +164,13 @@ exports.product_unpublish = (product_id, company_id) => {
 exports.product_publish = (product_id, category_id, company_id) => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT COUNT(*) as total_product FROM productdb.product WHERE category_id = ? AND company_id = ? AND product_status = 1`, [category_id, company_id])
+            return connection.query(`SELECT COUNT(*) as total_product, company.company_product_max
+                                     FROM productdb.product AS product
+                                     JOIN companydb.company AS company
+                                     ON product.company_id = company.company_id
+                                     WHERE product.category_id = ? AND product.company_id = ? AND product.product_status = 1`, [category_id, company_id])
                 .then(([rows, field]) => {
-                    if (rows[0].total_product >= 2) throw new Error(`該產品屬性已超過可以發佈的產品上限`);
+                    if (rows[0].total_product >= rows[0].company_product_max) throw new Error(`該產品屬性已超過可以發佈的產品上限`);
                     else return connection.query(`UPDATE productdb.product SET product_status = 1 WHERE product_id = ? AND company_id = ?`, [product_id, company_id])
                 })
                 .then((result) => {
