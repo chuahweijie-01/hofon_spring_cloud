@@ -12,6 +12,7 @@ exports.company_create = (req, res) => {
         company_address_another: req.body.company_address_another,
         company_description: req.body.company_description,
         company_official_id: req.body.company_official_id,
+        company_remarks: req.body.company_remarks,
 
         company_product_max: req.body.company_product_max,
 
@@ -32,16 +33,16 @@ exports.company_create = (req, res) => {
 
     company_model.add_company(company_info).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/company');
@@ -70,8 +71,8 @@ exports.company_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/company');
@@ -92,8 +93,8 @@ exports.company_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
@@ -119,21 +120,24 @@ exports.company_update = (req, res) => {
     company_id = req.params.id;
     company_info = {}
 
-    if (req.session.role == 0) company_info = { company_description: req.body.company_description };
+    if (req.session.role == 0) company_info = {
+        company_remarks: req.body.company_remarks,
+        company_description: req.body.company_description
+    };
     else company_info = req.body;
 
     company_model.company_update(company_id, company_info).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/company');
@@ -144,16 +148,16 @@ exports.company_update = (req, res) => {
 exports.company_delete = (req, res) => {
     company_model.company_delete(req.params.id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/company');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/company');

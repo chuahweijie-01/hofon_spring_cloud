@@ -8,16 +8,16 @@ exports.category_create = (req, res) => {
 
     category_model.category_create(category_name, company_id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/category');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/category');
@@ -42,8 +42,8 @@ exports.category_display = (req, res) => {
             });
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err.message,
-                'type': 'error'
+                msg: err.message,
+                type: 'error'
             });
             req.session.save(function (err) {
                 res.redirect('/api/category');
@@ -51,8 +51,8 @@ exports.category_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/category');
@@ -74,8 +74,8 @@ exports.category_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
@@ -98,8 +98,8 @@ exports.category_new = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/category');
@@ -119,16 +119,16 @@ exports.category_update = (req, res) => {
 
     category_model.category_update(category_info, company_id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/category');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/category');
@@ -139,16 +139,16 @@ exports.category_update = (req, res) => {
 exports.category_delete = (req, res) => {
     category_model.category_delete(req.params.id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/category');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/category');

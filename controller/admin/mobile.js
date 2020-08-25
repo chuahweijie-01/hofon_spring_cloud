@@ -17,16 +17,16 @@ exports.mobile_create = (req, res) => {
 
     mobile_model.mobile_create(setting_info, req.session.company, setting_info_company).then((result) => {
         req.flash('flash', {
-            'msg' : result,
-            'type': 'success'
+            msg : result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/mobile');
         })
     }).catch((err) => { 
         req.flash('flash', { 
-            'msg' : err.message,
-            'type': 'error'
+            msg : err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/mobile');
@@ -59,8 +59,8 @@ exports.mobile_display_list = (req, res) => {
     })
         .catch((err) => {
             req.flash('flash', {
-                'msg': err.message,
-                'type': 'error'
+                msg: err.message,
+                type: 'error'
             });
             req.session.save(function (err) {
                 res.redirect('/api/dashboard');

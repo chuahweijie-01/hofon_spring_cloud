@@ -9,8 +9,8 @@ exports.discount_create = (req, res) => {
     }
 
     req.flash('flash', {
-        'msg': 'API測試',
-        'type': 'success'
+        msg: 'API測試',
+        type: 'success'
     });
     req.session.save(function (err) {
         res.redirect('/api/discount');
@@ -18,16 +18,16 @@ exports.discount_create = (req, res) => {
 
     /*discount_model.discount_create(discount_info, req.body.product_id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/discount');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
-            'type': 'error'
+            msg: err,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/discount');
@@ -48,8 +48,8 @@ exports.discount_display = (req, res) => {
             });
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err,
-                'type': 'error'
+                msg: err,
+                type: 'error'
             });
             req.session.save(function (err) {
                 res.redirect('/api/discount');
@@ -57,8 +57,8 @@ exports.discount_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
-            'type': 'error'
+            msg: err,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/discount');
@@ -85,8 +85,8 @@ exports.discount_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
-            'type': 'error'
+            msg: err,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
@@ -112,8 +112,8 @@ exports.discount_new = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
-            'type': 'error'
+            msg: err,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/discount');
@@ -141,8 +141,8 @@ exports.discount_update = (req, res) => {
     discount_id = req.params.id;
 
     req.flash('flash', {
-        'msg': 'API測試',
-        'type': 'success'
+        msg: 'API測試',
+        type: 'success'
     });
     req.session.save(function (err) {
         res.redirect('/api/discount');
@@ -150,16 +150,16 @@ exports.discount_update = (req, res) => {
 
     /*discount_model.discount_update(discount_info, discount_id, req.body.product_id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/discount');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
-            'type': 'error'
+            msg: err,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/discount');
@@ -169,8 +169,8 @@ exports.discount_update = (req, res) => {
 
 exports.discount_delete = (req, res) => {
     req.flash('flash', {
-        'msg': 'API測試',
-        'type': 'success'
+        msg: 'API測試',
+        type: 'success'
     });
     req.session.save(function (err) {
         res.redirect('/api/discount');
@@ -178,16 +178,16 @@ exports.discount_delete = (req, res) => {
 
     /*discount_model.discount_delete(req.params.id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/discount');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err,
-            'type': 'error'
+            msg: err,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/discount');

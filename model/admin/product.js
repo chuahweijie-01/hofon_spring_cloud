@@ -164,11 +164,13 @@ exports.product_unpublish = (product_id, company_id) => {
 exports.product_publish = (product_id, category_id, company_id) => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT COUNT(*) as total_product, company.company_product_max
+            return connection.query(`SELECT company_product_max, (SELECT COUNT(*)
                                      FROM productdb.product AS product
                                      JOIN companydb.company AS company
                                      ON product.company_id = company.company_id
-                                     WHERE product.category_id = ? AND product.company_id = ? AND product.product_status = 1`, [category_id, company_id])
+                                     WHERE product.product_status = 1 AND product.category_id = ? AND product.company_id = ?) AS total_product
+                                     FROM companydb.company
+                                     WHERE company_id = ?`, [category_id, company_id, company_id])
                 .then(([rows, field]) => {
                     if (rows[0].total_product >= rows[0].company_product_max) throw new Error(`該產品屬性已超過可以發佈的產品上限`);
                     else return connection.query(`UPDATE productdb.product SET product_status = 1 WHERE product_id = ? AND company_id = ?`, [product_id, company_id])

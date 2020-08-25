@@ -28,9 +28,13 @@ const category = require('./route/admin/category');
 const award = require('./route/admin/award');
 const order = require('./route/admin/order');
 const ads = require('./route/admin/ads');
-const mobile = require('./route/admin/mobile')
-const admin = require('./route/admin/admin')
-const album = require('./route/admin/album')
+const mobile = require('./route/admin/mobile');
+const admin = require('./route/admin/admin');
+const album = require('./route/admin/album');
+
+const mobile_auth = require('./route/mobile_user/mobile_auth');
+const m_company = require('./route/mobile_user/company');
+const m_product = require('./route/mobile_user/product');
 
 const middlewares = require('./middleware/middlewares');
 
@@ -88,11 +92,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.post('/api/react_native/user', (req, res) => {
-    console.log(req.body);
-    res.send({ message: 'This is from Express Server !' })
-})
-
 app.get('/download', (req, res) => {
     res.render('login', {
         title: "登入頁面",
@@ -108,6 +107,10 @@ app.get('/download', (req, res) => {
     });
     //res.download("./public/image/pdf_file_download.pdf")
 })
+
+app.use('/mobile', mobile_auth);
+app.use('/mobile/api/company', m_company);
+app.use('/mobile/api/product', m_product);
 
 app.use('/', web_auth);
 

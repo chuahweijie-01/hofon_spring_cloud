@@ -11,16 +11,16 @@ exports.ads_create = (req, res) => {
 
     ads_model.ads_create(advertisement_info).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/ads');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/ads');
@@ -43,8 +43,8 @@ exports.ads_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/admin');
@@ -63,8 +63,8 @@ exports.ads_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
@@ -95,16 +95,16 @@ exports.ads_update = (req, res) => {
 
     ads_model.ads_update(req.params.id, advertisement_info).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/ads');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/ads');
@@ -115,16 +115,16 @@ exports.ads_update = (req, res) => {
 exports.ads_delete = (req, res) => {
     ads_model.ads_delete(req.params.id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/ads');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/ads');

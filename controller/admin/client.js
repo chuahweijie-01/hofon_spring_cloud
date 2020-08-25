@@ -29,16 +29,16 @@ exports.client_create = (req, res) => {
 
         client_model.client_create(client_info, privileges_id).then((result) => {
             req.flash('flash', {
-                'msg': result,
-                'type': 'success'
+                msg: result,
+                type: 'success'
             });
             req.session.save(function (err) {
                 res.redirect('/api/client');
             })
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err.message,
-                'type': 'error'
+                msg: err.message,
+                type: 'error'
             });
             req.session.save(function (err) {
                 res.redirect('/api/client');
@@ -64,8 +64,8 @@ exports.client_display = (req, res) => {
             });
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err.message,
-                'type': 'error'
+                msg: err.message,
+                type: 'error'
             });
             req.session.save(function (err) {
                 res.redirect('/api/client');
@@ -73,8 +73,8 @@ exports.client_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/client');
@@ -96,8 +96,8 @@ exports.client_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
@@ -122,8 +122,8 @@ exports.client_new = (req, res) => {
             });
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err.message,
-                'type': 'error'
+                msg: err.message,
+                type: 'error'
             });
             req.session.save(function (err) {
                 res.redirect('/api/client');
@@ -131,8 +131,8 @@ exports.client_new = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/client');
@@ -150,16 +150,16 @@ exports.client_update = (req, res) => {
 
     client_model.client_update(req.params.id, client_info, req.body.privileges_id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/client');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/client');
@@ -170,16 +170,16 @@ exports.client_update = (req, res) => {
 exports.client_delete = (req, res) => {
     client_model.client_delete(req.params.id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/client');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/client');

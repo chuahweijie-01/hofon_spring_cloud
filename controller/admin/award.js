@@ -13,16 +13,16 @@ exports.award_create = (req, res) => {
 
     award_model.award_create(award_info, product_id).then((result) => {
         req.flash('flash', {
-            'msg': '注冊成功',
-            'type': 'success'
+            msg: '注冊成功',
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/award');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': '數據庫並未連接',
-            'type': 'error'
+            msg: '數據庫並未連接',
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/award');
@@ -47,8 +47,8 @@ exports.award_display = (req, res) => {
             });
         }).catch((err) => {
             req.flash('flash', {
-                'msg': err.message,
-                'type': 'error'
+                msg: err.message,
+                type: 'error'
             });
             req.session.save(function (err) {
                 res.redirect('/api/award');
@@ -56,8 +56,8 @@ exports.award_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/award');
@@ -78,8 +78,8 @@ exports.award_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
@@ -102,8 +102,8 @@ exports.award_new = (req, res) => {
         });
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/award');
@@ -125,16 +125,16 @@ exports.award_update = (req, res) => {
 
     award_model.award_update(req.params.id, award_info, product_id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/award');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/award');
@@ -145,16 +145,16 @@ exports.award_update = (req, res) => {
 exports.award_delete = (req, res) => {
     award_model.award_delete(req.params.id).then((result) => {
         req.flash('flash', {
-            'msg': result,
-            'type': 'success'
+            msg: result,
+            type: 'success'
         });
         req.session.save(function (err) {
             res.redirect('/api/award');
         })
     }).catch((err) => {
         req.flash('flash', {
-            'msg': err.message,
-            'type': 'error'
+            msg: err.message,
+            type: 'error'
         });
         req.session.save(function (err) {
             res.redirect('/api/award');
