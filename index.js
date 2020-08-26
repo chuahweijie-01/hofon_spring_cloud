@@ -35,6 +35,7 @@ const album = require('./route/admin/album');
 const mobile_auth = require('./route/mobile_user/mobile_auth');
 const m_company = require('./route/mobile_user/company');
 const m_product = require('./route/mobile_user/product');
+const m_cart = require('./route/mobile_user/cart');
 
 const middlewares = require('./middleware/middlewares');
 
@@ -95,7 +96,7 @@ app.use(function (req, res, next) {
 app.get('/download', (req, res) => {
     res.render('login', {
         title: "登入頁面",
-        message: req.flash('flash')
+        message: req.flash(`flash`)
     }, (err, html) => {
         pdf.create(html, options).toStream((err, stream_file) => {
             if(err) console.log(err);
@@ -111,6 +112,7 @@ app.get('/download', (req, res) => {
 app.use('/mobile', mobile_auth);
 app.use('/mobile/api/company', m_company);
 app.use('/mobile/api/product', m_product);
+app.use('/mobile/api/cart', m_cart);
 
 app.use('/', web_auth);
 

@@ -21,10 +21,10 @@ exports.admin_info_input = [
         };
         const errors = validationResult(req);
         const modified_errors = errors.array().map((obj) => {
-            return Object.assign(obj, { type: 'error' });
+            return Object.assign(obj, { type: `error` });
         })
         if (!errors.isEmpty()) {
-            req.flash('validation', modified_errors);
+            req.flash(`validation`, modified_errors);
             req.session.save(function (err) {
                 res.redirect('/api/admin/new');
             })
@@ -42,10 +42,10 @@ exports.admin_info_input_edit = [
         req.session.admin_info = req.body;
         const errors = validationResult(req);
         const modified_errors = errors.array().map((obj) => {
-            return Object.assign(obj, { type: 'error' });
+            return Object.assign(obj, { type: `error` });
         })
         if (!errors.isEmpty()) {
-            req.flash('validation', modified_errors);
+            req.flash(`validation`, modified_errors);
             req.session.save(function (err) {
                 res.redirect('/api/admin/' + req.params.id);
             })

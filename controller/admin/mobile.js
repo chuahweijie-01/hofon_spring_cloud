@@ -1,4 +1,4 @@
-const mobile_model = require('../../model/admin/mobile')
+const mobile_model = require(`../../model/admin/mobile`)
 
 exports.mobile_create = (req, res) => {
 
@@ -16,20 +16,20 @@ exports.mobile_create = (req, res) => {
     }
 
     mobile_model.mobile_create(setting_info, req.session.company, setting_info_company).then((result) => {
-        req.flash('flash', {
+        req.flash(`flash`, {
             msg : result,
-            type: 'success'
+            type: `success`
         });
         req.session.save(function (err) {
-            res.redirect('/api/mobile');
+            res.redirect(`/api/mobile`);
         })
     }).catch((err) => { 
-        req.flash('flash', { 
+        req.flash(`flash`, { 
             msg : err.message,
-            type: 'error'
+            type: `error`
         });
         req.session.save(function (err) {
-            res.redirect('/api/mobile');
+            res.redirect(`/api/mobile`);
         })
     })
 }
@@ -43,27 +43,27 @@ exports.mobile_display_list = (req, res) => {
         if (Object.keys(result).length === 0) {
             result = [
                 TextRow = {
-                    header_color: '#F24E4E',
-                    body_color: '#F9B6B6',
-                    footer_color: '#F24E4E'
+                    header_color: `#F24E4E`,
+                    body_color: `#F9B6B6`,
+                    footer_color: `#F24E4E`
                 }
             ]
         }
-        res.render('mobile_update', {
+        res.render(`mobile_update`, {
             title: "軟體設定",
-            icon: '<span class="glyphicon glyphicon-phone" aria-hidden="true"></span>',
-            navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">軟體設定</li>',
-            message: req.flash('flash'),
+            icon: `<span class="glyphicon glyphicon-phone" aria-hidden="true"></span>`,
+            navigation: `<li><a href="/api/dashboard">管理總表</a></li><li class="active">軟體設定</li>`,
+            message: req.flash(`flash`),
             data: result
         });
     })
         .catch((err) => {
-            req.flash('flash', {
+            req.flash(`flash`, {
                 msg: err.message,
-                type: 'error'
+                type: `error`
             });
             req.session.save(function (err) {
-                res.redirect('/api/dashboard');
+                res.redirect(`/api/dashboard`);
             })
         })
 

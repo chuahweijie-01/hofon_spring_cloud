@@ -8,8 +8,9 @@ exports.auth = (req, res) => {
     }
     mobile_auth_model.auth(user_info).then((result) => {
         req.session.user = result[0].user_id;
-        for (var i = 0; i < result.length; i ++) delete result[i].user_id;
-        res.status(200).send({company_info: result});
+        req.session.save(function (err) {
+            res.redirect('/mobile/api/company');
+        })
     }).catch((err) => {
         res.status(404).send({ message: err.message })
     })

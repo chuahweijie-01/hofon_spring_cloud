@@ -1,4 +1,3 @@
-const connectionPool = require('../../conf/db');
 const connection = require('../../conf/db');
 
 exports.product_list = (company_id) => {

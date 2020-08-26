@@ -49,10 +49,10 @@ exports.company_info_input = [
         req.session.company_info = req.body;
         const errors = validationResult(req);
         const modified_errors = errors.array().map((obj) => {
-            return Object.assign(obj, { type: 'error' });
+            return Object.assign(obj, { type: `error` });
         })
         if (!errors.isEmpty()) {
-            req.flash('validation', modified_errors);
+            req.flash(`validation`, modified_errors);
             if (req.params.id) {
                 req.session.save(function (err) {
                     res.redirect('/api/company/' + req.params.id);
@@ -74,10 +74,10 @@ exports.company_info_input_client = [
         req.session.company_info = req.body.company_description;
         const errors = validationResult(req);
         const modified_errors = errors.array().map((obj) => {
-            return Object.assign(obj, { type: 'error' });
+            return Object.assign(obj, { type: `error` });
         })
         if (!errors.isEmpty()) {
-            req.flash('validation', modified_errors);
+            req.flash(`validation`, modified_errors);
             req.session.save(function (err) {
                 res.redirect('/api/company/' + req.params.id);
             })

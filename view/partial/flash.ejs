@@ -1,6 +1,6 @@
 <% if (message.length > 0) { %>
 <% message.forEach(function(info) { %>
-<% if(info.type == 'error') { %>
+<% if(info.type == `error`) { %>
 <div class="alert alert-danger alert-dismissible fade in">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
   <strong><%= info.msg%></strong>

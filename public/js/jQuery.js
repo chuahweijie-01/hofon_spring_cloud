@@ -124,6 +124,7 @@ $(function () {
   $('#increase_limit').on('click', () => {
     $('#reach_minimum').text('');
     $('#result_limit').val(parseInt($('#result_limit').val()) + 1);
+    
   })
 
   $('#decrease_limit').on('click', () => {

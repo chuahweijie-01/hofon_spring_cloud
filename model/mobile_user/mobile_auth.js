@@ -6,18 +6,6 @@ exports.auth = (user_info) => {
             return connection.query(`SELECT * FROM userdb.user WHERE user_email = ?`, [user_info.user_email])
                 .then(([rows, field]) => {
                     if (!rows.length) throw new Error(`該用戶不存在資料庫裏`);
-                    else if (rows[0].user_password == user_info.user_password) {
-                        return connection.query(`SELECT user.user_id, company.company_id, company.company_name
-                                                 FROM companydb.company AS company
-                                                 JOIN userdb.user_company AS user_company
-                                                 ON user_company.company_id = company.company_id
-                                                 JOIN userdb.user AS user
-                                                 ON user.user_id = user_company.user_id
-                                                 WHERE user.user_id = ?`, [rows[0].user_id])
-                    }
-                })
-                .then(([rows, field]) => {
-                    if (!rows.length) throw new Error(`該用戶不存在任何公司的資料庫`);
                     else return (rows);
                 })
                 .finally(() => {

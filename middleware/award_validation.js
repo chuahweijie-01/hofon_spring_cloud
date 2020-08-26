@@ -17,10 +17,10 @@ exports.award_info_input = [
 
         const errors = validationResult(req);
         const modified_errors = errors.array().map((obj) => {
-            return Object.assign(obj, { type: 'error' });
+            return Object.assign(obj, { type: `error` });
         })
         if (!errors.isEmpty()) {
-            req.flash('validation', modified_errors);
+            req.flash(`validation`, modified_errors);
             req.session.save(function (err) {
                 if (req.params.id) {
                     res.redirect('/api/award/' + req.params.id);

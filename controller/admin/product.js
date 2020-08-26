@@ -17,7 +17,7 @@ exports.product_create = (req, res) => {
     image_path = req.body.image_path;
 
     product_model.product_create(product_info).then((result) => {
-        req.flash('flash', {
+        req.flash(`flash`, {
             msg: result,
             type: 'success'
         });
@@ -25,9 +25,9 @@ exports.product_create = (req, res) => {
             res.redirect('/api/product');
         })
     }).catch((err) => {
-        req.flash('flash', {
+        req.flash(`flash`, {
             msg: err.message,
-            type: 'error'
+            type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/product');
@@ -44,25 +44,25 @@ exports.product_display = (req, res) => {
                 title: "產品",
                 icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
                 navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/product">產品</a></li><li class="active">更新產品</li>',
-                message: req.flash('flash'),
-                validation: req.flash('validation'),
+                message: req.flash(`flash`),
+                validation: req.flash(`validation`),
                 data: result,
                 category: category,
                 product_info: product_info
             });
         }).catch((err) => {
-            req.flash('flash', {
+            req.flash(`flash`, {
                 msg: err.message,
-                type: 'error'
+                type: `error`
             });
             req.session.save(function (err) {
                 res.redirect('/api/product');
             })
         })
     })).catch((err) => {
-        req.flash('flash', {
+        req.flash(`flash`, {
             msg: err.message,
-            type: 'error'
+            type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/product');
@@ -92,15 +92,15 @@ exports.product_display_list = (req, res) => {
             title: "產品",
             icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
             navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">產品</li>',
-            message: req.flash('flash'),
+            message: req.flash(`flash`),
             data: result.rows,
             pagination: result.pagination,
             pagination_path: 'product'
         });
     }).catch((err) => {
-        req.flash('flash', {
+        req.flash(`flash`, {
             msg: err.message,
-            type: 'error'
+            type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
@@ -116,15 +116,15 @@ exports.product_new = (req, res) => {
             title: "產品",
             icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
             navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/product">產品</a></li><li class="active">新增產品</li>',
-            message: req.flash('flash'),
-            validation: req.flash('validation'),
+            message: req.flash(`flash`),
+            validation: req.flash(`validation`),
             data: result,
             product_info: product_info
         });
     })).catch((err) => {
-        req.flash('flash', {
+        req.flash(`flash`, {
             msg: err.message,
-            type: 'error'
+            type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/product');
@@ -147,7 +147,7 @@ exports.product_update = (req, res) => {
     }
 
     product_model.product_update(product_id, product_info).then((result) => {
-        req.flash('flash', {
+        req.flash(`flash`, {
             msg: result,
             type: 'success'
         });
@@ -155,9 +155,9 @@ exports.product_update = (req, res) => {
             res.redirect('/api/product');
         })
     }).catch((err) => {
-        req.flash('flash', {
+        req.flash(`flash`, {
             msg: err.message,
-            type: 'error'
+            type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/product');
@@ -167,7 +167,7 @@ exports.product_update = (req, res) => {
 
 exports.product_delete = (req, res) => {
     product_model.product_delete(req.params.id).then((result) => {
-        req.flash('flash', {
+        req.flash(`flash`, {
             msg: result,
             type: 'success'
         });
@@ -175,9 +175,9 @@ exports.product_delete = (req, res) => {
             res.redirect('/api/product');
         })
     }).catch((err) => {
-        req.flash('flash', {
+        req.flash(`flash`, {
             msg: err.message,
-            type: 'error'
+            type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/product');
