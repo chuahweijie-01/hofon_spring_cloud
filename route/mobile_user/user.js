@@ -4,10 +4,10 @@ const user_controller = require('../../controller/mobile_user/user')
 router = express.Router();
 router.use(express.static('./public/'));
 
-router.post('/', user_controller.user_create)
+router.post('/address', user_controller.address_create);
 
-router.get('/', user_controller.user_display_list);
+router.get('/address', user_controller.address_detail);
 
-router.delete('/:id', user_controller.user_delete)
+router.delete('/address/:id', user_controller.address_delete);
 
 module.exports = router;

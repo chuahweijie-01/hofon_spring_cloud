@@ -60,7 +60,7 @@ exports.product_list = (company_id, page_info) => {
                                              ON product.category_id = category.category_id
                                              JOIN companydb.company AS company
                                              ON product.company_id = company.company_id
-                                             WHERE company.company_id = ? AND product_delete = 0
+                                             WHERE company.company_id = ?
                                              LIMIT ${limit}`, [company_id])
                 })
                 .then(([rows, field]) => {

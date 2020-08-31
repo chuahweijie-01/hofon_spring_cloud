@@ -36,6 +36,8 @@ const mobile_auth = require('./route/mobile_user/mobile_auth');
 const m_company = require('./route/mobile_user/company');
 const m_product = require('./route/mobile_user/product');
 const m_cart = require('./route/mobile_user/cart');
+const m_user = require('./route/mobile_user/user');
+const m_order = require('./route/mobile_user/order');
 
 const middlewares = require('./middleware/middlewares');
 
@@ -99,13 +101,13 @@ app.get('/download', (req, res) => {
         message: req.flash(`flash`)
     }, (err, html) => {
         pdf.create(html, options).toStream((err, stream_file) => {
-            if(err) console.log(err);
+            if (err) console.log(err);
             res.setHeader('Content-Type', 'application/pdf');
             res.setHeader('Content-Disposition', 'attachment; filename=file_download.pdf;');
             stream_file.pipe(res)
         })
         //res.send(html)
-    });
+    }); 
     //res.download("./public/image/pdf_file_download.pdf")
 })
 
@@ -113,6 +115,8 @@ app.use('/mobile', mobile_auth);
 app.use('/mobile/api/company', m_company);
 app.use('/mobile/api/product', m_product);
 app.use('/mobile/api/cart', m_cart);
+app.use('/mobile/api/user', m_user);
+app.use('/mobile/api/order', m_order);
 
 app.use('/', web_auth);
 
@@ -131,8 +135,6 @@ app.use('/api/ads', ads);
 app.use('/api/mobile', mobile);
 app.use('/api/admin', admin);
 app.use('/api/album', album);
-
-
 
 var port = process.env.PORT || 3000
 app.listen(3000, () => console.log(`Listening to Port : ${port} ... `));

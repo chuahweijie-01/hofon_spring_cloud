@@ -75,7 +75,8 @@ exports.discount_display = (req, res) => {
 }
 
 exports.discount_display_list = (req, res) => {
-    /*discount_model.discount_display_list(req.session.company).then((result) => {
+    discount_model.discount_display_list(req.session.company)
+    .then((result) => {
         res.render('discount', {
             title: "促銷",
             icon: '<span class="glyphicon glyphicon-gift" aria-hidden="true"></span>',
@@ -85,20 +86,13 @@ exports.discount_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash(`flash`, {
-            msg: err,
+            msg: err.message,
             type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
         })
-    })*/
-    res.render('discount', {
-        title: "促銷",
-        icon: '<span class="glyphicon glyphicon-gift" aria-hidden="true"></span>',
-        navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">促銷</li>',
-        message: req.flash(`flash`),
-        data: ''
-    });
+    })
 }
 
 exports.discount_new = (req, res) => {

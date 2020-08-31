@@ -1,7 +1,4 @@
 const connectionPool = require('../../conf/db');
-const connection = require('../../conf/db');
-const { discount_display } = require('../../controller/admin/discount');
-const { resolveInclude } = require('ejs');
 
 exports.discount_create = (discount_info, product_id) => {
     return new Promise((resolve, reject) => {
@@ -34,7 +31,27 @@ exports.discount_create = (discount_info, product_id) => {
 };
 
 exports.discount_display_list = (company_id) => {
-    return new Promise((resolve, reject) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT COUNT(*) AS total_product, discount.discount_id, discount.discount_name, discount.discount_percent
+                                     FROM productdb.discount AS discount
+                                     LEFT JOIN productdb.product AS product ON discount.discount_id = product.discount_id
+                                     WHERE product.company_id = ? GROUP BY discount.discount_name`, [company_id]);
+        })
+        .then(([rows, field]) => {
+            return (rows);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(`系統暫時無法運行該功能`);
+        })
+        .finally(() => {
+            connection.release();
+        })
+
+    /*return new Promise((resolve, reject) => {
         connectionPool.getConnection((connectionError, connection) => {
             if (connectionError) {
                 reject('數據庫連接失敗');
@@ -57,7 +74,7 @@ exports.discount_display_list = (company_id) => {
                 });
             }
         });
-    });
+    });*/
 }
 
 exports.product_list = (company_id) => {

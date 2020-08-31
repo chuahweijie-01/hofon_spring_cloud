@@ -33,10 +33,8 @@ exports.award_display = (award_id) => {
         .then((connection) => {
             return connection.query(`SELECT award.award_id, award.award_name, award.award_description, product_award.product_id, product.product_name
                                      FROM productdb.award AS award
-                                     JOIN productdb.product_award AS product_award
-                                     ON award.award_id = product_award.award_id
-                                     JOIN productdb.product AS product
-                                     ON product_award.product_id = product.product_id
+                                     JOIN productdb.product_award AS product_award ON award.award_id = product_award.award_id
+                                     JOIN productdb.product AS product ON product_award.product_id = product.product_id
                                      WHERE award.award_id = ?`, [award_id])
                 .then(([rows, field]) => {
                     return (rows);
@@ -69,12 +67,9 @@ exports.award_display_list = (company_id, page_info) => {
                     return connection.query(`SELECT COUNT(*) AS total_award, award.award_id, award.award_name,
                                              DATE_FORMAT(award.last_update, '%D %M %Y %H:%i:%s') AS last_update
                                              FROM productdb.award AS award
-                                             LEFT JOIN productdb.product_award AS product_award
-                                             ON award.award_id = product_award.award_id
-                                             LEFT JOIN productdb.product AS product
-                                             ON product_award.product_id = product.product_id
-                                             WHERE product.company_id = ?
-                                             GROUP BY award.award_name
+                                             LEFT JOIN productdb.product_award AS product_award ON award.award_id = product_award.award_id
+                                             LEFT JOIN productdb.product AS product ON product_award.product_id = product.product_id
+                                             WHERE product.company_id = ? GROUP BY award.award_name
                                              LIMIT ${limit}`, [company_id])
                 })
                 .then(([rows, field]) => {
@@ -105,8 +100,7 @@ exports.award_display_list = (company_id, page_info) => {
 exports.product_list = (company_id) => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT product_id, product_name FROM productdb.product
-                                     WHERE company_id = ? AND product_delete = 0`, [company_id])
+            return connection.query(`SELECT product_id, product_name FROM productdb.product WHERE company_id = ?`, [company_id])
                 .then(([rows, field]) => {
                     return (rows);
                 })
