@@ -48,7 +48,6 @@ exports.admin_display_list = (page_info) => {
     var page = parseInt(page_info.page, 10) || 1;
     var skip = (page - 1) * number_per_page;
     var limit = `${skip} , ${number_per_page}`;
-
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
@@ -109,7 +108,12 @@ exports.admin_delete = (admin_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM companydb.admin WHERE admin_id = ?`, [admin_id])
+            return connection.query(`SELECT * FROM companydb.admin WHERE admin_role = 1`);
+        })
+        .then(([rows, field]) => {
+            console.log(rows.length);
+            if(rows.length <= 2) throw new Error(`該平臺需保留至少兩名以上的管理者`);
+            else return connection.query(`DELETE FROM companydb.admin WHERE admin_id = ?`, [admin_id])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);
@@ -117,7 +121,7 @@ exports.admin_delete = (admin_id) => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error(`資料刪除失敗`);
+            throw new Error(err.message);
         })
         .finally(() => {
             connection.release();

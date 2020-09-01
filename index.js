@@ -9,8 +9,9 @@ const connection = require('./conf/db');
 const cookieParser = require('cookie-parser');
 const methodOverride = require('method-override')
 const cors = require('cors');
+const morgan = require('morgan');
 
-const pdf = require('html-pdf')
+const pdf = require('html-pdf');
 const options = { format: 'a4', base: 'http://localhost:3000' };
 
 var sessionStore = new MySQLStore({}, connection);
@@ -45,6 +46,7 @@ const passport_conf = require('./conf/passport_conf')(passport);
 app.use(cookieParser());
 
 app.use(helmet());
+app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

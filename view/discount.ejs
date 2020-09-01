@@ -27,7 +27,9 @@
                     <th>名稱</th>
                     <th>促銷(%)</th>
                     <th>相關產品總數</th>
-                    <th></th>
+                    <th>創建日期</th>
+                    <th class="col-md-1"></th>
+                    <th class="col-md-1"></th>
                   </tr>
                   <tr>
                 </thead>
@@ -40,7 +42,9 @@
                       <td><%= data[i].discount_name %></td>
                       <td><%= data[i].discount_percent %></td>
                       <td><%= data[i].total_product %></td>
-                      <td><a class="btn btn-default" href="/api/discount/<%= data[i].discount_id%>">編輯</a> <a class="btn btn-danger" href="#discountDeleteModal_<%= data[i].discount_id %>" data-toggle="modal">刪除</a></td>
+                      <td><%= data[i].created_date %></td>
+                      <td><a class="btn btn-default" href="/api/discount/<%= data[i].discount_id%>">編輯</a></td>
+                      <td><a class="btn btn-danger" href="#discountDeleteModal_<%= data[i].discount_id %>" data-toggle="modal">刪除</a></td>
                     </tr>
   
                     <div id="discountDeleteModal_<%= data[i].discount_id %>" class="modal fade">
@@ -70,6 +74,7 @@
                     
                 </tbody>
               </table>
+              <%- include('partial/pagination')-%>
             </div>
           </div>
 

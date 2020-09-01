@@ -31,17 +31,19 @@ exports.auth = (req, res) => {
 exports.register_admin = (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
         user = { username: req.body.username, password: hash, userrole: 1 };
-        web_auth_model.insert(user).then((result) => {
-            req.flash(`flash`, { msg: result, type: 'success' });
-            req.session.save(function (err) {
-                res.redirect('/');
+        web_auth_model.insert(user)
+            .then((result) => {
+                req.flash(`flash`, { msg: result, type: 'success' });
+                req.session.save(function (err) {
+                    res.redirect('/');
+                })
             })
-        }).catch((err) => {
-            req.flash(`flash`, { msg: err.message, type: `error` });
-            req.session.save(function (err) {
-                res.redirect('/register');
+            .catch((err) => {
+                req.flash(`flash`, { msg: err.message, type: `error` });
+                req.session.save(function (err) {
+                    res.redirect('/register');
+                })
             })
-        })
     })
 }
 

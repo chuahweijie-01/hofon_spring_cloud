@@ -48,8 +48,7 @@ exports.product_list = (company_id, page_info) => {
 
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT COUNT(*) AS total_product FROM productdb.product
-                                     WHERE company_id = ?`, [company_id])
+            return connection.query(`SELECT COUNT(*) AS total_product FROM productdb.product WHERE company_id = ?`, [company_id])
                 .then(([rows, field]) => {
                     number_of_rows = rows[0].total_product;
                     number_of_pages = Math.ceil(number_of_rows / number_per_page);
