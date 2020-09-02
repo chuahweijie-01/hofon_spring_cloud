@@ -4,12 +4,12 @@ exports.create_order = (req, res) => {
     var order_info = {
         user_id: req.session.user,
         company_id: req.session.company,
-        order_total_item: req.body.order_total_item,
-        order_tax : req.body.order_total_price * 0.06,
-        order_total_price: req.body.order_total_price
     }
-    product_info = [29, 28, 27, 26];
-    order_model.create_order(order_info, product_info)
+
+    var alpha_json_array = req.body;
+    var product_info = (Object.keys(alpha_json_array).map(function (k) { return alpha_json_array[k]; }));
+
+    order_model.create_order(order_info, product_info[0])
         .then((result) => {
             res.status(200).send({ message: result });
         })

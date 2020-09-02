@@ -14,7 +14,6 @@ exports.category_create = (category_name, company_id) => {
                         for (var i = 0; i < company_id.length; i++) {
                             company.push([company_id[i], result[0].insertId])
                         }
-                        console.log(company)
                         return connection.query(`INSERT INTO companydb.company_category (company_id, category_id) VALUES ?`, [company]);
                     }
                     else throw new Error(`資料新增失敗`);

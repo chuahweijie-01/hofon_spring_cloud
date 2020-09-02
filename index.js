@@ -46,7 +46,7 @@ const passport_conf = require('./conf/passport_conf')(passport);
 app.use(cookieParser());
 
 app.use(helmet());
-app.use(morgan('tiny'));
+//app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
