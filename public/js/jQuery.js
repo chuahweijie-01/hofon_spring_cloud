@@ -117,9 +117,9 @@ $(function () {
     $("#status_message").fadeOut(400);
   });
 
-  $('#order_status').on('click', () => {
+  /*$('#order_status').on('click', () => {
     $('#order_status').text('交易已完成').removeClass('btn-warning').addClass('btn-success');
-  })
+  })*/
 
   $('#increase_limit').on('click', () => {
     $('#reach_minimum').text('');

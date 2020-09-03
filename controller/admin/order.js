@@ -5,17 +5,39 @@ exports.order_create = (req, res) => {
 }
 
 exports.order_display = (req, res) => {
+    order_model.order_display(req.params.id, req.session.company)
+        .then((result) => {
+            res.render('order_view', {
+                title: "訂單",
+                icon: '<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>',
+                navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/order">訂單</a></li><li class="active">訂單詳情</li>',
+                message: req.flash(`flash`),
+                data: result
+            });
+        })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err,
+                type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/order');
+            })
+        })
 
 }
 
 exports.order_display_list = (req, res) => {
-    order_model.order_display_list(req.session.company)
+    order_model.order_display_list(req.session.company, req.query)
         .then((result) => {
-            console.log(result);
             res.render('order', {
                 title: "訂單",
                 icon: '<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>',
-                navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">訂單</li>'
+                navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">訂單</li>',
+                message: req.flash(`flash`),
+                data: result.rows,
+                pagination: result.pagination,
+                pagination_path: 'order'
             });
         })
         .catch((err) => {
@@ -40,7 +62,25 @@ exports.order_new = (req, res) => {
 
 
 exports.order_update = (req, res) => {
-
+    order_model.order_update(req.params.id)
+        .then((result) => {
+            req.flash(`flash`, {
+                msg: result,
+                type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/order/${req.params.id}`);
+            })
+        })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message,
+                type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/order/${req.params.id}`);
+            })
+        })
 }
 
 exports.order_delete = (req, res) => {

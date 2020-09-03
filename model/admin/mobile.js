@@ -9,7 +9,6 @@ exports.mobile_create = (setting_info, company_id, setting_info_company) => {
                     else return connection.query(`INSERT INTO companydb.mobile_setting SET ?`, [setting_info_company])
                 })
                 .then((result) => {
-                    console.log(result)
                     if (result[0].affectedRows >= 1) return (`軟體設定成功`);
                     else throw new Error(`軟體設定失敗`);
                 })

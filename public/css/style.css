@@ -397,6 +397,23 @@ select.minimal:focus {
 	display: inline-block;
 	margin-top: 13px;
 }
+
+.modal-confirm .icon-box-order {
+	width: 80px;
+	height: 80px;
+	margin: 0 auto;
+	border-radius: 50%;
+	z-index: 9;
+	text-align: center;
+	border: 3px solid #5cb85c;
+}
+.modal-confirm .icon-box-order i {
+	color: #5cb85c;
+	font-size: 46px;
+	display: inline-block;
+	margin-top: 13px;
+}
+
 .modal-confirm .btn, .modal-confirm .btn:active {
 	color: #fff;
 	border-radius: 4px;
@@ -421,6 +438,13 @@ select.minimal:focus {
 }
 .modal-confirm .btn-danger:hover, .modal-confirm .btn-danger:focus {
 	background: #ee3535;
+}
+
+.modal-confirm .btn-success {
+	background: #6faa6f;
+}
+.modal-confirm .btn-success:hover, .modal-confirm .btn-success:focus {
+	background: #5cb85c;
 }
 
 /* INVOICE DESIGN */
@@ -593,6 +617,16 @@ select.minimal:focus {
 .validation {
   font-weight: bold;
   color: #DC3545;
+}
+
+.verification {
+  font-weight: bold;
+  color: #5cb85c;
+}
+
+.warning_info {
+  font-weight: bold;
+  color: #f0ad4e;
 }
 
 textarea{

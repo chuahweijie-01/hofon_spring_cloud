@@ -143,7 +143,6 @@ exports.discount_update = (discount_info, discount_id, product_id) => {
             else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
-            console.log(result)
             if (result[0].affectedRows == 1) return (`資料更新成功`);
             else throw new Error(`資料更新失敗`);
         })

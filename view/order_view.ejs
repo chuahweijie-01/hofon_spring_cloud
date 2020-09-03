@@ -8,14 +8,20 @@
             <div class="row">
                 <%- include('partial/sidemenu')-%>
                 <div class="col-md-9">
+                    <%- include('partial/flash')-%>
                     <div class="panel panel-default">
                         <div class="panel-heading main-color-bg">
-                            <h3 class="panel-title">訂單序號 : AUJX458</h3>
+                            <h3 class="panel-title">訂單序號 : <%= data[0].order_id%></h3>
                         </div>
                         <div class="toolbar hidden-print">
                             <div class="row">
                                 <div class="text-left col-sm-6" style="padding-top: 20px; padding-left: 45px;">
-                                    <button class="btn btn-warning" id="order_status">交易未完成</button>
+                                    <% if (data[0].order_status === 0) { %>
+                                    <a class="btn btn-warning" href="#update_order%>" data-toggle="modal">訂單處理中</a>
+                                    <% } else { %>
+                                    <button class="btn btn-success" >交易已完成</button>
+                                    <% } %>
+
                                 </div>
                                 <div class="text-right col-sm-6" style="padding-top: 20px; padding-right: 45px;">
                                     <button class="btn btn-danger btn-info" id="download"><i
@@ -38,11 +44,9 @@
                                             <div class="col-sm-6 company-details">
                                                 <h2 class="name">
                                                     <a target="_blank" style="color: #c0392b;"
-                                                        href="https://sites.google.com/view/hofonspringcorp/english">HOFON
-                                                        SPRING</a>
+                                                        href="https://sites.google.com/view/hofonspringcorp/english"><%= data[0].company_name%></a>
                                                 </h2>
-                                                <div>No. 179, 建一路</div>
-                                                <div>中和區 新北市235</div>
+                                                <div><%= data[0].company_address%></div>
                                                 <div>companyemail@example.com</div>
                                             </div>
                                         </div>
@@ -51,16 +55,17 @@
                                         <div class="row contacts">
                                             <div class="col-sm-6 invoice-to">
                                                 <div class="text-gray-light">INVOICE TO:</div>
-                                                <h2 class="to">蔡威傑</h2>
-                                                <div class="address">新北市永和區中興街26號5樓</div>
+                                                <h2 class="to"><%= data[0].user_name%></h2>
+                                                <div class="address"><%= data[0].address_detail%>
+                                                    <%= data[0].city_name%><%= data[0].country_name_chinese%></div>
                                                 <div class="email"><a
-                                                        href="mailto:useremail@example.com">useremail@example.com</a>
+                                                        href="mailto:<%= data[0].user_email%>"><%= data[0].user_email%></a>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 invoice-details">
-                                                <h1 class="invoice-id">訂單明細 AUJX458</h1>
-                                                <div class="date">Date of Invoice: 01/07/2020</div>
-                                                <div class="date">Due Date: 30/07/2020</div>
+                                                <h1 class="invoice-id">訂單序號 : <%= data[0].order_id%></h1>
+                                                <div class="date">日期 : <%= data[0].created_date%></div>
+                                                <% if (data[0].order_status === 1) { %> <div class="date">完成日期 : <%= data[0].last_update%></div> <% } %>
                                             </div>
                                         </div>
                                         <table cellspacing="0" cellpadding="0">
@@ -74,49 +79,38 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+
+                                                <% if (data.length) { %>
+                                                <% for (var i=0; i< data.length; i++) { %>
                                                 <tr>
-                                                    <td class="no">01</td>
+                                                    <td class="no"><%= i + 1; %></td>
                                                     <td class="text-left">
-                                                        <h3>商品1</h3>商品1 代號碼 : JAIXJL6548
+                                                        <h3><%= data[i].product_name%></h3>商品 代號碼 :
+                                                        <%= data[i].product_id%>
                                                     </td>
-                                                    <td class="unit">$40.00</td>
-                                                    <td class="qty">30</td>
-                                                    <td class="total">$1,200.00</td>
+                                                    <td class="unit"><%= data[i].nett_price%></td>
+                                                    <td class="qty"><%= data[i].quantity%></td>
+                                                    <td class="total"><%= data[i].total_price%></td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="no">02</td>
-                                                    <td class="text-left">
-                                                        <h3>商品2</h3>商品2 代號碼 : JAIXJL6548
-                                                    </td>
-                                                    <td class="unit">$40.00</td>
-                                                    <td class="qty">80</td>
-                                                    <td class="total">$3,200.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="no">03</td>
-                                                    <td class="text-left">
-                                                        <h3>商品3</h3>商品3 代號碼 : JAIXJL6548
-                                                    </td>
-                                                    <td class="unit">$40.00</td>
-                                                    <td class="qty">20</td>
-                                                    <td class="total">$800.00</td>
-                                                </tr>
+                                                <% } %>
+                                                <% } %>
+
                                             </tbody>
                                             <tfoot>
                                                 <tr>
                                                     <td colspan="2"></td>
                                                     <td colspan="2">小計</td>
-                                                    <td>$5,200.00</td>
+                                                    <td><%= data[0].order_total_price%></td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2"></td>
-                                                    <td colspan="2">銷售稅</td>
-                                                    <td>$1,300.00</td>
+                                                    <td colspan="2">營業稅 (5%) </td>
+                                                    <td><%= data[0].order_tax%></td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2"></td>
                                                     <td colspan="2">匯總</td>
-                                                    <td>$6,500.00</td>
+                                                    <td><%= data[0].order_final_price%></td>
                                                 </tr>
                                             </tfoot>
                                         </table>
@@ -137,6 +131,30 @@
             </div>
         </div>
     </section>
+
+    <div id="update_order" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+          <div class="modal-content">
+            <div class="modal-header flex-column">
+              <div class="icon-box-order">
+                <i class="material-icons">&#xE8D1;</i>
+              </div>
+              <h4 class="modal-title w-100">即將 <strong class="verification">更新</strong>
+                訂單序號 <%= data[0].order_id %></h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p>是否將 <strong class="warning_info">訂單處理中</strong> 更新為 <strong class="verification">交易已完成</strong> 狀態？</p>
+              <p>為避免貴公司在訂單處理時造成的混淆，執行該動作以後，將無法再一次更換序號 <strong><%= data[0].order_id %></strong> 的訂單狀態。</p>
+              
+            </div>
+            <div class="modal-footer justify-content-center">
+              <a type="button" class="btn btn-secondary" data-dismiss="modal" style="color: white;">取消</a>
+              <a type="button" class="btn btn-success" href="/api/order/<%= data[0].order_id%>?_method=PUT" style="color: white;">更新</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <%- include('partial/footer')-%>
 

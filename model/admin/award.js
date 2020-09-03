@@ -121,12 +121,9 @@ exports.award_update = (award_id, award_info, product_id) => {
                 .then((result) => {
                     if (result[0].affectedRows >= 1) {
                         product = [];
-                        console.log(product_id)
-                        console.log(result)
                         for (var i = 0; i < product_id.length; i++) {
                             product.push([product_id[i], award_id])
                         }
-                        console.log(product)
                         return connection.query(`INSERT INTO productdb.product_award (product_id, award_id) VALUES ?`, [product]);
                     } else throw new Error(`資料更新失敗`);
                 })

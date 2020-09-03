@@ -126,7 +126,6 @@ exports.category_update = (category_info, company_id) => {
                     if (result[0].affectedRows >= 1) {
                         company = [];
                         for (var i = 0; i < company_id.length; i++) {
-                            console.log(company_id[i])
                             company.push([company_id[i], category_info.category_id])
                         }
                         return connection.query(`INSERT INTO companydb.company_category (company_id, category_id) VALUES ?`, [company])
