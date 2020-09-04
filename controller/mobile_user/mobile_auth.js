@@ -9,7 +9,8 @@ exports.auth = (req, res) => {
     mobile_auth_model.auth(user_info).then((result) => {
         req.session.user = result[0].user_id;
         req.session.save(function (err) {
-            res.redirect('/mobile/api/company');
+            //res.redirect('/mobile/api/company');
+            res.status(201).send({ message: `登入成功` })
         })
     }).catch((err) => {
         console.log(err)

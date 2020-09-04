@@ -95,7 +95,7 @@ $(function () {
       }).fail((err) => {
         $("#status_message").show();
         $('#status_message').addClass('alert alert-danger alert-dismissible').html('<a class="close" aria-label="close">&times;</a><strong>該產品屬性已超過可以發佈的產品上限</strong>');
-        $("html, body").animate({scrollTop: 0}, 500);
+        $("html, body").animate({ scrollTop: 0 }, 500);
       })
     } else {
       $.ajax({
@@ -107,7 +107,7 @@ $(function () {
       }).fail((err) => {
         $("#status_message").show();
         $('#status_message').addClass('alert alert-danger alert-dismissible').html('<a class="close" aria-label="close">&times;</a><strong>暫時無法設定該產品的發佈狀態</strong>');
-        $("html, body").animate({scrollTop: 0}, 500);
+        $("html, body").animate({ scrollTop: 0 }, 500);
       })
 
     }
@@ -117,20 +117,29 @@ $(function () {
     $("#status_message").fadeOut(400);
   });
 
-  /*$('#order_status').on('click', () => {
-    $('#order_status').text('交易已完成').removeClass('btn-warning').addClass('btn-success');
-  })*/
-
   $('#increase_limit').on('click', () => {
     $('#reach_minimum').text('');
     $('#result_limit').val(parseInt($('#result_limit').val()) + 1);
-    
+
   })
 
   $('#decrease_limit').on('click', () => {
     var value = parseInt($('#result_limit').val()) - 1;
     if (value >= 8) $('#result_limit').val(value);
     else $('#reach_minimum').text('* 已到達產品下限數目');
+  })
+
+  $('#change_company_logo').on('click', () => {
+
+    var image_path = $('#custom-text').data('image_path');
+
+    if ($('#change_company_logo').is(':checked')) {
+      $('#custom-button').removeAttr("disabled");
+      $('#custom-text').text('圖檔尚未選擇');
+    } else {
+      $('#custom-button').prop("disabled", true);
+      $('#custom-text').text(image_path);
+    }
   })
 
 });

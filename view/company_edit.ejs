@@ -15,7 +15,7 @@
               <h3 class="panel-title"><%= title%></h3>
             </div>
             <div class="panel-body">
-              <form action="/api/company/<%= data[0].company_id%>?_method=PUT" method='POST'>
+              <form action="/api/company/<%= data[0].company_id%>?_method=PUT" method='POST' enctype="multipart/form-data">
                 <label style="font-size: 20px;">負責人資料</label>
                 <div class="row">
                   <div class="form-group col-md-6">
@@ -105,9 +105,12 @@
                   <div class="form-group col-md-6">
                     <label>商標</label>
                     <div style="position:relative;">
-                      <input type="file" name="company_logo" id="real-file" class="hidden" />
-                      <button type="button" id="custom-button" class="btn btn-danger">上傳商標</button>
-                      <span id="custom-text">圖檔尚未選擇</span>
+                      <input type="file" name="company_logo" id="real-file" class="hidden" multiple/>
+                      <button type="button" id="custom-button" class="btn btn-danger" disabled>上傳商標</button>
+                      <span id="custom-text" data-image_path="<%= data[0].company_logo%>"><%= data[0].company_logo%></span>
+                    </div>
+                    <div class="form-group" style="padding-top: 10px;">
+                      <input type="checkbox" name="change_company_logo" id="change_company_logo" value="checked"> <label for="change_company_logo">更換商標</label>
                     </div>
                   </div>
                 </div>
@@ -309,8 +312,7 @@
                     <% if (validation.find(element => element.param == "company_bank_branch_code")) { %>
                     <div class="has-error">
                       <input type="text" name="company_bank_branch_code" class="form-control" placeholder="請輸入分行代號" value="<%= company_info.company_bank_branch_code%>">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_branch_code"))].msg; %></span>
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "company_bank_branch_code"))].msg; %></span>
                     </div>
                     <% } else { %>
                     <input type="text" name="company_bank_branch_code" class="form-control" placeholder="請輸入分行代號" value="<%= company_info.company_bank_branch_code%>">

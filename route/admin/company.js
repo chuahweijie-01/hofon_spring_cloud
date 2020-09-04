@@ -12,7 +12,7 @@ router.get('/new', company_controller.company_new);
 router.get('/', middlewares.checkUserRole, company_controller.company_display_list);
 router.get('/:id', company_controller.company_display);
 
-router.put('/:id', company_validation.company_info_input, company_controller.company_update);
+router.put('/:id', company_controller.upload_company_logo, company_validation.company_info_input, company_controller.company_update);
 router.put('/client/:id', company_validation.company_info_input_client, company_controller.company_update);
 
 router.delete('/:id', company_controller.company_delete);
