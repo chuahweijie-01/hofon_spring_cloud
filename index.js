@@ -46,7 +46,7 @@ const passport_conf = require('./conf/passport_conf')(passport);
 app.use(cookieParser());
 
 app.use(helmet());
-//app.use(morgan('tiny'));
+app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -58,7 +58,10 @@ app.use(session({
     secret: 'secret',
     store: sessionStore,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 365 * 24 * 60 * 60 * 1000 //Year
+    }
 }))
 
 app.use(passport.initialize());
@@ -111,6 +114,10 @@ app.get('/download', (req, res) => {
         //res.send(html)
     }); 
     //res.download("./public/image/pdf_file_download.pdf")
+})
+
+app.get('/session', (req, res) => {
+    res.send(`Expires in ${req.session.cookie.maxAge / 1000} 's`);
 })
 
 app.use('/mobile', mobile_auth);

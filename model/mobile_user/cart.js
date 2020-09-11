@@ -6,7 +6,7 @@ exports.cart_products = (user_id, company_id) => {
         .then((connect) => {
             connection = connect;
             return connection.query(`SELECT product.product_id, product.product_name, product.product_price, product.product_member_price, cart_product.quantity,
-                                     SUM(product.product_price * cart_product.quantity) AS total_price, product_with_discount.discount_price,
+                                     SUM(product.product_member_price * cart_product.quantity) AS total_price, product_with_discount.discount_price,
                                      SUM(product_with_discount.discount_price * cart_product.quantity) AS total_discount_price
                                      FROM userdb.cart AS cart
                                      JOIN userdb.cart_product AS cart_product ON cart.cart_id = cart_product.cart_id
@@ -43,7 +43,7 @@ exports.add_to_cart = (user_id, company_id, product_id, quantity) => {
             else throw new Error(`無法添加至購物車`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(`CATCH ERROR : ${err.message}`);
             throw new Error(`無法添加至購物車`);
         })
         .finally(() => {

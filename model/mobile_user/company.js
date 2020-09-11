@@ -17,8 +17,8 @@ exports.company_list = (user_id) => {
             else return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
-            throw new Error(err);
+            console.error(`CATCH ERROR : ${err.message}`);
+            throw new Error(err.message);
         })
         .finally(() => {
             connection.release()
@@ -39,8 +39,8 @@ exports.company_details = (company_id) => {
             else return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
-            throw new Error(err);
+            console.error(`CATCH ERROR : ${err.message}`);
+            throw new Error(err.message);
         })
         .finally(() => {
             connection.release()

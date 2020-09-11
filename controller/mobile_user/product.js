@@ -1,7 +1,7 @@
 const product_model = require('../../model/mobile_user/product');
 
 exports.product_display_list = (req, res) => {
-    var product_info, ads_info, category_info;
+    var product_info, ads_info, category_info, company_info;
     product_model.product_list(req.session.company)
         .then((result) => {
             product_info = result;
@@ -13,7 +13,7 @@ exports.product_display_list = (req, res) => {
         })
         .then((result) => {
             category_info = result;
-            res.status(200).send({ category_info: category_info, ads_info: ads_info, product_info: product_info })
+            res.status(200).send({ company_info: req.session.company, category_info: category_info, ads_info: ads_info, product_info: product_info })
         })
         .catch((err) => {
             res.status(404).send({ message: err.message })

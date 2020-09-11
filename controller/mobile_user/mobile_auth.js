@@ -7,13 +7,12 @@ exports.auth = (req, res) => {
         user_password: req.body.user_password
     }
     mobile_auth_model.auth(user_info).then((result) => {
-        req.session.user = result[0].user_id;
-        req.session.save(function (err) {
-            //res.redirect('/mobile/api/company');
+        req.session.user = result;
+        req.session.loggedin = true;
+        req.session.save((err) => {
             res.status(201).send({ message: `登入成功` })
         })
     }).catch((err) => {
-        console.log(err)
         res.status(404).send({ message: err.message })
     })
 }
@@ -34,11 +33,28 @@ exports.register = (req, res) => {
 }
 
 exports.logout = (req, res) => {
-    req.session.destroy(function (err) {
+    req.session.destroy((err) => {
         if (err) {
             res.send({ message: err })
         } else {
             res.status(200).send({ message: `已登出系統` })
         }
     })
+    
+    /*
+    mobile_auth_model.logout(req.session.user)
+        .then((result) => {
+            req.session.destroy((err) => {
+                if (err) {
+                    res.send({ message: err })
+                } else {
+                    res.status(200).send({ message: result })
+                }
+            })
+        })
+        .catch((err) => {
+            res.status(404).send({ message: err.message })
+        })
+    */
+
 }

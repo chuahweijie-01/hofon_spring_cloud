@@ -24,7 +24,7 @@ exports.add_to_cart = (req, res) => {
 exports.remove_from_cart = (req, res) => {
     cart_model.remove_from_cart(req.params.id)
         .then((result) => {
-            res.status(200).send({ message: result });
+            res.redirect(`/mobile/api/cart`);
         })
         .catch((err) => {
             res.status(404).send({ message: err.message });
@@ -34,7 +34,7 @@ exports.remove_from_cart = (req, res) => {
 exports.delete_cart = (req, res) => {
     cart_model.delete_cart(req.session.user, req.session.company)
         .then((result) => {
-            res.status(200).send({ message: result });
+            res.redirect(`/mobile/api/cart`);
         })
         .catch((err) => {
             res.status(404).send({ message: err.message });
