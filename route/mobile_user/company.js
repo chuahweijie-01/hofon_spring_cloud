@@ -5,7 +5,7 @@ router = express.Router();
 router.use(express.static('./public/'));
 
 router.get('/', company_controller.company_list);
-router.get('/:id', company_controller.company_details);
+router.get('/info', company_controller.company_details);
 
 router.post('/:id', company_controller.selected_company);
 

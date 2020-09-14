@@ -12,7 +12,8 @@ exports.cart_products = (user_id, company_id) => {
                                      JOIN userdb.cart_product AS cart_product ON cart.cart_id = cart_product.cart_id
                                      JOIN productdb.product AS product ON cart_product.product_id = product.product_id
                                      LEFT JOIN productdb.product_with_discount AS product_with_discount ON product.product_id = product_with_discount.product_id
-                                     WHERE cart.user_id = ? AND cart.company_id = ? GROUP BY product.product_id`, [user_id, company_id]);
+                                     JOIN companydb.company AS company ON product.company_id = company.company_id
+                                     WHERE cart.user_id = ? AND company.company_id = ? GROUP BY product.product_id`, [user_id, company_id]);
         })
         .then(([rows, field]) => {
             return (rows);
