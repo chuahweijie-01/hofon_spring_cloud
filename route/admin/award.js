@@ -1,6 +1,6 @@
 const express = require('express');
 const award_controller = require('../../controller/admin/award');
-const award_validation = require('../../middleware/award_validation');
+const award_validation = require('../../middleware/admin/award_validation');
 
 
 router = express.Router();

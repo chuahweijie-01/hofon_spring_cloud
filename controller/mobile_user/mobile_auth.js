@@ -40,21 +40,4 @@ exports.logout = (req, res) => {
             res.status(200).send({ message: `已登出系統` })
         }
     })
-    
-    /*
-    mobile_auth_model.logout(req.session.user)
-        .then((result) => {
-            req.session.destroy((err) => {
-                if (err) {
-                    res.send({ message: err })
-                } else {
-                    res.status(200).send({ message: result })
-                }
-            })
-        })
-        .catch((err) => {
-            res.status(404).send({ message: err.message })
-        })
-    */
-
 }

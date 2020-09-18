@@ -1,5 +1,5 @@
 const company_model = require('../../model/admin/company');
-const upload_image = require('../../middleware/upload_image')
+const upload_image = require('../../middleware/admin/upload_image')
 
 exports.upload_company_logo = (req, res, next) => {
     upload_image.company_logo(req, res, (err) => {

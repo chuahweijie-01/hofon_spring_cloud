@@ -25,12 +25,12 @@ exports.user_address = (user_id) => {
         })
 }
 
-exports.city = () => {
+exports.city = (country_id) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT city_id, country_id, city_name FROM userdb.city`)
+            return connection.query(`SELECT city_id, city_name FROM userdb.city WHERE country_id = ?`, [country_id])
         })
         .then(([rows, field]) => {
             return (rows);
@@ -85,6 +85,7 @@ exports.address_delete = (address_id) => {
 
 exports.address_create = (user_id, address_info) => {
     var connection;
+    console.log(address_info);
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;

@@ -1,6 +1,6 @@
 const express = require('express');
 const admin_controller = require('../../controller/admin/admin');
-const admin_validation = require('../../middleware/admin_validation');
+const admin_validation = require('../../middleware/admin/admin_validation');
 
 router = express.Router();
 router.use(express.static('./public/'));

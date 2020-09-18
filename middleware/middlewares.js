@@ -22,18 +22,23 @@ exports.checkUserRole = (req, res, next) => {
     }
 }
 
+exports.userRememberMe = (req, res, next) => {
+    if (req.session.loggedin == true) return next();
+    else res.status(401).send({ message: `Unauthorized` });
+}
+
 exports.loginFormValidate = [
     check('username')
-        .isEmail().withMessage('請輸入正確的郵件格式')
-        .notEmpty().withMessage('請輸入登入信息'),
+        .notEmpty().withMessage('請輸入登入信息')
+        .isEmail().withMessage('請輸入正確的郵件格式'),
 
     check('password')
-        .isLength({ min: 5 }).withMessage('密碼長度不足')
-        .notEmpty().withMessage('請輸入密碼'),
+        .notEmpty().withMessage('請輸入密碼')
+        .isLength({ min: 5 }).withMessage('密碼長度不足'),
 
     (req, res, next) => {
         const errors = validationResult(req);
-        const modified_errors = errors.array().map((obj) => {
+        const modified_errors = errors.array({ onlyFirstError: true }).map((obj) => {
             return Object.assign(obj, { type: `error` });
         })
         if (!errors.isEmpty()) {

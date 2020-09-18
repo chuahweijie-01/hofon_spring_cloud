@@ -1,7 +1,7 @@
 const express = require('express');
 const company_controller = require('../../controller/admin/company');
 const middlewares = require('../../middleware/middlewares');
-const company_validation = require('../../middleware/company_validation');
+const company_validation = require('../../middleware/admin/company_validation');
 
 router = express.Router();
 router.use(express.static('./public/'));
