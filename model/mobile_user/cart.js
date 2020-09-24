@@ -80,6 +80,7 @@ exports.delete_cart = (user_id, company_id) => {
             return connection.query(`DELETE FROM userdb.cart WHERE user_id = ? AND company_id = ? `, [user_id, company_id]);
         })
         .then((result) => {
+            console.log(result);
             if (result[0].affectedRows >= 1) return (`已移除購物車`);
             else throw new Error(`無法移除購物車`);
         })

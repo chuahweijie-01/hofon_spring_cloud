@@ -30,7 +30,7 @@ exports.company_details = (company_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT company_name, company_description, company_phone, company_address, company_address_another,
+            return connection.query(`SELECT company_name, company_logo, company_description, company_phone, company_address, company_address_another,
                                      company_contact_name, company_contact_position, company_contact_phone, company_contact_fax
                                      FROM companydb.company WHERE company_id = ?`, [company_id])
         })
