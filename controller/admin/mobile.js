@@ -5,14 +5,16 @@ exports.mobile_create = (req, res) => {
     setting_info = {
         header_color: req.body.header_color,
         body_color: req.body.body_color,
-        footer_color: req.body.footer_color
+        footer_color: req.body.footer_color,
+        button_1_color: req.body.button_1_color
     }
 
     setting_info_company = {
         company_id:  req.session.company,
         header_color: req.body.header_color,
         body_color: req.body.body_color,
-        footer_color: req.body.footer_color
+        footer_color: req.body.footer_color,
+        button_1_color: req.body.button_1_color
     }
 
     mobile_model.mobile_create(setting_info, req.session.company, setting_info_company).then((result) => {
@@ -45,7 +47,8 @@ exports.mobile_display_list = (req, res) => {
                 TextRow = {
                     header_color: `#F24E4E`,
                     body_color: `#F9B6B6`,
-                    footer_color: `#F24E4E`
+                    footer_color: `#F24E4E`,
+                    button_1_color: `#F6AEAD`
                 }
             ]
         }

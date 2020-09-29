@@ -120,7 +120,6 @@ exports.award_update = (req, res) => {
     var product_id;
     Array.isArray(req.body.product_id) ? product_id = req.body.product_id : product_id = [req.body.product_id];
 
-
     award_info = {
         award_name: req.body.award_name,
         award_description: req.body.award_description

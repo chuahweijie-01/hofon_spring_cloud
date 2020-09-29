@@ -64,6 +64,7 @@
                 <br>
                 <table class="table table-striped table-hover">
                   <tbody id="myTable">
+
                     <% if (product.length) { %>
                     <% var checked = 0; %>
                     <% for (var i=0; i< product.length; i++) { %>
@@ -73,21 +74,22 @@
                     <% break; %>
                     <% } %>
                     <% } %>
+
                     <tr>
                       <td>
                         <% if (checked == 1) { %>
-                        <input type="checkbox" name="product_id" id="<%= product[i].product_id%>"
-                          value="<%= product[i].product_id%>" checked>
+                        <input type="checkbox" name="product_id" id="<%= product[i].product_id%>" value="<%= product[i].product_id%>" checked>
                         <% } else { %>
-                        <input type="checkbox" name="product_id" id="<%= product[i].product_id%>"
-                          value="<%= product[i].product_id%>">
+                        <input type="checkbox" name="product_id" id="<%= product[i].product_id%>" value="<%= product[i].product_id%>">
                         <% } %>
                         <label for="<%= product[i].product_id%>"><%= product[i].product_name%></label>
                       </td>
                     </tr>
+
                     <% checked = 0; %>
                     <% } %>
                     <% } %>
+
                   </tbody>
                 </table>
                 <% if (validation.length > 0) { %>

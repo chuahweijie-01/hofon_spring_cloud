@@ -8,7 +8,6 @@ exports.award_info_input = [
         .trim()
         .notEmpty().withMessage('* 不可空缺'),
     check('product_id')
-        .trim()
         .notEmpty().withMessage('* 不可空缺'),
 
     (req, res, next) => {

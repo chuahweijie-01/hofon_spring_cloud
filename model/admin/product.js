@@ -55,10 +55,8 @@ exports.product_list = (company_id, page_info) => {
                     return connection.query(`SELECT product.product_id, product.product_name, product.product_stock, product.product_status, category.category_id, category.category_name, 
                                              DATE_FORMAT(product.last_update, '%D %M %Y %H:%i:%s') AS last_update
                                              FROM productdb.product AS product
-                                             JOIN productdb.category AS category
-                                             ON product.category_id = category.category_id
-                                             JOIN companydb.company AS company
-                                             ON product.company_id = company.company_id
+                                             JOIN productdb.category AS category ON product.category_id = category.category_id
+                                             JOIN companydb.company AS company ON product.company_id = company.company_id
                                              WHERE company.company_id = ?
                                              LIMIT ${limit}`, [company_id])
                 })

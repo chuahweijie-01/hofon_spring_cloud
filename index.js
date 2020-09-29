@@ -40,13 +40,17 @@ const m_cart = require('./route/mobile_user/cart');
 const m_user = require('./route/mobile_user/user');
 const m_order = require('./route/mobile_user/order');
 
+
+const ecpay_payment_gateway = require('./route/mobile_user/ecpay_payment_gateway');
+
 const middlewares = require('./middleware/middlewares');
 
 const passport_conf = require('./conf/passport_conf')(passport);
+
 app.use(cookieParser());
 
 app.use(helmet());
-app.use(morgan('tiny'));
+//app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -60,7 +64,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 365 * 24 * 60 * 60 * 1000 //Year
+        //maxAge: 365 * 24 * 60 * 60 * 1000
+        maxAge: 24 * 60 * 60 * 1000 //Year
     }
 }))
 
@@ -93,8 +98,6 @@ app.use((req, res, next) => {
     next();
 })
 
-
-
 app.use(function (req, res, next) {
     res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
     next();
@@ -112,7 +115,7 @@ app.get('/download', (req, res) => {
             stream_file.pipe(res)
         })
         //res.send(html)
-    }); 
+    });
     //res.download("./public/image/pdf_file_download.pdf")
 })
 
@@ -126,6 +129,8 @@ app.use('/mobile/api/product', m_product);
 app.use('/mobile/api/cart', m_cart);
 app.use('/mobile/api/user', m_user);
 app.use('/mobile/api/order', m_order);
+
+//app.use('/ecpay', ecpay_payment_gateway);
 
 app.use('/', web_auth);
 

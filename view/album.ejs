@@ -17,12 +17,12 @@
           <div class="row">
             <% if (data.length) { %>
             <% for (var i=0; i< data.length; i++) { %>
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-4"><a href="/api/album/<%= data[i].category_id%>" style="text-decoration:none;">
               <div class="thumbnail btn btn-info">
                 <div style="text-align: center; padding: 60px 25px;">
-                  <h2 style="margin-top: 10px;"><%= data[i].category_name%></h2>
+                  <h2 style="margin-top: 10px; color: black;"><%= data[i].category_name%></h2>
                 </div>
-              </div>
+              </div></a>
             </div>
 
             <% } %>
@@ -45,8 +45,6 @@
     </div>
   </section>
 
-
-  <!--<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>-->
   <script src="js/pickr.min.js"></script>
 
   <%- include('partial/footer')-%>

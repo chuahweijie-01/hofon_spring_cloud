@@ -4,6 +4,8 @@ const body_color = document.querySelector('.body_color');
 const body_color_real = document.querySelector('.body_color_real');
 const footer_color = document.querySelector('.footer_color');
 const footer_color_real = document.querySelector('.footer_color_real');
+const button_1_color = document.querySelector('.button_1_color');
+const button_1_color_real = document.querySelector('.button_1_color_real');
 
 
 const header_pickr = Pickr.create({
@@ -98,4 +100,35 @@ const footer_pickr = Pickr.create({
     footer_color_real.value = color.toHEXA().toString(0);
     footer_color.style.backgroundColor = color.toHEXA().toString(0);
     footer_pickr.hide()
+})
+
+const button_1_pickr = Pickr.create({
+    el: button_1_color,
+    useAsButton: true,
+    theme: 'classic',
+    default: document.getElementById("color_picker").getAttribute("data-button_1_color"),
+    components: {
+        preview: true,
+        hue: true,
+
+        interaction: {
+            hex: true,
+            input: true,
+            save: true,
+            cancel: true
+        }
+    },
+
+    i18n: {
+       'btn:save': '保存',
+       'btn:cancel': '關閉',
+    }
+    
+}).on('init', button_1_pickr => {
+    button_1_color_real.value = button_1_pickr.getSelectedColor().toHEXA().toString(0);
+    button_1_color.style.backgroundColor = button_1_pickr.getSelectedColor().toHEXA().toString(0);
+}).on('save', color => {
+    button_1_color_real.value = color.toHEXA().toString(0);
+    button_1_color.style.backgroundColor = color.toHEXA().toString(0);
+    button_1_pickr.hide()
 })

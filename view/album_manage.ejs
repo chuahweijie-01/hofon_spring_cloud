@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partial/header')-%>
+
+<body>
+  <section id="main">
+    <div class="container">
+      <div class="row">
+        <%- include('partial/sidemenu')-%>
+        <div class="col-md-9">
+          <%- include('partial/flash')-%>
+          <!--
+            <div class="jumbotron">
+            <h2><%= album_name%></h2>
+            </div>
+          -->
+
+          <div class="row">
+            <div class="col-md-9"><a class="btn btn-danger" href="#upload_album" data-toggle="modal">新增照片</a></div>
+          </div>
+
+          <div id="upload_album" class="modal fade">
+            <div class="modal-dialog modal-confirm">
+              <div class="modal-content">
+                <div class="modal-header flex-column">
+                  <div class="icon-box">
+                    <i class="material-icons">add_photo_alternate</i>
+                  </div>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <form method='POST' action='/api/album' enctype="multipart/form-data">
+                  <div class="modal-body">
+                    <input type='file' name='product_image' id='upload_file' class='form-control' onchange="preview_image();" multiple>
+                    <br>
+                    <div class="wrapper">
+                      <div class="scrolls">
+                        <div class="imageDiv" id='preview'>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer justify-content-center">
+                    <input type="button" class="btn btn-secondary" style="color: white;" data-dismiss="modal" value="取消">
+                    <input type="submit" class="btn btn-danger" style="color: white;" value="新增">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <hr>
+
+          <div class="row">
+            <% if (data[0].image_path != null) { %>
+            <% for (var i=0; i< data.length; i++) { %>
+            <div class="col-sm-6 col-md-4">
+              <!--<div class="thumbnail btn btn-info">-->
+              <div class="thumbnail img-wrap">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><a href="#imageDeleteModal_<%= data[i].image_id %>" style="text-decoration: none;"
+                    data-toggle="modal">&times;</a></button>
+                <div style="text-align: center; padding: 60px 25px;">
+                  <img src="<%= data[i].image_path%>" width="150" height="150">
+                </div>
+              </div>
+            </div>
+
+            <div id="imageDeleteModal_<%= data[i].image_id %>" class="modal fade">
+              <div class="modal-dialog modal-confirm">
+                <div class="modal-content">
+                  <div class="modal-header flex-column">
+                    <div class="icon-box">
+                      <i class="material-icons">&#xE5CD;</i>
+                    </div>
+                    <h4 class="modal-title w-100">即將刪除該相片</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                    <p>該作業無法復原，確認要繼續執行嗎？</p>
+                  </div>
+                  <div class="modal-footer justify-content-center">
+                    <a type="button" class="btn btn-secondary" data-dismiss="modal" style="color: white;">取消</a>
+                    <a type="button" class="btn btn-danger" href="/api/album/<%= data[i].image_id%>?_method=DELETE"
+                      style="color: white;">刪除</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <% } %>
+            <% } %>
+          </div>
+
+          <!--
+              <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                  <img src="/image/company_logo.jpg" alt="image" />
+                  <div class="caption">
+                    <p><a href="#" class="btn btn-danger" role="button">刪除</a></p>
+                  </div>
+                </div>
+              </div>
+              -->
+
+          <%- include('partial/pagination')-%>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/pickr.min.js"></script>
+
+  <script>
+    function preview_image() {
+      var total_file = document.getElementById("upload_file").files.length;
+      for (var i = 0; i < total_file; i++) {
+        $('#preview').append("<img src='" + URL.createObjectURL(event.target.files[i]) + "' width=\"50\" height=\"50\">");
+      }
+    }
+  </script>
+
+  <%- include('partial/footer')-%>
+
+</body>
+
+</html>

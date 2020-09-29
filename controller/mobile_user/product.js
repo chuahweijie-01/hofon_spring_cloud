@@ -20,11 +20,17 @@ exports.product_display_list = (req, res) => {
         })
 }
 
-
 exports.product_display = (req, res) => {
-    product_model.product_display(req.params.id, req.session.company).then((product_info) => {
-        res.status(200).send({ product_info: product_info })
-    }).catch((err) => {
-        res.status(404).send({ message: err.message })
-    })
+    var product_info, award_info;
+    product_model.product_display(req.params.id, req.session.company)
+        .then((result) => {
+            product_info = result;
+            return product_model.award_details(product_info[0].product_id)
+        })
+        .then((result) => {
+            award_info = result;
+            res.status(200).send({ product_info: product_info, award_info: award_info })
+        }).catch((err) => {
+            res.status(404).send({ message: err.message })
+        })
 }

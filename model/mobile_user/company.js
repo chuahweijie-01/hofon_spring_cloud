@@ -5,7 +5,7 @@ exports.company_list = (user_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT company.company_id, company.company_name, mobile.header_color, mobile.body_color, mobile.footer_color
+            return connection.query(`SELECT company.company_id, company.company_name, mobile.header_color, mobile.body_color, mobile.footer_color, mobile.button_1_color
                                      FROM companydb.company AS company
                                      JOIN companydb.mobile_setting AS mobile ON company.company_id = mobile.company_id
                                      JOIN userdb.user_company AS user_company ON user_company.company_id = company.company_id

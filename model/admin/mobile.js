@@ -22,7 +22,7 @@ exports.mobile_create = (setting_info, company_id, setting_info_company) => {
 exports.mobile_display_list = (company_id) => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT header_color, body_color, footer_color FROM companydb.mobile_setting WHERE company_id = ?`, [company_id])
+            return connection.query(`SELECT header_color, body_color, footer_color, button_1_color FROM companydb.mobile_setting WHERE company_id = ?`, [company_id])
                 .then(([rows, field]) => {
                     return (rows);
                 })

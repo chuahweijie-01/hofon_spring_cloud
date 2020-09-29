@@ -37,6 +37,13 @@
                     <input type="text" class="form-control footer_color" readonly>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>按鍵底色</label>
+                    <input type="text" name="button_1_color" class="form-control hidden button_1_color_real">
+                    <input type="text" class="form-control button_1_color" readonly>
+                  </div>
+                </div>
                 <hr>
                 <input type="submit" class="btn btn-danger" value="更新">
               </form>
@@ -51,7 +58,7 @@
   <!--<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>-->
   <script src="js/pickr.min.js"></script>
   <script src="js/color_picker.js" id="color_picker" data-header_color="<%= data[0].header_color%>"
-    data-body_color="<%= data[0].body_color%>" data-footer_color="<%= data[0].footer_color%>"></script>
+    data-body_color="<%= data[0].body_color%>" data-footer_color="<%= data[0].footer_color%>"  data-button_1_color="<%= data[0].button_1_color%>"></script>
 
   <%- include('partial/footer')-%>
 

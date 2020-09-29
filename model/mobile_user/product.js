@@ -24,6 +24,28 @@ exports.product_list = (company_id) => {
         })
 }
 
+exports.award_details = (product_id) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT award.award_name, award.award_description FROM productdb.award AS award
+                                     JOIN productdb.product_award AS product_award ON product_award.award_id = award.award_id
+                                     JOIN productdb.product AS product ON product_award.product_id = product.product_id
+                                     WHERE product.product_id = ?`, [product_id])
+        })
+        .then(([rows, field]) => {
+            return (rows);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error('資料選取失敗');
+        })
+        .finally(() => {
+            connection.release();
+        })
+}
+
 exports.ads_list = (company_id) => {
     var connection;
     return connectionPool.getConnection()
@@ -36,7 +58,7 @@ exports.ads_list = (company_id) => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error('資料新增失敗');
+            throw new Error('資料選取失敗');
         })
         .finally(() => {
             connection.release();
@@ -72,11 +94,9 @@ exports.product_display = (product_id, company_id) => {
         .then((connect) => {
             connection = connect;
             return connection.query(`SELECT product.product_id, product.product_name, product.product_price, product.product_member_price, product_with_discount.discount_price,
-                                     product.product_rating, product.product_description, award.award_name, award.award_description, category.category_name
+                                     product.product_rating, product.product_description, category.category_name
                                      FROM productdb.product AS product
                                      JOIN productdb.category AS category ON product.category_id = category.category_id
-                                     LEFT JOIN productdb.product_award AS product_award ON product.product_id = product_award.product_id
-                                     LEFT JOIN productdb.award AS award ON product_award.award_id = award.award_id
                                      LEFT JOIN productdb.product_with_discount AS product_with_discount ON product.product_id = product_with_discount.product_id
                                      WHERE product.company_id = ? AND product.product_id = ? AND product.product_status = 1`, [company_id, product_id])
         })
