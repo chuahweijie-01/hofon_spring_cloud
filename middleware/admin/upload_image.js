@@ -4,7 +4,6 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        console.log(file)
         var path = `public/image/admin/${req.params.id}`;
         if (!fs.existsSync(path)) { 
             fs.mkdirSync(path);

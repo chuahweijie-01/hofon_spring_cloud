@@ -3,14 +3,18 @@ const album_model = require('../../model/admin/album');
 const upload_product_image = require('../../middleware/admin/upload_product_image');
 
 exports.album_display_list = (req, res) => {
-    album_model.album_display_list(req.session.company)
+    album_model.album_display_list(req.session.company, req.query)
         .then((result) => {
+            console.log(result.rows)
             res.render('album', {
                 title: "相簿功能",
                 icon: '<span class="glyphicon glyphicon-film" aria-hidden="true"></span>',
                 navigation: '<li><a href="/api/dashboard">管理總表</a></li><li class="active">相簿功能</li>',
                 message: req.flash(`flash`),
-                data: result
+                data: result.rows,
+                pagination: result.pagination,
+                pagination_path: `album`,
+                total_image: result.total_image
             });
         })
         .catch((err) => {
@@ -36,7 +40,7 @@ exports.album_category = (req, res) => {
                 data: result.rows,
                 album_name: result.rows[0].category_name,
                 pagination: result.pagination,
-                pagination_path: `album/${req.session.category_id}`
+                pagination_path: `album`
             });
         })
         .catch((err) => {
@@ -63,11 +67,11 @@ exports.album_add = (req, res) => {
         } else {
             var image_path = [];
             for (var i = 0; i < (req.files).length; i++) {
-                image_path.push([req.session.category_id, `/image/admin/${req.session.company}/product/${req.session.category_id}/${req.files[i].filename}`])
+                image_path.push([req.session.company, `/image/admin/${req.session.company}/album/${req.files[i].filename}`])
             }
-            album_model.album_add(image_path, req.session.category_id, req.session.company)
+            album_model.album_add(image_path, req.session.company)
                 .then((result) => {
-                    res.redirect(`/api/album/${req.session.category_id}`);
+                    res.redirect(`/api/album`);
                 })
                 .catch((err) => {
                     for (var i = 0; i < (req.files).length; i++) {
@@ -78,7 +82,7 @@ exports.album_add = (req, res) => {
                         type: `error`
                     });
                     req.session.save(function (err) {
-                        res.redirect(`/api/album/${req.session.category_id}`)
+                        res.redirect(`/api/album`)
                     })
                 })
         }
@@ -90,7 +94,7 @@ exports.album_image_delete = (req, res) => {
         .then((result) => {
             try {
                 fs.unlinkSync(`public${result}`)
-                res.redirect(`/api/album/${req.session.category_id}`);
+                res.redirect(`/api/album`);
             } catch (error) {
                 throw new Error(`該圖片已從資料庫移除，但不在服務器内。`)
             }
@@ -101,7 +105,7 @@ exports.album_image_delete = (req, res) => {
                 type: `error`
             });
             req.session.save(function (err) {
-                res.redirect(`/api/album/${req.session.category_id}`)
+                res.redirect(`/api/album`)
             })
         })
 }

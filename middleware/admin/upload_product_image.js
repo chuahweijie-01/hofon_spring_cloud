@@ -4,18 +4,14 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        var path = `public/image/admin/${req.session.company}/product`;
-        if (!fs.existsSync(path)) { 
-            fs.mkdirSync(path);
-        }
-        path = `public/image/admin/${req.session.company}/product/${req.session.category_id}`;
+        var path = `public/image/admin/${req.session.company}/album`;
         if (!fs.existsSync(path)) { 
             fs.mkdirSync(path);
         }
         callback(null, path);
     },
     filename: function (req, file, callback) {
-        callback(null, Date.now() + '.jpg');
+        callback(null, `${Date.now()}_${file.originalname}`);
     }
 })
 
