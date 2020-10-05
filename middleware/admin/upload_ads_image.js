@@ -4,7 +4,7 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        var path = `public/image/admin/${req.session.company}/product`;
+        var path = `public/image/admin/${req.session.company}/ads`;
         if (!fs.existsSync(path)) { 
             fs.mkdirSync(path);
         }
@@ -27,11 +27,10 @@ function checkFileType(file, callback) {
     }
 }
 
-exports.upload_product_image = multer({
+exports.upload_ads_image = multer({
     storage: storage,
     limits: { fileSize: 1000000 },
     fileFilter: function (req, file, callback) {
         checkFileType(file, callback);
     }
-}).array('image_path', 8);
-
+}).single('advertisement_image');

@@ -15,7 +15,7 @@
               <h3 class="panel-title"><%= title%></h3>
             </div>
             <div class="panel-body">
-              <form action="/api/ads" method='POST'>
+              <form action="/api/ads" method='POST' enctype="multipart/form-data">
                 <label style="font-size: 20px;"><%= title%>資料</label>
                 <div class="row">
                   <div class="form-group col-md-6">
@@ -23,39 +23,46 @@
                     <% if (validation.length > 0) { %>
                     <% if (validation.find(element => element.param == "advertisement_name")) { %>
                     <div class="has-error">
-                      <input type="text" name="advertisement_name" class="form-control" placeholder="標題名稱" value="<%= ads_info.advertisement_name %>">
-                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "advertisement_name"))].msg; %></span>
+                      <input type="text" name="advertisement_name" class="form-control" placeholder="標題名稱"
+                        value="<%= ads_info.advertisement_name %>">
+                      <span
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "advertisement_name"))].msg; %></span>
                     </div>
                     <% } else { %>
-                    <input type="text" name="advertisement_name" class="form-control" placeholder="標題名稱" value="<%= ads_info.advertisement_name %>">
+                    <input type="text" name="advertisement_name" class="form-control" placeholder="標題名稱"
+                      value="<%= ads_info.advertisement_name %>">
                     <% } %>
                     <% } else { %>
-                      <input type="text" name="advertisement_name" class="form-control" placeholder="標題名稱">
+                    <input type="text" name="advertisement_name" class="form-control" placeholder="標題名稱">
                     <% } %>
                   </div>
                   <div class="form-group col-md-6">
-                    <label>廣告</label>
-                    <div style="position:relative;">
-                      <input type="file" name="advertisement_image" id="real-file" class="hidden" />
-                      <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
-                      <span id="custom-text">圖檔尚未選擇</span>
+                    <label>相關鏈接</label>
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "advertisement_link")) { %>
+                    <div class="has-error">
+                      <input type="text" name="advertisement_link" class="form-control" placeholder="http://"
+                        value="<%= ads_info.advertisement_link %>">
+                      <span
+                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "advertisement_link"))].msg; %></span>
                     </div>
+                    <% } else { %>
+                    <input type="text" name="advertisement_link" class="form-control" placeholder="http://"
+                      value="<%= ads_info.advertisement_link %>">
+                    <% } %>
+                    <% } else { %>
+                    <input type="text" name="advertisement_link" class="form-control" placeholder="http://">
+                    <% } %>
+
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>相關鏈接</label>
-                  <% if (validation.length > 0) { %>
-                  <% if (validation.find(element => element.param == "advertisement_link")) { %>
-                  <div class="has-error">
-                    <input type="text" name="advertisement_link" class="form-control" placeholder="http://" value="<%= ads_info.advertisement_link %>">
-                    <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "advertisement_link"))].msg; %></span>
+                  <label>廣告</label>
+                  <div style="position:relative;">
+                    <input type="file" name="advertisement_image" id="upload_file" class="hidden" />
+                    <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
+                    <span id="custom-text">圖檔尚未選擇</span>
                   </div>
-                  <% } else { %>
-                  <input type="text" name="advertisement_link" class="form-control" placeholder="http://" value="<%= ads_info.advertisement_link %>">
-                  <% } %>
-                  <% } else { %>
-                  <input type="text" name="advertisement_link" class="form-control" placeholder="http://">
-                  <% } %>
                 </div>
                 <br>
                 <input type="submit" class="btn btn-danger" value="新增">
@@ -70,4 +77,5 @@
   <%- include('partial/footer')-%>
 
 </body>
+
 </html>

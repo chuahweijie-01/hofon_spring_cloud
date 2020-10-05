@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 })
 
 function checkFileType(file, callback) {
-    const filetypes = /jpeg|jpg|png|gif/;
+    const filetypes = /jpeg|jpg/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = filetypes.test(file.mimetype);
 
@@ -34,5 +34,3 @@ exports.company_logo = multer({
         checkFileType(file, callback);
     }
 }).single('company_logo');
-//}).array('company_logo', 10);
-

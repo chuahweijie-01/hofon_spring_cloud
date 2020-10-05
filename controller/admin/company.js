@@ -35,7 +35,6 @@ exports.upload_company_logo = (req, res, next) => {
         } else {
             next();
         }
-
     })
 }
 
@@ -44,7 +43,6 @@ exports.company_create = (req, res) => {
     company_info = {
 
         company_name: req.body.company_name,
-        //company_logo: req.body.company_logo,
         company_phone: req.body.company_phone,
         company_address: req.body.company_address,
         company_address_another: req.body.company_address_another,
@@ -213,23 +211,33 @@ exports.company_update = (req, res) => {
 }
 
 exports.company_delete = (req, res) => {
-    company_model.company_delete(req.params.id)
-        .then((result) => {
-            req.flash(`flash`, {
-                msg: result,
-                type: 'success'
-            });
-            req.session.save(function (err) {
-                res.redirect('/api/company');
-            })
+    if (req.params.id === '1') {
+        req.flash(`flash`, {
+            msg: `注意！此管理臺公司不可以被刪除。`,
+            type: `error`
+        });
+        req.session.save(function (err) {
+            res.redirect('/api/company');
         })
-        .catch((err) => {
-            req.flash(`flash`, {
-                msg: err.message,
-                type: `error`
-            });
-            req.session.save(function (err) {
-                res.redirect('/api/company');
+    } else {
+        company_model.company_delete(req.params.id)
+            .then((result) => {
+                req.flash(`flash`, {
+                    msg: result,
+                    type: 'success'
+                });
+                req.session.save(function (err) {
+                    res.redirect('/api/company');
+                })
             })
-        })
+            .catch((err) => {
+                req.flash(`flash`, {
+                    msg: err.message,
+                    type: `error`
+                });
+                req.session.save(function (err) {
+                    res.redirect('/api/company');
+                })
+            })
+    }
 }

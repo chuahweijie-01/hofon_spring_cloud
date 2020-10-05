@@ -16,13 +16,13 @@ $(function () {
 
   //CUSTOMIZE FILE HANDLE BUTTON
   $('#custom-button').on('click', function () {
-    $('#real-file').trigger('click');
+    $('#upload_file').trigger('click');
   })
 
   //CUSTOMIZE FILE HANDLE BUTTON
-  $('#real-file').on('change', function () {
-    if ($('#real-file').val()) {
-      $('#custom-text').text($('#real-file').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
+  $('#upload_file').on('change', function () {
+    if ($('#upload_file').val()) {
+      $('#custom-text').text($('#upload_file').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
     } else {
       $('#custom-text').text('圖檔尚未選擇');
     }
@@ -141,6 +141,10 @@ $(function () {
       $('#custom-text').text(image_path);
     }
   })
+
+  $(document).on('click', '.category_color', () => {
+    
+  });
 
 });
 

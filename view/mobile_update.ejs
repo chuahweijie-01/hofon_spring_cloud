@@ -47,26 +47,31 @@
                 <hr>
                 <input type="submit" class="btn btn-danger" value="更新">
               </form>
+              
+              <!--
               <hr>
               <label style="font-size: 20px;">產品屬性按鍵 色彩客制化</label>
+              <br>
 
               <% if (data.length) { %>
               <% for (var i=0; i< data.length; i++) { %>
+              <label><%= data[i].category_name%></label>
               <div class="row">
                 <div class="form-group col-md-6">
-                  <label><%= data[i].category_name%></label>
-                  <input type="text" name="button_1_color" class="form-control hidden button_1_color_real">
-                  <input type="text" class="form-control button_1_color" readonly>
+                  <input type="color" name="category_color" id="category_color_real" class="form-control hidden category_color_real">
+                  <input type="color" class="form-control category_color" readonly>
                 </div>
                 <div class="form-group col-md-6">
                   <a class="btn btn-danger" href="">更新</a>
                 </div>
               </div>
-              <% } %>
-              <% } %>
-              <hr>
 
+              <% } %>
+              <% } %>
               <hr>
+              <hr>
+              -->
+              
             </div>
           </div>
         </div>
@@ -74,8 +79,6 @@
     </div>
   </section>
 
-
-  <!--<script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>-->
   <script src="js/pickr.min.js"></script>
   <script src="js/color_picker.js" id="color_picker" data-header_color="<%= data[0].header_color%>"
     data-body_color="<%= data[0].body_color%>" data-footer_color="<%= data[0].footer_color%>"

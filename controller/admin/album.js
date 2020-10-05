@@ -5,7 +5,6 @@ const upload_product_image = require('../../middleware/admin/upload_product_imag
 exports.album_display_list = (req, res) => {
     album_model.album_display_list(req.session.company, req.query)
         .then((result) => {
-            console.log(result.rows)
             res.render('album', {
                 title: "相簿功能",
                 icon: '<span class="glyphicon glyphicon-film" aria-hidden="true"></span>',

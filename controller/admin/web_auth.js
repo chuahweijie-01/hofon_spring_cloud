@@ -30,7 +30,7 @@ exports.auth = (req, res) => {
 
 exports.register_admin = (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
-        user = { username: req.body.username, password: hash, userrole: 1 };
+        user = { company_id: 1, admin_email: req.body.username, admin_password: hash, admin_role: 1 };
         web_auth_model.insert(user)
             .then((result) => {
                 req.flash(`flash`, { msg: result, type: 'success' });

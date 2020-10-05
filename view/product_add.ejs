@@ -14,7 +14,7 @@
               <h3 class="panel-title"><%= title%></h3>
             </div>
             <div class="panel-body">
-              <form action="/api/product" method='POST'>
+              <form action="/api/product" method='POST' enctype="multipart/form-data">
                 <label style="font-size: 20px;"><%= title%>資料</label>
 
                 <div class="form-group">
@@ -130,15 +130,6 @@
 
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label>圖片</label>
-                    <div style="position:relative;">
-                      <input type="file" name="image_path" id="real-file" class="hidden" multiple />
-                      <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
-                      <span id="custom-text">圖檔尚未選擇</span>
-                    </div>
-                  </div>
-
-                  <div class="form-group col-md-6">
                     <label>評分</label>
                     <div style="height: 30px;">
                       <div class="rating">
@@ -191,6 +182,22 @@
 
                 </div>
 
+                <hr>
+
+                <label style="font-size: 20px;"><%= title%>图片</label>
+                <div class="form-group">
+                  <div style="position:relative;">
+                    <input type="file" name="image_path" id="upload_file" class="hidden" multiple onchange="preview_image();" />
+                    <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
+                  </div>
+                  <br>
+                  <div class="wrapper">
+                    <div class="scrolls">
+                      <div class="imageDiv" id='preview'></div>
+                    </div>
+                  </div>
+                </div>
+
                 <input type="submit" class="btn btn-danger" value="新增">
               </form>
             </div>
@@ -199,6 +206,16 @@
       </div>
     </div>
   </section>
+
+  <script>
+    function preview_image() {
+      var total_file = document.getElementById("upload_file").files.length;
+      $('#preview').empty();
+      for (var i = 0; i < total_file; i++) {
+        $('#preview').append("<img src='" + URL.createObjectURL(event.target.files[i]) + "' width=\"125\" height=\"125\">");
+      }
+    }
+  </script>
 
   <%- include('partial/footer')-%>
 

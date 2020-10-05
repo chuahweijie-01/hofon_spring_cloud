@@ -1,4 +1,38 @@
-const product_model = require('../../model/admin/product')
+const fs = require('fs');
+const product_model = require('../../model/admin/product');
+const upload_product_image = require('../../middleware/admin/upload_product_image');
+
+exports.upload_product_images = (req, res, next) => {
+    upload_product_image.upload_product_image(req, res, (err) => {
+        if (err) {
+            req.flash(`flash`, {
+                msg: err,
+                type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/product`);
+            })
+        } else if (req.files == undefined) {
+            req.flash(`flash`, {
+                msg: `無法獲取产品圖檔路徑，請重新上傳。`,
+                type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/product`);
+            })
+        } else if (req.files.length <= 0) {
+            req.flash(`flash`, {
+                msg: `沒有圖片`,
+                type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/product`);
+            })
+        } else {
+            next();
+        }
+    })
+}
 
 exports.product_create = (req, res) => {
 
@@ -14,31 +48,47 @@ exports.product_create = (req, res) => {
         product_latest_price: req.body.product_price,
     }
 
-    image_path = req.body.image_path;
-
-    product_model.product_create(product_info).then((result) => {
-        req.flash(`flash`, {
-            msg: result,
-            type: 'success'
-        });
-        req.session.save(function (err) {
-            res.redirect('/api/product');
+    product_model.product_create(product_info)
+        .then((product_id) => {
+            var image_path = [];
+            for (var i = 0; i < (req.files).length; i++) {
+                image_path.push([product_id, `/image/admin/${req.session.company}/product/${req.files[i].filename}`])
+            }
+            return product_model.insert_product_image(image_path)
         })
-    }).catch((err) => {
-        req.flash(`flash`, {
-            msg: err.message,
-            type: `error`
-        });
-        req.session.save(function (err) {
-            res.redirect('/api/product');
+        .then((result) => {
+            req.flash(`flash`, {
+                msg: result,
+                type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/product');
+            })
         })
-    })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message,
+                type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/product');
+            })
+        })
 }
 
 exports.product_display = (req, res) => {
-    product_model.category_list(req.session.company).then((category => {
-        product_model.product(req.params.id, req.session.company).then((result) => {
-            var product_info = req.session.product_info;
+    var category, image;
+    product_model.category_list(req.session.company)
+        .then((result) => {
+            category = result;
+            return product_model.product_image(req.params.id)
+        })
+        .then((result) => {
+            image = result;
+            return product_model.product(req.params.id, req.session.company)
+        })
+        .then((result) => {
+            var product_info_temp = req.session.product_info;
             req.session.product_info = null;
             res.render('product_edit', {
                 title: "產品",
@@ -48,9 +98,11 @@ exports.product_display = (req, res) => {
                 validation: req.flash(`validation`),
                 data: result,
                 category: category,
-                product_info: product_info
+                product_info: product_info_temp,
+                image: image
             });
-        }).catch((err) => {
+        })
+        .catch((err) => {
             req.flash(`flash`, {
                 msg: err.message,
                 type: `error`
@@ -59,15 +111,6 @@ exports.product_display = (req, res) => {
                 res.redirect('/api/product');
             })
         })
-    })).catch((err) => {
-        req.flash(`flash`, {
-            msg: err.message,
-            type: `error`
-        });
-        req.session.save(function (err) {
-            res.redirect('/api/product');
-        })
-    });
 }
 
 exports.product_publish = (req, res) => {
@@ -133,9 +176,9 @@ exports.product_new = (req, res) => {
 }
 
 exports.product_update = (req, res) => {
-    product_id = req.params.id;
+    var product_id = req.params.id;
 
-    product_info = {
+    var product_info = {
         product_name: req.body.product_name,
         product_price: req.body.product_price,
         product_member_price: req.body.product_member_price,
@@ -146,41 +189,79 @@ exports.product_update = (req, res) => {
         product_latest_price: req.body.product_price,
     }
 
-    product_model.product_update(product_id, product_info).then((result) => {
-        req.flash(`flash`, {
-            msg: result,
-            type: 'success'
-        });
-        req.session.save(function (err) {
-            res.redirect('/api/product');
+    var image_path = [];
+    for (var i = 0; i < (req.files).length; i++) {
+        image_path.push([product_id, `/image/admin/${req.session.company}/product/${req.files[i].filename}`]);
+    }
+
+    product_model.insert_product_image(image_path)
+        .then((result) => {
+            return product_model.product_update(product_id, product_info)
         })
-    }).catch((err) => {
-        req.flash(`flash`, {
-            msg: err.message,
-            type: `error`
-        });
-        req.session.save(function (err) {
-            res.redirect('/api/product');
+        .then((result) => {
+            req.flash(`flash`, {
+                msg: result,
+                type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/product');
+            })
         })
-    })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message,
+                type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/product');
+            })
+        })
 }
 
 exports.product_delete = (req, res) => {
-    product_model.product_delete(req.params.id).then((result) => {
-        req.flash(`flash`, {
-            msg: result,
-            type: 'success'
-        });
-        req.session.save(function (err) {
-            res.redirect('/api/product');
+    product_model.product_delete(req.params.id)
+        .then((result) => {
+            console.log(result)
+            console.log(result.length)
+            try {
+                for (var i = 0; i < result.length; i++) {
+                    fs.unlinkSync(`public${result[i].image_path}`)
+                }
+                res.redirect(`/api/product`);
+            } catch (error) {
+                console.log(error)
+                throw new Error(`該圖片已從資料庫移除，但不在服務器内。`)
+            }
         })
-    }).catch((err) => {
-        req.flash(`flash`, {
-            msg: err.message,
-            type: `error`
-        });
-        req.session.save(function (err) {
-            res.redirect('/api/product');
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message,
+                type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/product');
+            })
         })
-    })
+}
+
+exports.image_delete = (req, res) => {
+    product_model.image_delete(req.params.id)
+        .then((result) => {
+            try {
+                fs.unlinkSync(`public${result[0].image_path}`)
+                res.redirect(`/api/product/${req.params.product}`);
+            } catch (error) {
+                console.log(error)
+                throw new Error(`該圖片已從資料庫移除，但不在服務器内。`)
+            }
+        })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message,
+                type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/product/${req.params.product}`);
+            })
+        })
 }

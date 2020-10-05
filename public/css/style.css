@@ -679,7 +679,7 @@ textarea{
 .scrolls { 
   overflow-x: scroll;
   overflow-y: hidden;
-  height: 80px;
+  height: 150px;
 }
 
 .imageDiv { 
@@ -691,7 +691,7 @@ textarea{
 .imageDiv img { 
   box-shadow: 1px 1px 10px #999; 
   margin: 2px;
-  max-height: 50px;
+  max-height: 150px;
   cursor: pointer;
   display:inline-block
 }

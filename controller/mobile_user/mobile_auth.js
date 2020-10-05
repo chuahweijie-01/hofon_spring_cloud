@@ -6,6 +6,9 @@ exports.auth = (req, res) => {
         user_email: req.body.user_email,
         user_password: req.body.user_password
     }
+
+    console.log(user_info);
+    
     mobile_auth_model.auth(user_info).then((result) => {
         req.session.user = result;
         req.session.loggedin = true;

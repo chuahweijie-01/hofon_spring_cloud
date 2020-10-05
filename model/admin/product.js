@@ -1,11 +1,51 @@
+const { response } = require('express');
 const connectionPool = require('../../conf/db');
+
+exports.insert_product_image = (image_info) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`INSERT INTO productdb.image (product_id, image_path) VALUES ?`, [image_info])
+        })
+        .then((result) => {
+            if (result[0].affectedRows >= 1) return (`产品添加成功`);
+            else throw new Error(`图片新增失敗`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err.message}`);
+            throw new Error(err.message);
+        })
+        .finally(() => {
+            connection.release()
+        })
+}
+
+exports.product_image = (product_id) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT image_id, image_path FROM productdb.image WHERE product_id = ?`, [product_id])
+        })
+        .then(([rows, field]) => {
+            return rows;
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err.message}`);
+            throw new Error(err.message);
+        })
+        .finally(() => {
+            connection.release()
+        })
+}
 
 exports.product_create = (product_info) => {
     return connectionPool.getConnection()
         .then((connection) => {
             return connection.query(`INSERT INTO productdb.product SET ?`, [product_info])
                 .then((result) => {
-                    if (result[0].affectedRows >= 1) return (`${product_info.product_name} 新增成功`);
+                    if (result[0].affectedRows >= 1) return (result[0].insertId);
                     else throw new Error(`資料新增失敗`);
                 })
                 .finally(() => {
@@ -18,23 +58,23 @@ exports.product_create = (product_info) => {
 };
 
 exports.category_list = (company_id) => {
+    var connection;
     return connectionPool.getConnection()
-        .then((connection) => {
-            return connection.query(`SELECT category.category_id, category.category_name
-                                     FROM productdb.category AS category
-                                     JOIN companydb.company_category AS company_category
-                                     ON category.category_id = company_category.category_id
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT category.category_id, category.category_name FROM productdb.category AS category
+                                     JOIN companydb.company_category AS company_category ON category.category_id = company_category.category_id
                                      WHERE company_category.company_id = ?`, [company_id])
-                .then(([rows, field]) => {
-                    return (rows);
-                })
-                .finally(() => {
-                    connection.release();
-                })
+        })
+        .then(([rows, field]) => {
+            return (rows);
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('系統暫時無法運行該功能');
+        })
+        .finally(() => {
+            connection.release();
         })
 }
 
@@ -86,21 +126,22 @@ exports.product_list = (company_id, page_info) => {
 }
 
 exports.product = (product_id, company_id) => {
+    var connection;
     return connectionPool.getConnection()
-        .then((connection) => {
+        .then((connect) => {
+            connection = connect;
             return connection.query(`SELECT product_id, product_name, product_stock, product_description, product_rating, product_price, product_member_price, category_id
-                                     FROM productdb.product
-                                     WHERE product.product_id = ? AND company_id = ?`, [product_id, company_id])
-                .then(([rows, field]) => {
-                    return (rows);
-                })
-                .finally(() => {
-                    connection.release();
-                })
+                                     FROM productdb.product WHERE product.product_id = ? AND company_id = ?`, [product_id, company_id])
+        })
+        .then(([rows, field]) => {
+            return (rows);
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('系統暫時無法運行該功能');
+        })
+        .finally(() => {
+            connection.release();
         })
 }
 
@@ -123,20 +164,52 @@ exports.product_update = (product_id, product_info) => {
 }
 
 exports.product_delete = (product_id) => {
+    var connection, image_path;
     return connectionPool.getConnection()
-        .then((connection) => {
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT image.image_path FROM productdb.image AS image
+                                     JOIN productdb.product AS product ON image.product_id = product.product_id
+                                     WHERE product.product_id = ?`, [product_id])
+        })
+        .then(([rows, field]) => {
+            image_path = rows;
             return connection.query(`DELETE FROM productdb.product WHERE product_id = ?`, [product_id])
-                .then((result) => {
-                    if (result[0].affectedRows === 1) return (`資料刪除成功`);
-                    else throw new Error(`資料刪除失敗`);
-                })
-                .finally(() => {
-                    connection.release();
-                })
+        })
+        .then((result) => {
+            if (result[0].affectedRows === 1) return (image_path);
+            else throw new Error(`資料刪除失敗`);
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('資料刪除失敗');
+        })
+        .finally(() => {
+            connection.release();
+        })
+}
+
+exports.image_delete = (image_id) => {
+    var connection, image_path;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT image_path FROM productdb.image WHERE image_id = ?`, [image_id])
+        })
+        .then(([rows, field]) => {
+            image_path = rows;
+            return connection.query(`DELETE FROM productdb.image WHERE image_id = ?`, [image_id])
+        })
+        .then((result) => {
+            if (result[0].affectedRows === 1) return image_path;
+            else throw new Error(`資料刪除失敗`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error('資料刪除失敗');
+        })
+        .finally(() => {
+            connection.release();
         })
 }
 
