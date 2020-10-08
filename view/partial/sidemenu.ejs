@@ -13,24 +13,25 @@
       <a href="/api/user" class="list-group-item"><span aria-hidden="true"></span> 消費者</a>
     </div>
 
-  <% if (locals.role === 0 ) { %>
+    <% if (locals.role === 0 ) { %>
     <a href="/api/product" class="list-group-item"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 產品</a>
-    <a href="/api/discount" class="list-group-item"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span>  促銷管理</a>
+    <a href="/api/discount" class="list-group-item"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> 促銷管理</a>
     <a href="/api/award" class="list-group-item"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> 暢銷排行榜管理</a>
     <a href="/api/ads" class="list-group-item"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 廣告管理</a>
     <a href="/api/mobile" class="list-group-item"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> 軟體設定</a>
     <!--<a href="/api/album" class="list-group-item"><span class="glyphicon glyphicon-film" aria-hidden="true"></span> 相簿功能</a>-->
-  <% } else { %>
+    <% } else { %>
     <a href="/api/category" class="list-group-item"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 產品屬性</a>
-  <% } %>
+    <a href="/api/world" class="list-group-item"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> 區域</a>
+    <% } %>
 
     <a href="javascript:void(0)" class="list-group-item" data-toggle="collapse"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 報告 <i class="fa fa-angle"></i></a>
     <div class="list-group collapse">
-      
+
       <% if (locals.role === 0) { %>
       <a href="/api/order" class="list-group-item"><span aria-hidden="true"></span> 訂單</a>
       <% }%>
-      
+
       <a href="javascript:void(0);" class="list-group-item"><span aria-hidden="true"></span> 報告</a>
       <a href="javascript:void(0);" class="list-group-item"><span aria-hidden="true"></span> 報告</a>
       <a href="javascript:void(0);" class="list-group-item"><span aria-hidden="true"></span> 報告</a>

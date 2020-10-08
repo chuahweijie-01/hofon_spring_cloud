@@ -1,37 +1,67 @@
+const fs = require('fs');
 const company_model = require('../../model/admin/company');
 const upload_image = require('../../middleware/admin/upload_image')
 
 exports.upload_company_logo = (req, res, next) => {
-    upload_image.company_logo(req, res, (err) => {
+    upload_image.upload_company_logo(req, res, (err) => {
         if (err) {
             req.flash(`flash`, {
-                msg: err,
-                type: `error`
+                msg: err, type: `error`
             });
             req.session.company_info = req.body
             req.session.save(function (err) {
-                res.redirect(`/api/company/${req.params.id}`);
+                if (req.params.id) res.redirect(`/api/company/${req.params.id}`);
+                else res.redirect(`/api/company/new`);
             })
-        } else if (req.body.change_company_logo) {
-            if (req.file == undefined) {
-                req.flash(`flash`, {
-                    msg: `無法獲取新的商標圖檔路徑，請重新上傳，或系統將會使用原有圖檔。`,
-                    type: `error`
-                });
-                req.session.save(function (err) {
-                    res.redirect(`/api/company/${req.params.id}`);
-                })
-            } else if (req.file.length <= 0) {
-                req.flash(`flash`, {
-                    msg: `沒有圖片`,
-                    type: `error`
-                });
-                req.session.save(function (err) {
-                    res.redirect(`/api/company/${req.params.id}`);
-                })
-            } else {
-                next();
-            }
+        } else if (req.file == undefined) {
+            req.flash(`flash`, {
+                msg: `無法獲取公司商標路徑，請重新上傳。`, type: `error`
+            });
+            req.session.save(function (err) {
+                if (req.params.id) res.redirect(`/api/company/${req.params.id}`);
+                else res.redirect(`/api/company/new`);
+            })
+        } else if (req.file.length <= 0) {
+            req.flash(`flash`, {
+                msg: `沒有圖片`, type: `error`
+            });
+            req.session.save(function (err) {
+                if (req.params.id) res.redirect(`/api/company/${req.params.id}`);
+                else res.redirect(`/api/company/new`);
+            })
+        } else {
+            next();
+        }
+    })
+}
+
+exports.upload_company_bank_image = (req, res, next) => {
+    upload_image.upload_company_bank_image(req, res, (err) => {
+        if (err) {
+            req.flash(`flash`, {
+                msg: err.message, type: `error`
+            });
+            req.session.company_info = req.body
+            req.session.save(function (err) {
+                if (req.params.id) res.redirect(`/api/company/${req.params.id}`);
+                else res.redirect(`/api/company/new`);
+            })
+        } else if (req.file == undefined) {
+            req.flash(`flash`, {
+                msg: `無法獲取公司商標路徑，請重新上傳。`, type: `error`
+            });
+            req.session.save(function (err) {
+                if (req.params.id) res.redirect(`/api/company/${req.params.id}`);
+                else res.redirect(`/api/company/new`);
+            })
+        } else if (req.file.length <= 0) {
+            req.flash(`flash`, {
+                msg: `沒有圖片`, type: `error`
+            });
+            req.session.save(function (err) {
+                if (req.params.id) res.redirect(`/api/company/${req.params.id}`);
+                else res.redirect(`/api/company/new`);
+            })
         } else {
             next();
         }
@@ -57,7 +87,9 @@ exports.company_create = (req, res) => {
         company_contact_phone: req.body.company_contact_phone,
         company_contact_position: req.body.company_contact_position,
 
-        company_bank_image: req.body.company_bank_image,
+        company_email: req.body.company_email,
+        company_website: req.body.company_website,
+
         company_bank_name: req.body.company_bank_name,
         company_bank_name_code: req.body.company_bank_name_code,
         company_bank_branch: req.body.company_bank_branch,
@@ -69,16 +101,14 @@ exports.company_create = (req, res) => {
 
     company_model.add_company(company_info).then((result) => {
         req.flash(`flash`, {
-            msg: result,
-            type: 'success'
+            msg: '接下來，請上傳 公司商標 以及 銀行存摺封面影本。', type: 'success'
         });
         req.session.save(function (err) {
-            res.redirect('/api/company');
+            res.redirect(`/api/company/${result}`);
         })
     }).catch((err) => {
         req.flash(`flash`, {
-            msg: err.message,
-            type: `error`
+            msg: err.message, type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/company');
@@ -107,8 +137,7 @@ exports.company_display = (req, res) => {
         })
     }).catch((err) => {
         req.flash(`flash`, {
-            msg: err.message,
-            type: `error`
+            msg: err.message, type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/company');
@@ -129,8 +158,7 @@ exports.company_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash(`flash`, {
-            msg: err.message,
-            type: `error`
+            msg: err.message, type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
@@ -165,7 +193,6 @@ exports.company_update = (req, res) => {
     else {
         company_info = {
             company_name: req.body.company_name,
-            company_logo: `/image/admin/${req.params.id}/company_logo.jpg`,
             company_phone: req.body.company_phone,
             company_address: req.body.company_address,
             company_address_another: req.body.company_address_another,
@@ -180,7 +207,9 @@ exports.company_update = (req, res) => {
             company_contact_phone: req.body.company_contact_phone,
             company_contact_position: req.body.company_contact_position,
 
-            company_bank_image: req.body.company_bank_image,
+            company_email: req.body.company_email,
+            company_website: req.body.company_website,
+
             company_bank_name: req.body.company_bank_name,
             company_bank_name_code: req.body.company_bank_name_code,
             company_bank_branch: req.body.company_bank_branch,
@@ -193,16 +222,14 @@ exports.company_update = (req, res) => {
 
     company_model.company_update(company_id, company_info).then((result) => {
         req.flash(`flash`, {
-            msg: result,
-            type: 'success'
+            msg: result, type: 'success'
         });
         req.session.save(function (err) {
             res.redirect(`/api/company/${req.params.id}`);
         })
     }).catch((err) => {
         req.flash(`flash`, {
-            msg: err.message,
-            type: `error`
+            msg: err.message, type: `error`
         });
         req.session.save(function (err) {
             res.redirect(`/api/company/${req.params.id}`);
@@ -213,8 +240,7 @@ exports.company_update = (req, res) => {
 exports.company_delete = (req, res) => {
     if (req.params.id === '1') {
         req.flash(`flash`, {
-            msg: `注意！此管理臺公司不可以被刪除。`,
-            type: `error`
+            msg: `注意！此管理臺公司不可以被刪除。`, type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/company');
@@ -223,8 +249,7 @@ exports.company_delete = (req, res) => {
         company_model.company_delete(req.params.id)
             .then((result) => {
                 req.flash(`flash`, {
-                    msg: result,
-                    type: 'success'
+                    msg: result, type: 'success'
                 });
                 req.session.save(function (err) {
                     res.redirect('/api/company');
@@ -232,12 +257,71 @@ exports.company_delete = (req, res) => {
             })
             .catch((err) => {
                 req.flash(`flash`, {
-                    msg: err.message,
-                    type: `error`
+                    msg: err.message, type: `error`
                 });
                 req.session.save(function (err) {
                     res.redirect('/api/company');
                 })
             })
     }
+}
+
+exports.update_company_logo = (req, res) => {
+    image_info = {
+        company_logo: `/image/admin/${req.params.id}/${req.file.filename}`
+    }
+    company_model.update_company_logo(image_info, req.params.id)
+        .then((result) => {
+            try {
+                fs.unlinkSync(`public${result[0].company_logo}`)
+            } catch (error) {
+                console.log(error)
+                throw new Error(`該圖片已從資料庫移除，但不在服務器内。`)
+            }
+            req.flash(`flash`, {
+                msg: `商標圖檔更新成功`, type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/company/${req.params.id}`);
+            })
+        })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message, type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/company/${req.params.id}`);
+            })
+        })
+}
+
+exports.update_company_bank_image = (req, res) => {
+    image_info = {
+        company_bank_image: `/image/admin/${req.params.id}/${req.file.filename}`
+    }
+    company_model.update_company_bank_image(image_info, req.params.id)
+        .then((result) => {
+            if (result[0].company_bank_image != null) {
+                try {
+                    fs.unlinkSync(`public${result[0].company_bank_image}`)
+                } catch (error) {
+                    console.log(error)
+                    throw new Error(`該圖片已從資料庫移除，但不在服務器内。`)
+                }
+            }
+            req.flash(`flash`, {
+                msg: `商標圖檔更新成功`, type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/company/${req.params.id}`);
+            })
+        })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message, type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/company/${req.params.id}`);
+            })
+        })
 }

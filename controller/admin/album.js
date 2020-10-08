@@ -1,6 +1,6 @@
 const fs = require('fs');
 const album_model = require('../../model/admin/album');
-const upload_product_image = require('../../middleware/admin/upload_product_image');
+const upload_image = require('../../middleware/admin/upload_image');
 
 exports.album_display_list = (req, res) => {
     album_model.album_display_list(req.session.company, req.query)
@@ -54,7 +54,7 @@ exports.album_category = (req, res) => {
 }
 
 exports.album_add = (req, res) => {
-    upload_product_image.upload_product_image(req, res, (err) => {
+    upload_image.upload_product_image(req, res, (err) => {
         if (err) {
             req.flash(`flash`, {
                 msg: err,

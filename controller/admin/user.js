@@ -1,19 +1,6 @@
 const user_model = require('../../model/admin/user')
 
-exports.user_create = (req, res) => {
-
-}
-
-exports.user_create_address = (req, res) => {
-
-}
-
-exports.user_display = (req, res) => {
-
-}
-
 exports.user_display_list = (req, res) => {
-
     user_model.user_display_list(req.query, req.session.company, req.session.role).then((result) => {
         res.render('user', {
             title: "消費者",
@@ -26,8 +13,7 @@ exports.user_display_list = (req, res) => {
         });
     }).catch((err) => {
         req.flash(`flash`, {
-            msg: err.message,
-            type: `error`
+            msg: err.message, type: `error`
         });
         req.session.save(function (err) {
             res.redirect('/api/dashboard');
@@ -35,19 +21,22 @@ exports.user_display_list = (req, res) => {
     })
 }
 
-exports.user_display_address = (req, res) => {
-
+exports.user_deactivate = (req, res) => {
+    user_model.user_deactivate(req.params.id)
+        .then((result) => {
+            res.status(200).send(result);
+        })
+        .catch((err) => {
+            res.status(404).send(err);
+        })
 }
 
-exports.user_update = (req, res) => {
-
+exports.user_reactivate = (req, res) => {
+    user_model.user_reactivate(req.params.id)
+        .then((result) => {
+            res.status(200).send(result);
+        })
+        .catch((err) => {
+            res.status(404).send(err);
+        })
 }
-
-exports.user_delete = (req, res) => {
-
-}
-
-exports.user_delete_address = (req, res) => {
-
-}
-

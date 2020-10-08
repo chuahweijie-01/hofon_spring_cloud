@@ -16,14 +16,14 @@ exports.user_display_list = (page_info, company_id, role) => {
                     number_of_rows = rows[0].total_admin;
                     number_of_pages = Math.ceil(number_of_rows / number_per_page);
                     if (role == 1) {
-                        query = `SELECT user.user_email, user.user_name, company.company_name, user.user_gender, user_status,
+                        query = `SELECT user.user_id, user.user_email, user.user_name, company.company_name, user.user_gender, user_status,
                                  DATE_FORMAT(user.created_date, '%D %M %Y %H:%i:%s') AS created_date
                                  FROM userdb.user AS user
                                  JOIN userdb.user_company AS user_company ON user.user_id = user_company.user_id
                                  JOIN companydb.company AS company ON user_company.company_id = company.company_id
                                  GROUP BY user.user_email LIMIT ${limit}`;
                     } else {
-                        query = `SELECT user.user_email, user.user_name, user.user_gender, user_status,
+                        query = `SELECT user.user_id, user.user_email, user.user_name, user.user_gender, user_status,
                                  DATE_FORMAT(user.last_login, '%D %M %Y %H:%i:%s') AS last_login
                                  FROM userdb.user AS user
                                  JOIN userdb.user_company AS user_company ON user.user_id = user_company.user_id 
@@ -55,3 +55,43 @@ exports.user_display_list = (page_info, company_id, role) => {
             throw new Error(`系統暫時無法運行該功能`);
         })
 };
+
+exports.user_deactivate = (user_id) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`UPDATE userdb.user SET user_status = 0 WHERE user_id = ?`, [user_id])
+        })
+        .then((result) => {
+            if (result[0].info.match('Changed: 1')) return (`已凍結用戶`);
+            else return (`用戶凍結失敗`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(err);
+        })
+        .finally(() => {
+            connection.release();
+        })
+}
+
+exports.user_reactivate = (user_id) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`UPDATE userdb.user SET user_status = 1 WHERE user_id = ?`, [user_id])
+        })
+        .then((result) => {
+            if (result[0].info.match('Changed: 1')) return (`已凍結用戶`);
+            else return (`用戶凍結失敗`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(err);
+        })
+        .finally(() => {
+            connection.release();
+        })
+}

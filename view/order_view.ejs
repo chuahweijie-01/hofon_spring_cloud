@@ -36,8 +36,7 @@
                                     <header>
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <a target="_blank"
-                                                    href="https://sites.google.com/view/hofonspringcorp/english">
+                                                <a target="_blank" href="https://sites.google.com/view/hofonspringcorp/english">
                                                     <img src="<%= data[0].company_logo%>"  width="100" height="100"></a>
                                             </div>
                                             <div class="col-sm-6 company-details">
@@ -46,7 +45,7 @@
                                                         href="https://sites.google.com/view/hofonspringcorp/english"><%= data[0].company_name%></a>
                                                 </h2>
                                                 <div><%= data[0].company_address%></div>
-                                                <div>companyemail@example.com</div>
+                                                <div><%= data[0].company_email%></div>
                                             </div>
                                         </div>
                                     </header>
@@ -87,7 +86,7 @@
                                                         <h3><%= data[i].product_name%></h3>商品 代號碼 :
                                                         <%= data[i].product_id%>
                                                     </td>
-                                                    <td class="unit"><%= data[i].nett_price%></td>
+                                                    <td class="unit"><%= data[i].discount_price%></td>
                                                     <td class="qty"><%= data[i].quantity%></td>
                                                     <td class="total"><%= data[i].total_price%></td>
                                                 </tr>

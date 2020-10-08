@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<%- include('partial/header')-%>
+
+<body>
+  <section id="main">
+    <div class="container">
+      <div class="row">
+        <%- include('partial/sidemenu')-%>
+        <div class="col-md-9">
+          <%- include('partial/flash')-%>
+          <div class="panel panel-default">
+            <div class="panel-heading main-color-bg">
+              <h3 class="panel-title"><%= title%></h3>
+            </div>
+            <div class="panel-body">
+              <form action="/api/admin" method='POST'>
+                <label style="font-size: 20px;">國家</label>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>國家代號</label>
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "country_code")) { %>
+                    <div class="has-error">
+                      <input type="text" name="country_code" id="country_code" class="form-control" placeholder="國家代號" value="<%= world_info.country_code %>">
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "country_code"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                    <input type="text" name="country_code" id="country_code" class="form-control" placeholder="國家代號" value="<%= world_info.country_code %>">
+                    <span class="error text-danger"></span>
+                    <% } %>
+                    <% } else { %>
+                    <input type="text" name="country_code" id="country_code" class="form-control" placeholder="國家代號" value="<%= data[0].country_code %>">
+                    <span class="error text-danger"></span>
+                    <% } %>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>國家(華)</label>
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "country_name_chinese")) { %>
+                    <div class="has-error">
+                      <input type="text" name="country_name_chinese" class="form-control" placeholder="國家(華)" value="<%= world_info.country_name_chinese %>">
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "country_name_chinese"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                    <input type="text" name="country_name_chinese" class="form-control" placeholder="國家(華)" value="<%= world_info.country_name_chinese %>">
+                    <% } %>
+                    <% } else { %>
+                    <input type="text" name="country_name_chinese" class="form-control" placeholder="國家(華)" value="<%= data[0].country_name_chinese %>">
+                    <% } %>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>國家(英)</label>
+                    <% if (validation.length > 0) { %>
+                    <% if (validation.find(element => element.param == "country_name_english")) { %>
+                    <div class="has-error">
+                      <input type="text" name="country_name_english" class="form-control" placeholder="國家(英)" value="<%= world_info.country_name_english %>">
+                      <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "country_name_english"))].msg; %></span>
+                    </div>
+                    <% } else { %>
+                    <input type="text" name="country_name_english" class="form-control" placeholder="國家(英)" value="<%= world_info.country_name_english %>">
+                    <span class="error text-danger validation"></span>
+                    <% } %>
+                    <% } else { %>
+                    <input type="text" name="country_name_english" class="form-control" placeholder="國家(英)" value="<%= data[0].country_name_english %>">
+                    <span class="error text-danger"></span>
+                    <% } %>
+                  </div>
+                </div>
+                <input type="submit" class="btn btn-danger" value="更新">
+                </form>
+                <hr>
+                <form>
+                <label style="font-size: 20px;">城市</label>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="text" name="city_name" class="form-control" placeholder="輸入城市名稱">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <a class="btn btn-danger" href="">添加城市</a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <% if (data.length) { %>
+                        <% if (data[0].city_name != null) { %>
+                    <% for (var i=0; i < data.length; i++) { %>
+                        <button type="button" class="btn btn-labeled btn-default">
+                            <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span><%= data[i].city_name %></button>
+                    <% } %>
+                    <% } %>
+                    <% } %>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('partial/footer')-%>
+
+</body>
+
+</html>

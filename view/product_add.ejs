@@ -184,10 +184,10 @@
 
                 <hr>
 
-                <label style="font-size: 20px;"><%= title%>图片</label>
+                <label style="font-size: 20px;"><%= title%>圖片</label>
                 <div class="form-group">
                   <div style="position:relative;">
-                    <input type="file" name="image_path" id="upload_file" class="hidden" multiple onchange="preview_image();" />
+                    <input type="file" name="image_path" id="upload_file" class="hidden" multiple />
                     <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
                   </div>
                   <br>
@@ -206,16 +206,6 @@
       </div>
     </div>
   </section>
-
-  <script>
-    function preview_image() {
-      var total_file = document.getElementById("upload_file").files.length;
-      $('#preview').empty();
-      for (var i = 0; i < total_file; i++) {
-        $('#preview').append("<img src='" + URL.createObjectURL(event.target.files[i]) + "' width=\"125\" height=\"125\">");
-      }
-    }
-  </script>
 
   <%- include('partial/footer')-%>
 

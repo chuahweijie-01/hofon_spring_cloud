@@ -7,17 +7,17 @@ exports.auth = (req, res) => {
         user_password: req.body.user_password
     }
 
-    console.log(user_info);
-    
-    mobile_auth_model.auth(user_info).then((result) => {
-        req.session.user = result;
-        req.session.loggedin = true;
-        req.session.save((err) => {
-            res.status(201).send({ message: `登入成功` })
+    mobile_auth_model.auth(user_info)
+        .then((result) => {
+            req.session.user = result;
+            req.session.loggedin = true;
+            req.session.save((err) => {
+                res.status(201).send({ message: `登入成功` })
+            })
         })
-    }).catch((err) => {
-        res.status(404).send({ message: err.message })
-    })
+        .catch((err) => {
+            res.status(404).send({ message: err.message })
+        })
 }
 
 exports.register = (req, res) => {

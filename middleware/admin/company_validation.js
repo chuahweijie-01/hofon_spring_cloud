@@ -15,6 +15,12 @@ exports.company_info_input = [
         .notEmpty().withMessage('* 不可空缺')
         .isInt().withMessage('* 該欄位只接受數字格式')
         .isLength({ min: 8, max: 10 }).withMessage('* 統編只允許八或十碼'),
+    check('company_website')
+        .notEmpty().withMessage('* 不可空缺')
+        .isURL().withMessage('* 請輸入正確的URL格式'),
+    check('company_email')
+        .notEmpty().withMessage('* 不可空缺')
+        .isEmail().withMessage('* 請輸入正確的郵件格式'),
     check('company_phone')
         .notEmpty().withMessage('* 不可空缺'),
     check('company_description')

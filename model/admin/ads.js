@@ -103,3 +103,42 @@ exports.ads_delete = (advertisement_id) => {
             connection.release();
         })
 };
+
+exports.ads_image_identify = (advertisement_id) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT advertisement_image FROM companydb.advertisement WHERE advertisement_id = ?`, [advertisement_id])
+        })
+        .then(([rows, field]) => {
+            return rows;
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(err.message);
+        })
+        .finally(() => {
+            connection.release();
+        })
+}
+
+exports.ads_image_update = (advertisement_id, advertisement_image) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`UPDATE companydb.advertisement SET advertisement_image = ? WHERE advertisement_id = ?`, [advertisement_image, advertisement_id])
+        })
+        .then((result) => {
+            if (result[0].info.match('Changed: 1')) return (`圖片更新成功`);
+            else return (`資料沒有異動`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(err.message);
+        })
+        .finally(() => {
+            connection.release();
+        })
+}

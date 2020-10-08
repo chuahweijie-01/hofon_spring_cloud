@@ -14,8 +14,7 @@
               <h3 class="panel-title"><%= title%></h3>
             </div>
             <div class="panel-body">
-              <form action="/api/product/<%= data[0].product_id%>?_method=PUT" method='POST'
-                enctype="multipart/form-data">
+              <form action="/api/product/<%= data[0].product_id%>?_method=PUT" method='POST'>
                 <label style="font-size: 20px;"><%= title%>資料</label>
 
                 <div class="form-group">
@@ -194,9 +193,12 @@
                   <% } %>
 
                 </div>
+                <input type="submit" class="btn btn-danger" value="更新">
+              </form>
 
-                <hr>
+              <hr>
 
+              <form action="/api/product/<%= data[0].product_id%>/image?_method=PUT" method='POST' enctype="multipart/form-data">
                 <label style="font-size: 20px;"><%= title%>图片</label>
                 <div class="form-group">
                   <label>已保存圖片</label>
@@ -243,8 +245,7 @@
                   </div>
 
                   <div style="position:relative;">
-                    <input type="file" name="image_path" id="upload_file" class="hidden" multiple
-                      onchange="preview_image();" />
+                    <input type="file" name="image_path" id="upload_file" class="hidden" multiple />
                     <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
                   </div>
                   <br>
@@ -263,16 +264,6 @@
       </div>
     </div>
   </section>
-
-  <script>
-    function preview_image() {
-      var total_file = document.getElementById("upload_file").files.length;
-      $('#preview').empty();
-      for (var i = 0; i < total_file; i++) {
-        $('#preview').append("<img src='" + URL.createObjectURL(event.target.files[i]) + "' width=\"125\" height=\"125\">");
-      }
-    }
-  </script>
 
   <%- include('partial/footer')-%>
 

@@ -21,24 +21,24 @@ $(function () {
 
   //CUSTOMIZE FILE HANDLE BUTTON
   $('#upload_file').on('change', function () {
-    if ($('#upload_file').val()) {
-      $('#custom-text').text($('#upload_file').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
-    } else {
-      $('#custom-text').text('圖檔尚未選擇');
+    var total_file = document.getElementById('upload_file').files.length;
+    $('#preview').empty();
+    for (var i = 0; i < total_file; i++) {
+      $('#preview').append("<img src='" + URL.createObjectURL(event.target.files[i]) + "' width=\"125\" height=\"125\">");
     }
   });
 
   //CUSTOMIZE FILE HANDLE BUTTON
   $('#custom-button2').on('click', function () {
-    $('#real-file2').trigger('click');
+    $('#upload_bank_file').trigger('click');
   })
 
   //CUSTOMIZE FILE HANDLE BUTTON
-  $('#real-file2').on('change', function () {
-    if ($('#real-file2').val()) {
-      $('#custom-text2').text($('#real-file2').val().match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]);
-    } else {
-      $('#custom-text2').text('圖檔尚未選擇');
+  $('#upload_bank_file').on('change', function () {
+    var total_file = document.getElementById("upload_bank_file").files.length;
+    $('#preview_bank').empty();
+    for (var i = 0; i < total_file; i++) {
+      $('#preview_bank').append("<img src='" + URL.createObjectURL(event.target.files[i]) + "' width=\"125\" height=\"125\">");
     }
   });
 
@@ -79,7 +79,7 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip();
 
   //PUBLISH STATUS
-  $('.publish_status_group').mousedown('click', function () {
+  $('.publish_status_group').on('click', function () {
 
     var publish_status_id = '#' + $(this).attr('id');
     var product_id = $(publish_status_id).data('product_id');
@@ -107,6 +107,40 @@ $(function () {
       }).fail((err) => {
         $("#status_message").show();
         $('#status_message').addClass('alert alert-danger alert-dismissible').html('<a class="close" aria-label="close">&times;</a><strong>暫時無法設定該產品的發佈狀態</strong>');
+        $("html, body").animate({ scrollTop: 0 }, 500);
+      })
+
+    }
+  });
+
+  //USER ACTIVATION
+  $('.user_activation').on('click', function () {
+
+    var user_activation_id = '#' + $(this).attr('id');
+    var user_id = $(user_activation_id).data('user_id');
+
+    if ($(user_activation_id).text() === '凍結中') {
+      $.ajax({
+        type: "POST",
+        url: `/api/user/${user_id}/reactive`
+      }).done((result) => {
+        $(user_activation_id).text('激活中').removeClass('btn-primary').addClass('btn-success');
+        $("#status_message").click();
+      }).fail((err) => {
+        $("#status_message").show();
+        $('#status_message').addClass('alert alert-danger alert-dismissible').html('<a class="close" aria-label="close">&times;</a><strong>該用戶無法被激活</strong>');
+        $("html, body").animate({ scrollTop: 0 }, 500);
+      })
+    } else {
+      $.ajax({
+        type: "POST",
+        url: `/api/user/${user_id}/deactive`
+      }).done((result) => {
+        $(user_activation_id).text('凍結中').removeClass('btn-success').addClass('btn-primary');
+        $("#status_message").click();
+      }).fail((err) => {
+        $("#status_message").show();
+        $('#status_message').addClass('alert alert-danger alert-dismissible').html('<a class="close" aria-label="close">&times;</a><strong>該用戶無法被凍結</strong>');
         $("html, body").animate({ scrollTop: 0 }, 500);
       })
 
@@ -141,10 +175,6 @@ $(function () {
       $('#custom-text').text(image_path);
     }
   })
-
-  $(document).on('click', '.category_color', () => {
-    
-  });
 
 });
 

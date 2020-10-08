@@ -111,7 +111,7 @@ exports.admin_delete = (admin_id) => {
             return connection.query(`SELECT * FROM companydb.admin WHERE admin_role = 1`);
         })
         .then(([rows, field]) => {
-            if(rows.length <= 2) throw new Error(`該平臺需保留至少兩名以上的管理者`);
+            if (rows.length <= 2) throw new Error(`該平臺需保留至少兩名以上的管理者`);
             else return connection.query(`DELETE FROM companydb.admin WHERE admin_id = ?`, [admin_id])
         })
         .then((result) => {

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+  
 <%- include('partial/header')-%>
 
 <body>
@@ -10,7 +10,7 @@
         <%- include('partial/sidemenu')-%>
         <div class="col-md-9">
           <%- include('partial/flash')-%>
-          <a class="btn btn-danger" href="/api/company/new" style="margin-bottom: 10px;">新增<%= title%></a>
+          <a class="btn btn-danger" href="/api/world/new" style="margin-bottom: 10px;">新增<%= title%></a>
           <div class="panel panel-default">
             <div class="panel-heading main-color-bg">
               <h3 class="panel-title"><%= title%></h3>
@@ -26,40 +26,43 @@
                 <thead>
                   <tr>
                     <th></th>
-                    <th>統編</th>
-                    <th>名稱</th>
-                    <th>加入日期</th>
+                    <th>代號</th>
+                    <th>國家(華)</th>
+                    <th>國家(英)</th>
+                    <th>城市總數</th>
                     <th class="col-md-1 col-sm-1"></th>
                     <th class="col-md-1 col-sm-1"></th>
                   </tr>
+                  <tr>
                 </thead>
                 <tbody id="myTable">
                   <% if (data.length) { %>
                   <% for (var i=0; i< data.length; i++) { %>
                   <tr>
-                    <td><%= i + 1; %></td>
-                    <td><%= data[i].company_official_id %></td>
-                    <td><%= data[i].company_name %></td>
-                    <td><%= data[i].created_date %></td>
-                    <td><a class="btn btn-default" href="/api/company/<%= data[i].company_id%>">編輯</a></td>
-                    <td><a class="btn btn-danger" href="#companyDeleteModal_<%= data[i].company_id %>" data-toggle="modal">刪除</a></td>
+                    <td><%= i + 1 %></td>
+                    <td><%= data[i].country_code %></td>
+                    <td><%= data[i].country_name_chinese %></td>
+                    <td><%= data[i].country_name_english %></td>
+                    <td><%= data[i].total_city %></td>
+                    <td><a class="btn btn-default" href="/api/world/<%= data[i].country_id%>">編輯</a></td>
+                    <td><a class="btn btn-danger" href="#countryDeleteModal_<%= data[i].country_id %>" data-toggle="modal">刪除</a></td>
                   </tr>
-                  <div id="companyDeleteModal_<%= data[i].company_id %>" class="modal fade">
+                  <div id="countryDeleteModal_<%= data[i].country_id %>" class="modal fade">
                     <div class="modal-dialog modal-confirm">
                       <div class="modal-content">
                         <div class="modal-header flex-column">
                           <div class="icon-box">
                             <i class="material-icons">&#xE5CD;</i>
                           </div>
-                          <h4 class="modal-title w-100">即將刪除 <%= data[i].company_name %></h4>
+                          <h4 class="modal-title w-100">即將刪除 <%= data[i].country_name_chinese %> (<%= data[i].country_name_english %>), <%= data[i].country_code %></h4>
                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         </div>
                         <div class="modal-body">
-                          <p>改作業無法復原，確認要繼續執行嗎？</p>
+                          <p>該作業無法復原，確認要繼續執行嗎？</p>
                         </div>
                         <div class="modal-footer justify-content-center">
                           <a type="button" class="btn btn-secondary" data-dismiss="modal" style="color: white;">取消</a>
-                          <a type="button" class="btn btn-danger" href="/api/company/<%= data[i].company_id%>?_method=DELETE" style="color: white;">刪除</a>
+                          <a type="button" class="btn btn-danger" href="/api/world/<%= data[i].country_id%>?_method=DELETE" style="color: white;">刪除</a>
                         </div>
                       </div>
                     </div>
@@ -68,7 +71,7 @@
                   <% } %>
                 </tbody>
               </table>
-                <%- include('partial/pagination')-%>
+              <%- include('partial/pagination')-%>
             </div>
           </div>
         </div>

@@ -56,15 +56,20 @@
 
                   </div>
                 </div>
+                <hr>
                 <div class="form-group">
-                  <label>廣告</label>
+                  <label style="font-size: 20px;"><%= title%>圖片</label>
                   <div style="position:relative;">
                     <input type="file" name="advertisement_image" id="upload_file" class="hidden" />
                     <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
-                    <span id="custom-text">圖檔尚未選擇</span>
+                  </div>
+                  <br>
+                  <div class="wrapper">
+                    <div class="scrolls">
+                      <div class="imageDiv" id='preview'></div>
+                    </div>
                   </div>
                 </div>
-                <br>
                 <input type="submit" class="btn btn-danger" value="新增">
               </form>
             </div>

@@ -1,32 +1,32 @@
 const fs = require('fs');
 const ads_model = require(`../../model/admin/ads`);
-const upload_ads_image = require('../../middleware/admin/upload_ads_image')
+const upload_image = require('../../middleware/admin/upload_image')
 
 exports.upload_ads_image = (req, res, next) => {
-    upload_ads_image.upload_ads_image(req, res, (err) => {
+    upload_image.upload_ads_image(req, res, (err) => {
         if (err) {
             req.flash(`flash`, {
-                msg: err,
-                type: `error`
+                msg: err, type: `error`
             });
             req.session.save(function (err) {
-                res.redirect(`/api/ads`);
+                if (req.params.id) res.redirect(`/api/ads/${req.params.id}`);
+                else res.redirect(`/api/ads/new`);
             })
         } else if (req.file == undefined) {
             req.flash(`flash`, {
-                msg: `無法獲取廣告圖檔路徑，請重新上傳。`,
-                type: `error`
+                msg: `無法獲取廣告圖檔路徑，請重新上傳。`, type: `error`
             });
             req.session.save(function (err) {
-                res.redirect(`/api/ads`);
+                if (req.params.id) res.redirect(`/api/ads/${req.params.id}`);
+                else res.redirect(`/api/ads/new`);
             })
         } else if (req.file.length <= 0) {
             req.flash(`flash`, {
-                msg: `沒有圖片`,
-                type: `error`
+                msg: `沒有圖片`, type: `error`
             });
             req.session.save(function (err) {
-                res.redirect(`/api/ads`);
+                if (req.params.id) res.redirect(`/api/ads/${req.params.id}`);
+                else res.redirect(`/api/ads/new`);
             })
         } else {
             next();
@@ -46,8 +46,7 @@ exports.ads_create = (req, res) => {
     ads_model.ads_create(advertisement_info)
         .then((result) => {
             req.flash(`flash`, {
-                msg: result,
-                type: 'success'
+                msg: result, type: 'success'
             });
             req.session.save(function (err) {
                 res.redirect('/api/ads');
@@ -55,8 +54,7 @@ exports.ads_create = (req, res) => {
         })
         .catch((err) => {
             req.flash(`flash`, {
-                msg: err.message,
-                type: `error`
+                msg: err.message, type: `error`
             });
             req.session.save(function (err) {
                 res.redirect('/api/ads');
@@ -81,8 +79,7 @@ exports.ads_display = (req, res) => {
         })
         .catch((err) => {
             req.flash(`flash`, {
-                msg: err.message,
-                type: `error`
+                msg: err.message, type: `error`
             });
             req.session.save(function (err) {
                 res.redirect('/api/admin');
@@ -103,8 +100,7 @@ exports.ads_display_list = (req, res) => {
         })
         .catch((err) => {
             req.flash(`flash`, {
-                msg: err.message,
-                type: `error`
+                msg: err.message, type: `error`
             });
             req.session.save(function (err) {
                 res.redirect('/api/dashboard');
@@ -129,15 +125,13 @@ exports.ads_new = (req, res) => {
 exports.ads_update = (req, res) => {
     advertisement_info = {
         advertisement_name: req.body.advertisement_name,
-        advertisement_image: `/image/admin/${req.session.company}/ads/${req.file.filename}`,
         advertisement_link: req.body.advertisement_link
     }
 
     ads_model.ads_update(req.params.id, advertisement_info)
         .then((result) => {
             req.flash(`flash`, {
-                msg: result,
-                type: 'success'
+                msg: result, type: 'success'
             });
             req.session.save(function (err) {
                 res.redirect('/api/ads');
@@ -145,8 +139,7 @@ exports.ads_update = (req, res) => {
         })
         .catch((err) => {
             req.flash(`flash`, {
-                msg: err.message,
-                type: `error`
+                msg: err.message, type: `error`
             });
             req.session.save(function (err) {
                 res.redirect('/api/ads');
@@ -160,8 +153,7 @@ exports.ads_delete = (req, res) => {
             try {
                 fs.unlinkSync(`public${result[0].advertisement_image}`)
                 req.flash(`flash`, {
-                    msg: `資料刪除成功`,
-                    type: 'success'
+                    msg: `資料刪除成功`, type: 'success'
                 });
                 req.session.save(function (err) {
                     res.redirect('/api/ads');
@@ -173,11 +165,40 @@ exports.ads_delete = (req, res) => {
         })
         .catch((err) => {
             req.flash(`flash`, {
-                msg: err.message,
-                type: `error`
+                msg: err.message, type: `error`
             });
             req.session.save(function (err) {
                 res.redirect('/api/ads');
+            })
+        })
+}
+
+exports.ads_image_update = (req, res) => {
+    ads_model.ads_image_identify(req.params.id)
+        .then((result) => {
+            try {
+                fs.unlinkSync(`public${result[0].advertisement_image}`)
+            } catch (error) {
+                console.log(error)
+                throw new Error(`該圖片已從資料庫移除，但不在服務器内。`)
+            }
+            image_path = `/image/admin/${req.session.company}/ads/${req.file.filename}`
+            return ads_model.ads_image_update(req.params.id, image_path)
+        })
+        .then((result) => {
+            req.flash(`flash`, {
+                msg: result, type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/ads/${req.params.id}`);
+            })
+        })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message, type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/ads/${req.params.id}`);
             })
         })
 }

@@ -1,16 +1,16 @@
 const { response } = require('express');
 const connectionPool = require('../../conf/db');
 
-exports.insert_product_image = (image_info) => {
+exports.insert_product_image = (image_path) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`INSERT INTO productdb.image (product_id, image_path) VALUES ?`, [image_info])
+            return connection.query(`INSERT INTO productdb.image (product_id, image_path) VALUES ?`, [image_path])
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return (`产品添加成功`);
-            else throw new Error(`图片新增失敗`);
+            if (result[0].affectedRows >= 1) return (`產品圖片添加成功`);
+            else throw new Error(`產品图片添加失敗`);
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err.message}`);
@@ -234,13 +234,10 @@ exports.product_unpublish = (product_id, company_id) => {
 exports.product_publish = (product_id, category_id, company_id) => {
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT company_product_max, (SELECT COUNT(*)
-                                     FROM productdb.product AS product
-                                     JOIN companydb.company AS company
-                                     ON product.company_id = company.company_id
+            return connection.query(`SELECT company_product_max, (SELECT COUNT(*) FROM productdb.product AS product
+                                     JOIN companydb.company AS company ON product.company_id = company.company_id
                                      WHERE product.product_status = 1 AND product.category_id = ? AND product.company_id = ?) AS total_product
-                                     FROM companydb.company
-                                     WHERE company_id = ?`, [category_id, company_id, company_id])
+                                     FROM companydb.company WHERE company_id = ?`, [category_id, company_id, company_id])
                 .then(([rows, field]) => {
                     if (rows[0].total_product >= rows[0].company_product_max) throw new Error(`該產品屬性已超過可以發佈的產品上限`);
                     else return connection.query(`UPDATE productdb.product SET product_status = 1 WHERE product_id = ? AND company_id = ?`, [product_id, company_id])
@@ -255,5 +252,24 @@ exports.product_publish = (product_id, category_id, company_id) => {
         }, err => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error(`資料更新失敗`);
+        })
+}
+
+exports.product_image_total = (product_id) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT COUNT(*) AS total_image FROM productdb.image WHERE product_id = ?`, [product_id])
+        })
+        .then(([rows, field]) => {
+            return rows;
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(`圖片總數计算失败`);
+        })
+        .finally(() => {
+            connection.release();
         })
 }

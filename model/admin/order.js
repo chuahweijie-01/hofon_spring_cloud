@@ -49,7 +49,7 @@ exports.order_display = (order_id, company_id) => {
   return connectionPool.getConnection()
     .then((connect) => {
       connection = connect;
-      return connection.query(`SELECT * FROM orderdb.order_full_information WHERE order_id = ? AND company_id = ?`, [order_id, company_id])
+      return connection.query(`SELECT * FROM orderdb.order_full_information WHERE order_id = ? AND company_id = ? GROUP BY product_id`, [order_id, company_id])
     })
     .then(([rows, field]) => {
       return rows;

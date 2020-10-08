@@ -1,22 +1,23 @@
-const mysql = require('mysql');
-const connectionPool = require('../../conf/db');
 const connection = require('../../conf/db');
+const connectionPool = require('../../conf/db');
 
 exports.add_company = (company_info) => {
+    var connection;
     return connectionPool.getConnection()
-        .then((connection) => {
+        .then((connect) => {
+            connection = connect;
             return connection.query(`INSERT INTO companydb.company SET ?`, [company_info])
-                .then((result) => {
-                    if (result[0].affectedRows === 1) return (`${company_info.company_name} 新增成功`);
-                    else throw new Error(`資料新增失敗`);
-                })
-                .finally(() => {
-                    connection.release();
-                })
+        })
+        .then((result) => {
+            if (result[0].affectedRows === 1) return (result[0].insertId);
+            else throw new Error(`資料新增失敗`);
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('資料新增失敗');
+        })
+        .finally(() => {
+            connection.release();
         })
 };
 
@@ -116,3 +117,75 @@ exports.company_delete = (company_id) => {
             throw new Error('資料刪除失敗');
         })
 };
+
+exports.update_company_logo = (image_info, company_id) => {
+    var connection, image_path;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT company_logo FROM companydb.company WHERE company_id = ?`, [company_id])
+        })
+        .then(([rows, field]) => {
+            image_path = rows;
+            return connection.query(`UPDATE companydb.company SET ? WHERE company_id = ?`, [image_info, company_id])
+        })
+        .then((result) => {
+            if (result[0].info.match('Changed: 1')) return (image_path);
+            else return (`資料沒有異動`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error('資料更新失敗');
+        })
+        .finally(() => {
+            connection.release();
+        })
+}
+
+exports.update_company_logo = (image_info, company_id) => {
+    var connection, image_path;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT company_logo FROM companydb.company WHERE company_id = ?`, [company_id])
+        })
+        .then(([rows, field]) => {
+            image_path = rows;
+            return connection.query(`UPDATE companydb.company SET ? WHERE company_id = ?`, [image_info, company_id])
+        })
+        .then((result) => {
+            if (result[0].info.match('Changed: 1')) return (image_path);
+            else return (`資料沒有異動`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error('資料更新失敗');
+        })
+        .finally(() => {
+            connection.release();
+        })
+}
+
+exports.update_company_bank_image = (image_info, company_id) => {
+    var connection, image_path;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT company_bank_image FROM companydb.company WHERE company_id = ?`, [company_id])
+        })
+        .then(([rows, field]) => {
+            image_path = rows;
+            return connection.query(`UPDATE companydb.company SET ? WHERE company_id = ?`, [image_info, company_id])
+        })
+        .then((result) => {
+            if (result[0].info.match('Changed: 1')) return (image_path);
+            else return (`資料沒有異動`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error('資料更新失敗');
+        })
+        .finally(() => {
+            connection.release();
+        })
+}
