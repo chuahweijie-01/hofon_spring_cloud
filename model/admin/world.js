@@ -20,6 +20,26 @@ exports.world_create = (world_info) => {
         })
 }
 
+exports.world_city_create = (world_info) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`INSERT INTO userdb.city SET ?`, [world_info])
+        })
+        .then((result) => {
+            if (result[0].affectedRows === 1) return (`${world_info.city_name} 新增成功`);
+            else throw new Error(`${world_info.city_name} 新增失敗`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(err.message);
+        })
+        .finally(() => {
+            connection.release();
+        })
+}
+
 exports.world_display_list = (page_info) => {
     var connection;
     var page_size = 10;
@@ -38,7 +58,7 @@ exports.world_display_list = (page_info) => {
             number_of_pages = Math.ceil(number_of_rows / number_per_page);
             return connection.query(`SELECT country.country_id, country.country_name_chinese, country.country_name_english, country.country_code,
                                      COUNT(*) AS total_city FROM userdb.country AS country
-                                     LEFT JOIN userdb.city AS city ON country.country_id = city.country_id GROUP BY country.country_id`)
+                                     LEFT JOIN userdb.city AS city ON country.country_id = city.country_id GROUP BY country.country_id ORDER BY country.country_code`)
         })
         .then(([rows, field]) => {
             result = {
@@ -71,7 +91,7 @@ exports.world_display = (country_id) => {
             connection = connect;
             return connection.query(`SELECT country.country_id, country.country_name_chinese, country.country_name_english, country.country_code,
                                      city.city_id, city.city_name FROM userdb.country AS country
-                                     LEFT JOIN userdb.city AS city ON country.country_id = city.country_id WHERE country.country_id = ?`, [country_id])
+                                     LEFT JOIN userdb.city AS city ON country.country_id = city.country_id WHERE country.country_id = ? ORDER BY city.city_id`, [country_id])
         })
         .then(([rows, field]) => {
             return rows
@@ -91,6 +111,26 @@ exports.world_delete = (country_id) => {
         .then((connect) => {
             connection = connect;
             return connection.query(`DELETE FROM userdb.country WHERE country_id = ?`, [country_id])
+        })
+        .then((result) => {
+            if (result[0].affectedRows === 1) return (`資料刪除成功`);
+            else throw new Error(`資料刪除失敗`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(err.message);
+        })
+        .finally(() => {
+            connection.release();
+        })
+}
+
+exports.world_city_delete = (city_id) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`DELETE FROM userdb.city WHERE city_id = ?`, [city_id])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);

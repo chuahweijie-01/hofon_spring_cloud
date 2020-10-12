@@ -1,9 +1,12 @@
 const express = require('express');
 const admin_controller = require('../../controller/admin/admin');
 const admin_validation = require('../../middleware/admin/admin_validation');
+const privilegesValidation = require('../../middleware/admin/privilegesValidation');
 
 router = express.Router();
 router.use(express.static('./public/'));
+
+router.use(privilegesValidation.privilegesCheck("3"));
 
 router.post('/', admin_validation.admin_info_input, admin_controller.admin_create);
 

@@ -7,8 +7,6 @@ exports.world_create = (req, res) => {
         country_name_english: req.body.country_name_english
     }
 
-    console.log(world_info)
-
     world_model.world_create(world_info)
         .then((result) => {
             req.flash(`flash`, {
@@ -24,6 +22,30 @@ exports.world_create = (req, res) => {
             });
             req.session.save(function (err) {
                 res.redirect('/api/world');
+            })
+        })
+}
+
+exports.world_city_create = (req, res) => {
+    world_info = {
+        country_id: req.params.id,
+        city_name: req.body.city_name
+    }
+    world_model.world_city_create(world_info)
+        .then((result) => {
+            req.flash(`flash`, {
+                msg: result, type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/world/${req.params.id}`);
+            })
+        })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message, type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/world/${req.params.id}`);
             })
         })
 }
@@ -105,6 +127,26 @@ exports.world_delete = (req, res) => {
             });
             req.session.save(function (err) {
                 res.redirect('/api/world');
+            })
+        })
+}
+
+exports.world_city_delete = (req, res) => {
+    world_model.world_city_delete(req.params.city_id)
+        .then((result) => {
+            req.flash(`flash`, {
+                msg: result, type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/world/${req.params.id}`);
+            })
+        })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message, type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/world/${req.params.id}`);
             })
         })
 }

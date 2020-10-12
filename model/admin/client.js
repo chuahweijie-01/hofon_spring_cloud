@@ -162,6 +162,10 @@ exports.client_update = (client_id, client_info, privileges_id) => {
         .then((connect) => {
             connection = connect;
             return connection.query(`DELETE FROM companydb.admin_privileges WHERE admin_id = ?`, [client_id])
+            return connection.query(`SELECT COUNT(*) AS total_admin_privileges FROM companydb.admin_privileges AS admin_privileges
+                                     JOIN companydb.admin AS admin ON admin_privileges.admin_id = admin.admin_id
+                                     JOIN companydb.company AS company ON admin.company_id = company.company_id
+                                     WHERE company.company_id = 29 AND admin_privileges.privileges_id = 3`)
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) {
@@ -182,19 +186,20 @@ exports.client_update = (client_id, client_info, privileges_id) => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error('資料更新失敗');
+            throw new Error(err.message);
         })
         .finally(() => {
             connection.release();
         })
 };
 
-exports.client_delete = (client_id) => {
+exports.client_delete = (client_id, current_login_user) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM companydb.admin WHERE admin_id = ?`, [client_id])
+            if (client_id === current_login_user.toString()) throw new Error(`该帐号目前为使用状态，无法被删除`)
+            else return connection.query(`DELETE FROM companydb.admin WHERE admin_id = ?`, [client_id])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);
@@ -202,7 +207,7 @@ exports.client_delete = (client_id) => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error('資料刪除失敗');
+            throw new Error(err.message);
         })
         .finally(() => {
             connection.release();

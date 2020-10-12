@@ -1,8 +1,11 @@
 const express = require('express');
 const discount_controller = require('../../controller/admin/discount')
+const privilegesValidation = require('../../middleware/admin/privilegesValidation');
 
 router = express.Router();
 router.use(express.static('./public/'));
+
+router.use(privilegesValidation.privilegesCheck("6"));
 
 router.post('/', discount_controller.discount_create)
 

@@ -1,10 +1,12 @@
 const express = require('express');
 const product_controller = require('../../controller/admin/product');
 const product_validation = require('../../middleware/admin/product_validation');
-
+const privilegesValidation = require('../../middleware/admin/privilegesValidation');
 
 router = express.Router();
 router.use(express.static('./public/'));
+
+router.use(privilegesValidation.privilegesCheck("5"));
 
 router.post('/', product_controller.upload_product_images, product_validation.product_info_input, product_controller.product_create);
 router.post('/publish/:product_id/:category_id', product_controller.product_publish);

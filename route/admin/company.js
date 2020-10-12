@@ -2,9 +2,12 @@ const express = require('express');
 const company_controller = require('../../controller/admin/company');
 const middlewares = require('../../middleware/middlewares');
 const company_validation = require('../../middleware/admin/company_validation');
+const privilegesValidation = require('../../middleware/admin/privilegesValidation');
 
 router = express.Router();
 router.use(express.static('./public/'));
+
+router.use(privilegesValidation.privilegesCheck("2"));
 
 router.post('/', company_validation.company_info_input, company_controller.company_create);
 

@@ -1,8 +1,11 @@
 const express = require('express');
-const user_controller = require('../../controller/admin/user')
+const user_controller = require('../../controller/admin/user');
+const privilegesValidation = require('../../middleware/admin/privilegesValidation');
 
 router = express.Router();
 router.use(express.static('./public/'));
+
+router.use(privilegesValidation.privilegesCheck("4"));
 
 router.get('/', user_controller.user_display_list);
 

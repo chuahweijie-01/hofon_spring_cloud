@@ -1,10 +1,12 @@
 const express = require('express');
 const award_controller = require('../../controller/admin/award');
 const award_validation = require('../../middleware/admin/award_validation');
-
+const privilegesValidation = require('../../middleware/admin/privilegesValidation');
 
 router = express.Router();
 router.use(express.static('./public/'));
+
+router.use(privilegesValidation.privilegesCheck("7"));
 
 router.post('/', award_validation.award_info_input, award_controller.award_create)
 

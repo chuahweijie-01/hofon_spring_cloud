@@ -5,12 +5,13 @@ exports.cart_products = (user_id, company_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT product.product_id, product.product_name, product.product_price, product.product_member_price, cart_product.quantity,
+            return connection.query(`SELECT product.product_id, product.product_name, product.product_price, product.product_member_price, cart_product.quantity, image.image_path,
                                      SUM(product.product_member_price * cart_product.quantity) AS total_price, product_with_discount.discount_price,
                                      SUM(product_with_discount.discount_price * cart_product.quantity) AS total_discount_price
                                      FROM userdb.cart AS cart
                                      JOIN userdb.cart_product AS cart_product ON cart.cart_id = cart_product.cart_id
                                      JOIN productdb.product AS product ON cart_product.product_id = product.product_id
+                                     JOIN productdb.image AS image ON product.product_id = image.product_id
                                      LEFT JOIN productdb.product_with_discount AS product_with_discount ON product.product_id = product_with_discount.product_id
                                      JOIN companydb.company AS company ON product.company_id = company.company_id
                                      WHERE cart.user_id = ? AND company.company_id = ? GROUP BY product.product_id`, [user_id, company_id]);
