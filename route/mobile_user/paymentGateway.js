@@ -5,6 +5,18 @@ const crypto = require('crypto')
 router = express.Router();
 router.use(express.static('./public/'));
 
+function currentDateTime() {
+    let date_ob = new Date();
+    let date = ("0" + date_ob.getDate()).slice(-2);
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+    let year = date_ob.getFullYear();
+    let hours = date_ob.getHours();
+    let minutes = date_ob.getMinutes();
+    let seconds = date_ob.getSeconds();
+
+    return (`${year}/${month}/${date} ${hours}:${minutes}:${seconds}`);
+}
+
 router.get('/', (req, res) => {
     const merchantID = "2000132"
     const hashKey = "5294y06JbISpM5x9"

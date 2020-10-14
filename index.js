@@ -43,7 +43,7 @@ const m_user = require('./route/mobile_user/user');
 const m_order = require('./route/mobile_user/order');
 
 
-const ecpay_payment_gateway = require('./route/mobile_user/ecpay_payment_gateway');
+//const paymentGateway = require('./route/mobile_user/paymentGateway');
 
 const middlewares = require('./middleware/middlewares');
 
@@ -132,7 +132,7 @@ app.use('/mobile/api/cart', m_cart);
 app.use('/mobile/api/user', m_user);
 app.use('/mobile/api/order', m_order);
 
-//app.use('/ecpay', ecpay_payment_gateway);
+//app.use('/payment', paymentGateway);
 
 app.use('/', web_auth);
 

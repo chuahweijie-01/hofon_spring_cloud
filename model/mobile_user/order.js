@@ -12,11 +12,10 @@ exports.create_order = (order_info, product_info) => {
             for (var i = 0; i < product_info.length; i++) {
                 connection.query(`INSERT INTO orderdb.order_product(order_id, product_id, quantity, nett_price, discount_price, total_price)
                                   VALUES (?, ?, ?, (SELECT product_member_price FROM productdb.product WHERE product_id = ?),
-                                  IFNULL ((SELECT discount_price FROM productdb.product_with_discount WHERE product_id = ?), nett_price), (discount_price * ?));`
+                                  IFNULL ((SELECT discount_price FROM productdb.product_with_discount WHERE product_id = ?), nett_price), (discount_price * ?))`
                     , [result[0].insertId, product_info[i].product_id, product_info[i].quantity, product_info[i].product_id, product_info[i].product_id, product_info[i].quantity])
                     .then((result) => {
-                        //if (result[0].affectedRows >= 1) console.log(`Turn ${i}`)
-                        //else console.log(`Something happened`);
+                        // Update continue ...
                     })
             }
             if (result[0].affectedRows >= 1) return (order_id);

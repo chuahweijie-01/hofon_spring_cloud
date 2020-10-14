@@ -41,19 +41,22 @@ exports.product_image = (product_id) => {
 }
 
 exports.product_create = (product_info) => {
+    var connection;
     return connectionPool.getConnection()
-        .then((connection) => {
+        .then((connect) => {
+            connection = connect;
             return connection.query(`INSERT INTO productdb.product SET ?`, [product_info])
-                .then((result) => {
-                    if (result[0].affectedRows >= 1) return (result[0].insertId);
-                    else throw new Error(`資料新增失敗`);
-                })
-                .finally(() => {
-                    connection.release();
-                })
-        }, err => {
+        })
+        .then((result) => {
+            if (result[0].affectedRows >= 1) return (result[0].insertId);
+            else throw new Error(`資料新增失敗`);
+        })
+        .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('資料新增失敗');
+        })
+        .finally(() => {
+            connection.release();
         })
 };
 
@@ -79,6 +82,7 @@ exports.category_list = (company_id) => {
 }
 
 exports.product_list = (company_id, page_info) => {
+    var connection;
     var page_size = 10;
     var number_of_rows, number_of_pages;
     var number_per_page = parseInt(page_size, 10) || 1;
@@ -87,41 +91,41 @@ exports.product_list = (company_id, page_info) => {
     var limit = `${skip} , ${number_per_page}`;
 
     return connectionPool.getConnection()
-        .then((connection) => {
+        .then((connect) => {
+            connection = connect;
             return connection.query(`SELECT COUNT(*) AS total_product FROM productdb.product WHERE company_id = ?`, [company_id])
-                .then(([rows, field]) => {
-                    number_of_rows = rows[0].total_product;
-                    number_of_pages = Math.ceil(number_of_rows / number_per_page);
-                    return connection.query(`SELECT product.product_id, product.product_name, product.product_stock, product.product_status, category.category_id, category.category_name, 
-                                             DATE_FORMAT(product.last_update, '%D %M %Y %H:%i:%s') AS last_update
-                                             FROM productdb.product AS product
-                                             JOIN productdb.category AS category ON product.category_id = category.category_id
-                                             JOIN companydb.company AS company ON product.company_id = company.company_id
-                                             WHERE company.company_id = ?
-                                             LIMIT ${limit}`, [company_id])
-                })
-                .then(([rows, field]) => {
-                    result = {
-                        rows: rows,
-                        pagination: {
-                            current: page,
-                            number_per_page: number_per_page,
-                            has_previous: page > 1,
-                            previous: page - 1,
-                            has_next: page < number_of_pages,
-                            next: page + 1,
-                            last_page: Math.ceil(number_of_rows / page_size)
-                        }
-                    }
-                    return (result);
-                })
-                .finally(() => {
-                    connection.release();
-                })
+        })
+        .then(([rows, field]) => {
+            number_of_rows = rows[0].total_product;
+            number_of_pages = Math.ceil(number_of_rows / number_per_page);
+            return connection.query(`SELECT product.product_id, product.product_name, product.product_stock, product.product_status, category.category_id, category.category_name, 
+                                     DATE_FORMAT(product.last_update, '%D %M %Y %H:%i:%s') AS last_update
+                                     FROM productdb.product AS product
+                                     JOIN productdb.category AS category ON product.category_id = category.category_id
+                                     JOIN companydb.company AS company ON product.company_id = company.company_id
+                                     WHERE company.company_id = ? LIMIT ${limit}`, [company_id])
+        })
+        .then(([rows, field]) => {
+            result = {
+                rows: rows,
+                pagination: {
+                    current: page,
+                    number_per_page: number_per_page,
+                    has_previous: page > 1,
+                    previous: page - 1,
+                    has_next: page < number_of_pages,
+                    next: page + 1,
+                    last_page: Math.ceil(number_of_rows / page_size)
+                }
+            }
+            return (result);
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error('系統暫時無法運行該功能');
+        })
+        .finally(() => {
+            connection.release();
         })
 }
 

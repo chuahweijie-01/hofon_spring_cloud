@@ -35,10 +35,8 @@ exports.company_list = (page_info) => {
                 .then(([rows, field]) => {
                     number_of_rows = rows[0].total_company;
                     number_of_pages = Math.ceil(number_of_rows / number_per_page);
-                    return connection.query(`SELECT company_id, company_official_id, company_name,
-                                             DATE_FORMAT(created_date, '%D %M %Y %H:%i:%s') AS created_date
-                                             FROM companydb.company
-                                             LIMIT ${limit}`)
+                    return connection.query(`SELECT company_id, company_official_id, company_name, DATE_FORMAT(created_date, '%D %M %Y %H:%i:%s') AS created_date
+                                             FROM companydb.company WHERE company_id <> '1' LIMIT ${limit}`)
                 })
                 .then(([rows, field]) => {
                     result = {
