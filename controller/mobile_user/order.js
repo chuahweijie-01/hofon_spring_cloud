@@ -29,7 +29,35 @@ exports.order_list = (req, res) => {
 }
 
 exports.order_display = (req, res) => {
-    order_model.order_display(req.params.id, req.session.company)
+    order_model.order_display(req.params.id)
+        .then((result) => {
+            res.render('mobile_order_view', {
+                title: "訂單瀏覽",
+                data: result
+            });
+        })
+        .catch((err) => {
+            res.status(404).send({ message: err.message })
+        })
+}
+
+exports.order_test = (req, res) => {
+    order_model.order_display(190, 29)
+        .then((result) => {
+            res.render('mobile_order_view', {
+                title: "訂單瀏覽",
+                data: result
+            }, ((err, html) => {
+                res.status(200).send(html);
+            }));
+        })
+        .catch((err) => {
+            res.status(404).send({ message: err.message })
+        })
+}
+
+exports.order_review = (req, res) => {
+    order_model.order_review(req.params.id)
         .then((result) => {
             res.status(200).send({ order_info: result });
         })
@@ -49,5 +77,15 @@ exports.delete_order = (req, res) => {
 }
 
 exports.update_order_address = (req, res) => {
-    
+    order_address = {
+        order_id: req.params.id,
+        address_id: req.query.address
+    }
+    order_model.update_order_address(order_address, req.session.user)
+        .then((result) => {
+            res.status(200).send({ message: result });
+        })
+        .catch((err) => {
+            res.status(404).send({ message: err.message })
+        })
 }

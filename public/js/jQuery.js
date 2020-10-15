@@ -62,6 +62,7 @@ $(function () {
         if (twoDigitDate.length == 1) twoDigitDate = "0" + twoDigitDate;
         var currentDate = twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
 
+        console.log(currentDate)
         const invoice = $('#invoice')[0];
         var opt = {
             margin: 0.5,
