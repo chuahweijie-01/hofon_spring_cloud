@@ -51,10 +51,14 @@
                       <td>
                         <% if (checked == 1) { %>
                         <input type="checkbox" name="product_id" id="<%= product[i].product_id%>" value="<%= product[i].product_id%>" checked>
+                        <label for="<%= product[i].product_id%>"><%= product[i].product_name%></label>
+                        <% } else if (product[i].discount_id != null){ %>
+                        <input type="checkbox" disabled>
+                        <label for="<%= product[i].product_id%>">已歸納在 <%= product[i].discount_name%> : <%= product[i].product_name%></label>
                         <% } else { %>
                         <input type="checkbox" name="product_id" id="<%= product[i].product_id%>" value="<%= product[i].product_id%>">
-                        <% } %>
                         <label for="<%= product[i].product_id%>"><%= product[i].product_name%></label>
+                        <% } %>
                       </td>
                     </tr>
 

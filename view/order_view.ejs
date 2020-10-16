@@ -12,7 +12,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading main-color-bg">
                             <h3 class="panel-title">訂單序號 :
-                                <%= data[0].order_id%>
+                                <%= data[0].merchant_trade_number%>
                             </h3>
                         </div>
                         <div class="toolbar hidden-print">
@@ -31,24 +31,13 @@
                             <div class="invoice overflow-auto" style="padding-top: 0;" id="invoice">
                                 <div style="min-width: 600px">
                                     <header>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <h2>訂單明細</h2>
-                                            </div>
-                                            <div class="col-sm-6 company-details">
-                                                <h2 class="name">
-                                                    <a target="_blank" style="color: #c0392b;"
-                                                        href="https://sites.google.com/view/hofonspringcorp/english">
-                                                        <%= data[0].company_name%>
-                                                    </a>
+                                        <div class="form-class company-details">
+                                            <h1 class="name" style="padding-bottom: 10px;">訂單明細</h1>    
+                                            <h2 class="name">
+                                                    <a target="_blank" style="color: #c0392b;" href="https://sites.google.com/view/hofonspringcorp/english"> <%= data[0].company_name%></a>
                                                 </h2>
-                                                <div>
-                                                    <%= data[0].company_address%>
-                                                </div>
-                                                <div>
-                                                    <%= data[0].company_email%>
-                                                </div>
-                                            </div>
+                                                <div> <%= data[0].company_address%> </div>
+                                                <div> <%= data[0].company_email%> </div>
                                         </div>
                                     </header>
                                     <main>
@@ -70,11 +59,13 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-6 invoice-details">
-                                                <h1 class="invoice-id">訂單序號 :
-                                                    <%= data[0].order_id%>
-                                                </h1>
-                                                <div class="date">日期 :
-                                                    <%= data[0].created_date%>
+                                                <h1 class="invoice-id">訂單序號</h1>
+                                                <h2 class="invoice-id"><%= data[0].merchant_trade_number%></h2>
+                                                <div class="date">生成日期 :
+                                                    <%= data[0].trade_date%>
+                                                </div>
+                                                <div class="date">結賬日期 :
+                                                    <%= data[0].payment_date%>
                                                 </div>
                                                 <% if (data[0].order_status === 1) { %>
                                                 <div class="date">完成日期 :
@@ -168,14 +159,13 @@
                         <i class="material-icons">&#xE8D1;</i>
                     </div>
                     <h4 class="modal-title w-100">即將 <strong class="verification">更新</strong> 訂單序號
-                        <%= data[0].order_id %>
+                        <%= data[0].merchant_trade_number %>
                     </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
                     <p>是否將 <strong class="warning_info">訂單處理中</strong> 更新為 <strong class="verification">交易已完成</strong>
                         狀態？</p>
-                    <p>為避免貴公司在訂單處理時造成的混淆，執行該動作以後，將無法再一次更換序號 <strong><%= data[0].order_id %></strong> 的訂單狀態。</p>
 
                 </div>
                 <div class="modal-footer justify-content-center">

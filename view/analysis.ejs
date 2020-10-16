@@ -35,7 +35,7 @@
                                         <th>電郵</th>
                                         <th>最後一次登入</th>
                                         <% } %>
-                                        <th class="col-md-1 col-lg-1 col-sm-1">狀態</th>
+                                        <th class="col-md-1 col-lg-1 col-sm-1"></th>
                                     </tr>
                                     <tr>
                                 </thead>
@@ -53,17 +53,7 @@
                                         <td><%= data[i].user_email %></td>
                                         <td><%= data[i].last_login %></td>
                                         <% } %>
-                                        <% if (data[i].user_status === 1 ) { %>
-                                        <td><a class="btn btn-success user_activation"
-                                                id="user_activation_<%= data[i].user_id%>"
-                                                data-button_id="<%= data[i].user_id%>"
-                                                data-user_id="<%= data[i].user_id%>">激活中</a></td>
-                                        <% } else { %>
-                                        <td><a class="btn btn-primary user_activation"
-                                                id="user_activation_<%= data[i].user_id%>"
-                                                data-button_id="<%= data[i].user_id%>"
-                                                data-user_id="<%= data[i].user_id%>">凍結中</a></td>
-                                        <% } %>
+                                        <td><a class="btn btn-danger" href="/api/analysis/<%= data[i].user_id%>"">分析報告</a></td>
                                     </tr>
                                     <% } %>
                                     <% } %>

@@ -34,6 +34,7 @@ const mobile = require('./route/admin/mobile');
 const admin = require('./route/admin/admin');
 const album = require('./route/admin/album');
 const world = require('./route/admin/world');
+const analysis = require('./route/admin/analysis');
 
 const mobile_auth = require('./route/mobile_user/mobile_auth');
 const m_company = require('./route/mobile_user/company');
@@ -69,7 +70,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         //maxAge: 365 * 24 * 60 * 60 * 1000
-        maxAge: 24 * 60 * 60 * 1000 //Year
+        maxAge: 8 * 60 * 60 * 1000
     }
 }))
 
@@ -156,6 +157,7 @@ app.use('/api/mobile', mobile);
 app.use('/api/admin', admin);
 app.use('/api/album', album);
 app.use('/api/world', world);
+app.use('/api/analysis', analysis);
 
 var port = process.env.PORT || 3000
 app.listen(3000, () => console.log(`Listening to Port : ${port} ... `));

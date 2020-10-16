@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <button id='paymentResult'>Send post message from web</button>
+    <script>
+        var button = document.getElementById('paymentResult');
+        button.addEventListener('click', function() {
+            document.getElementById('paymentResult').innerText = "Text Change";
+            window.postMessage("Hello From Express JS Backend ! ", "*");
+        })
+
+        /*function passingMessage() {
+            event.preventDefault();
+            if (window.postMessage.length !== 1) {
+                setTimeout(passingMessage, 200);
+            } else {
+                console.log('Heyyy')
+                window.postMessage("Hello From Express JS Backend ! ", "*");
+            }
+        }*/
+
+    </script>
+</body>
+
+</html>

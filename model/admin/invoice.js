@@ -17,9 +17,8 @@ exports.invoice_display_list = (company_id, page_info) => {
         .then(([rows, field]) => {
             number_of_rows = rows[0].total_order;
             number_of_pages = Math.ceil(number_of_rows / number_per_page);
-            return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, 
-                               DATE_FORMAT(created_date, '%D %M %Y %H:%i:%s') AS created_date FROM orderdb.order
-                               WHERE company_id = ? AND order_status <> 0 LIMIT ${limit}`, [company_id])
+            return connection.query(`SELECT order_id, merchant_trade_number, order_total_item, order_final_price, order_status, DATE_FORMAT(created_date, '%D %M %Y %H:%i:%s') AS created_date FROM orderdb.order
+                                     WHERE company_id = ? AND order_status <> 0 LIMIT ${limit}`, [company_id])
         })
         .then(([rows, field]) => {
             result = {
@@ -79,7 +78,7 @@ exports.invoice_update = (order_id, order_info) => {
             if (result[0].info.match('Changed: 1') && current_status === 1)
                 return connection.query(`SELECT product_id, quantity FROM orderdb.order_product WHERE order_id = ?`, [order_id]);
             else if (result[0].info.match('Changed: 1'))
-                return (`訂單序號 ${order_id} 更新完成`);
+                return (`訂單更新完成`);
             else throw new Error(`訂單狀態無法變更`)
         })
         .then(([rows, field]) => {
@@ -89,7 +88,7 @@ exports.invoice_update = (order_id, order_info) => {
                         // Update continue ...
                     })
             }
-            return (`訂單序號 ${order_id} 更新完成`);
+            return (`訂單更新完成`);
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);

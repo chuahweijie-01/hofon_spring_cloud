@@ -19,3 +19,23 @@ exports.generateOrder = (order_id) => {
             connection.release()
         })
 }
+
+exports.merchantTradeNoUpdate = (orderId, paymentDate, tradeDate, merchantTradeNo, tradeNo) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`UPDATE orderdb.order SET payment_date = ?, trade_date = ?, merchant_trade_number = ?, trade_number = ? WHERE order_id = ?`,
+                                    [paymentDate, tradeDate, merchantTradeNo, tradeNo, orderId])
+        })
+        .then((result) => {
+            return (result)
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR : ${err}`);
+            throw new Error(err);
+        })
+        .finally(() => {
+            connection.release()
+        })
+}
