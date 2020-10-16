@@ -73,8 +73,7 @@ exports.award_display_list = (company_id, page_info) => {
                                              FROM productdb.award AS award
                                              LEFT JOIN productdb.product_award AS product_award ON award.award_id = product_award.award_id
                                              LEFT JOIN productdb.product AS product ON product_award.product_id = product.product_id
-                                             WHERE product.company_id = ? GROUP BY award.award_name
-                                             LIMIT ${limit}`, [company_id])
+                                             WHERE product.company_id = ? GROUP BY award.award_name LIMIT ${limit}`, [company_id])
                 })
                 .then(([rows, field]) => {
                     result = {

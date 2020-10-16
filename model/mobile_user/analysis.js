@@ -49,9 +49,12 @@ exports.insertAnalysisData = () => {
             //Wrinkle info { analysis_id: analysis_id, wrinkle_result: wrinkle_result, image:  wrinkle_image }
             if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.wrinkle SET ?`, [wrinkle_info])
         })
+        .then((result) => {
+            if (result[0].affectedRows === 1) return (`所有資料已輸入完畢`);
+        })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error(err.message);
+            throw new Error(analysis_id); //If insertion failed, then return id and perform delete to remove all data (Conceptual)
         })
         .finally(() => {
             connection.release();
