@@ -27,7 +27,7 @@
                                         <th>單號</th>
                                         <th>產品總數</th>
                                         <th>總額</th>
-                                        <th>訂單日期</th>
+                                        <th>完成日期</th>
                                         <th class="col-md-1 col-sm-1">狀態</th>
                                         <th class="col-md-1 col-sm-1"></th>
                                     </tr>
@@ -39,10 +39,10 @@
                                     <% for (var i=0; i< data.length; i++) { %>
                                     <tr>
                                         <td><%= i + 1; %></td>
-                                        <td><%= data[i].merchant_trade_number, %></td>
+                                        <td><%= data[i].order_id %></td>
                                         <td><%= data[i].order_total_item %></td>
                                         <td><%= data[i].order_final_price %></td>
-                                        <td><%= data[i].created_date %></td>
+                                        <td><%= data[i].last_update %></td>
                                         <% if (data[i].order_status === 1 ) { %>
                                         <td>
                                             <div class="btn btn-complete">交易已完成</div>

@@ -1,7 +1,10 @@
 const order_model = require('../../model/mobile_user/order');
+const getDateTime = require('../../middleware/middlewares');
+const cryptoRandomString = require('crypto-random-string');
 
 exports.create_order = (req, res) => {
     var order_info = {
+        order_id: getDateTime.currentDateTime().MerchantTradeNo + cryptoRandomString({length: 6, type: 'distinguishable'}),
         user_id: req.session.user,
         company_id: req.session.company,
     }

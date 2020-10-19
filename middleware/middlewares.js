@@ -49,3 +49,23 @@ exports.loginFormValidate = [
         } else return next();
     }
 ]
+
+exports.currentDateTime = () => {
+    let date_ob = new Date();
+    let date = ("0" + date_ob.getDate()).slice(-2);
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+    let year = date_ob.getFullYear();
+    let hours = ("0" + date_ob.getHours()).slice(-2);
+    let minutes = ("0" + date_ob.getMinutes()).slice(-2);
+    let seconds = ("0" + date_ob.getSeconds()).slice(-2);
+
+    var MerchantTradeDate = `${year}/${month}/${date} ${hours}:${minutes}:${seconds}`;
+    var MerchantTradeNo = `${year}${month}${date}${hours}${minutes}${seconds}`;
+
+    currentDateTimeFormat = {
+        MerchantTradeDate: MerchantTradeDate,
+        MerchantTradeNo: MerchantTradeNo
+    }
+
+    return currentDateTimeFormat;
+}

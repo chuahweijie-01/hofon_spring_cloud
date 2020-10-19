@@ -1,56 +1,28 @@
 const connectionPool = require('../../conf/db');
 
-exports.insertAnalysisData = () => {
-    var connection, analysis_id;
+exports.insertAnalysisData = (analysisInfo, analysisDetails) => {
+    var connection, analysisId;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            //General info { user_id: user_id, analysis_date: analysis_date }
-            return connection.query(`INSERT INTO analysisdb.analysis SET ?`, [analysis_info])
+            //General info { user_id: user_id, company_id: company_id, analysis_date: analysis_date }
+            return connection.query(`INSERT INTO analysisdb.analysis SET ?`, [analysisInfo])
         })
         .then((result) => {
-            analysis_id = result[0].insertId;
-            //Acne info { analysis_id: analysis_id, acne_result: acne_result, image: acne_image }
-            if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.acne SET ?`, [acne_info])
+            if (result[0].affectedRows === 1) {
+                analysisId = result[0].insertId;
+                for (var array in analysisDetails)
+                    analysisDetails[array].unshift(analysisId);
+                return connection.query(`INSERT INTO analysisdb.analysis_details (analysis_id, model_id, score, image_path) VALUES ?`, [analysisDetails])
+            } else {
+                throw new Error(`資料新增失敗`)
+            }
+
         })
         .then((result) => {
-            //Deepspot info { analysis_id: analysis_id, deepspot_result: deepspot_result, image: deepspot_image }
-            if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.deepspot SET ?`, [deepspot_info])
-        })
-        .then((result) => {
-            //Dark circles info { analysis_id: analysis_id, dark_circles_result: dark_circles_result, image: dark_circles_image }
-            if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.dark_circles SET ?`, [dark_circles_info])
-        })
-        .then((result) => {
-            //Brownspot info { analysis_id: analysis_id, brownspot_result: brownspot_result, image: brownspot_image }
-            if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.brownspot SET ?`, [brownspot_info])
-        })
-        .then((result) => {
-            //Grain info { analysis_id: analysis_id, grain_result: grain_result, image: grain_image }
-            if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.grain SET ?`, [grain_info])
-        })
-        .then((result) => {
-            //Horny info { analysis_id: analysis_id, horny_result: horny_result, image: horny_image }
-            if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.horny SET ?`, [horny_info])
-        })
-        .then((result) => {
-            //Pore info { analysis_id: analysis_id, pore_result: pore_result, image: pore_image }
-            if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.pore SET ?`, [pore_info])
-        })
-        .then((result) => {
-            //Sensitive info { analysis_id: analysis_id, sensitive_result: sensitive_result, image: sensitive_image }
-            if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.sensitive SET ?`, [sensitive_info])
-        })
-        .then((result) => {
-            //Whitening info { analysis_id: analysis_id, whitening_result: whitening_result, image: whitening_image }
-            if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.whitening SET ?`, [whitening_info])
-        })
-        .then((result) => {
-            //Wrinkle info { analysis_id: analysis_id, wrinkle_result: wrinkle_result, image:  wrinkle_image }
-            if (result[0].affectedRows === 1) return connection.query(`INSERT INTO analysisdb.wrinkle SET ?`, [wrinkle_info])
-        })
-        .then((result) => {
-            if (result[0].affectedRows === 1) return (`所有資料已輸入完畢`);
+            if (result[0].affectedRows >= 1)
+                return result;
+            else throw new Error(`項目新增失敗`)
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);

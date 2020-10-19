@@ -7,16 +7,8 @@ exports.create_order = (order_info, product_info) => {
             connection = connect;
             return connection.query(`INSERT INTO orderdb.order SET ?`, [order_info]);
         })
-
-        /*
-        (`INSERT INTO orderdb.order_product(order_id, product_id, quantity, nett_price, discount_price, total_price)
-        SELECT ?,?,?, product.product_member_price, IFNULL(product_with_discount.discount_price, nett_price), (discount_price * ?)
-        FROM productdb.product AS product
-        JOIN productdb.product_with_discount AS product_with_discount ON product_with_discount.product_id = product.product_id
-        WHERE product.product_id = ?`, [order_id, product_info[i].product_id, product_info[i].quantity, product_info[i].quantity, product_info[i].product_id])
-        */
         .then((result) => {
-            order_id = result[0].insertId;
+            order_id = order_info.order_id;
             for (var i = 0; i < product_info.length; i++) {
                 connection.query(`INSERT INTO orderdb.order_product(order_id, product_id, quantity, nett_price, discount_price, total_price)
                                   SELECT ?,?,?, product.product_member_price, IFNULL(product_with_discount.discount_price, product.product_member_price), IFNULL(product_with_discount.discount_price * ?, product.product_member_price * ?)
@@ -46,7 +38,7 @@ exports.order_list = (company_id, user_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, DATE_FORMAT(created_date, '%D %M %Y %H:%i:%s') AS created_date
+            return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, DATE_FORMAT(trade_date, '%D %c %Y %H:%i:%s') AS trade_date
                                      FROM orderdb.order WHERE company_id = ? AND user_id = ?  AND (order_status = 0 OR order_status = 1)`, [company_id, user_id])
         })
         .then(([rows, field]) => {

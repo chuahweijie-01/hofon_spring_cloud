@@ -55,9 +55,10 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-6 invoice-details">
-                                            <h1 class="invoice-id">訂單序號</h1>
-                                                <h2 class="invoice-id"><%= data[0].merchant_trade_number%></h2>
-                                            <div class="date">日期 : <%= data[0].created_date%> </div>
+                                            <h1 class="invoice-id">序號</h1>
+                                                <h2 class="invoice-id"><%= data[0].order_id%></h2>
+                                            <div class="date">生成日期 : <%= data[0].trade_date%> </div>
+                                            <div class="date">結賬日期 : <%= data[0].payment_date%> </div>
                                             <% if (data[0].order_status === 1) { %>
                                             <div class="date">完成日期 : <%= data[0].last_update%> </div>
                                             <% } %>

@@ -7,20 +7,18 @@ exports.analysis_report_list = (page_info, company_id) => {
     var page = parseInt(page_info.page, 10) || 1;
     var skip = (page - 1) * number_per_page;
     var limit = `${skip} , ${number_per_page}`;
-    var query;
 
     return connectionPool.getConnection()
         .then((connection) => {
-            return connection.query(`SELECT COUNT(*) AS total_user FROM userdb.user`)
+            return connection.query(`SELECT COUNT(*) AS analysisTotal FROM analysisdb.analysis`)
                 .then(([rows, field]) => {
-                    number_of_rows = rows[0].total_admin;
+                    number_of_rows = rows[0].analysisTotal;
                     number_of_pages = Math.ceil(number_of_rows / number_per_page);
-                    query = `SELECT user.user_id, user.user_email, user.user_name, user.user_gender, user_status,
-                             DATE_FORMAT(user.last_login, '%D %M %Y %H:%i:%s') AS last_login FROM userdb.user AS user
-                             JOIN userdb.user_company AS user_company ON user.user_id = user_company.user_id 
-                             WHERE user_company.company_id = ${company_id} LIMIT ${limit}`;
-
-                    return connection.query(query)
+                    return connection.query(`SELECT analysis.analysis_id, user.user_name, user.user_gender, COUNT(*) AS total_method,
+                                             DATE_FORMAT(analysis.created_date, '%D %c %Y %H:%i:%s') AS created_date FROM analysisdb.analysis AS analysis
+                                             JOIN analysisdb.analysis_details AS analysis_details ON analysis.analysis_id = analysis_details.analysis_id
+                                             JOIN userdb.user AS user ON analysis.user_id = user.user_id
+                                             WHERE analysis.company_id = ? GROUP BY analysis.analysis_id LIMIT ${limit}`, [company_id]);
                 })
                 .then(([rows, field]) => {
                     result = {

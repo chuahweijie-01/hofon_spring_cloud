@@ -2,25 +2,40 @@
 <html lang="en">
 
 <body>
-    <button id='paymentResult'>Send post message from web</button>
-    <script>
-        var button = document.getElementById('paymentResult');
-        button.addEventListener('click', function() {
-            document.getElementById('paymentResult').innerText = "Text Change";
-            window.postMessage("Hello From Express JS Backend ! ", "*");
-        })
+    <button id='paymentResult' value="<%= paymentResult%>">Send post message from web</button>
+    <div>Payment Result is : <%= paymentResult%></div>
+    <div>Post message log</div>
 
-        /*function passingMessage() {
+    <textarea style="height: 50%; width: 100%;" rows="10" readonly></textarea>
+
+    <!--<script>
+        var log = document.querySelector("textarea");
+        var button = document.getElementById('paymentResult');
+
+        document.querySelector("button").onclick = function () {
+            //passingMessage();
+        }
+        window.addEventListener("message", function (event) {
+            console.log("Received post message", event);
+            logMessage(event.data);
+        }, false);
+
+        function logMessage(message) {
+            log.append((new Date()) + " " + message + "\n");
+        }
+
+        function passingMessage() {
             event.preventDefault();
             if (window.postMessage.length !== 1) {
                 setTimeout(passingMessage, 200);
             } else {
-                console.log('Heyyy')
+                console.log("Send post message");
+                logMessage("Sending post message from web..");
                 window.postMessage("Hello From Express JS Backend ! ", "*");
             }
-        }*/
+        }
 
-    </script>
+    </script>-->
 </body>
 
 </html>

@@ -11,7 +11,7 @@
                     <%- include('partial/flash')-%>
                     <div class="panel panel-default">
                         <div class="panel-heading main-color-bg">
-                            <h3 class="panel-title">訂單序號 : <%= data[0].merchant_trade_number%> </h3>
+                            <h3 class="panel-title">序號 : <%= data[0].order_id%> </h3>
                         </div>
                         <div class="toolbar hidden-print">
                             <div class="row">
@@ -37,7 +37,7 @@
                                 <div style="min-width: 600px">
                                     <header>
                                         <div class="form-class company-details">
-                                            <h1 class="name" style="padding-bottom: 10px;">訂單明細</h1>    
+                                            <h1 class="name" style="padding-bottom: 10px;">訂單發票</h1>    
                                             <h2 class="name">
                                                     <a target="_blank" style="color: #c0392b;" href="https://sites.google.com/view/hofonspringcorp/english"> <%= data[0].company_name%></a>
                                                 </h2>
@@ -47,7 +47,7 @@
                                     </header>
                                     <main>
                                         <div class="row contacts">
-                                            <div class="col-sm-6 invoice-to">
+                                            <div class="col-sm-4 invoice-to">
                                                 <div class="text-gray-light">INVOICE TO:</div>
                                                 <h2 class="to">
                                                     <%= data[0].user_name%>
@@ -63,19 +63,13 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6 invoice-details">
-                                                <h1 class="invoice-id">訂單序號</h1>
-                                                <h2 class="invoice-id"><%= data[0].merchant_trade_number%></h2>
-                                                <div class="date">生成日期 :
-                                                    <%= data[0].trade_date%>
-                                                </div>
-                                                <div class="date">結賬日期 :
-                                                    <%= data[0].payment_date%>
-                                                </div>
+                                            <div class="col-sm-8 invoice-details">
+                                                <h1 class="invoice-id">序號</h1>
+                                                <h2 class="invoice-id"><%= data[0].order_id%></h2>
+                                                <div class="date">生成日期 : <%= data[0].trade_date%> </div>
+                                                <div class="date">結賬日期 : <%= data[0].payment_date%> </div>
                                                 <% if (data[0].order_status === 1) { %>
-                                                <div class="date">完成日期 :
-                                                    <%= data[0].last_update%>
-                                                </div>
+                                                <div class="date">完成日期 : <%= data[0].last_update%> </div>
                                                 <% } %>
                                             </div>
                                         </div>
