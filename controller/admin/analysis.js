@@ -1,10 +1,6 @@
 const analysis_model = require('../../model/admin/analysis');
 
 exports.analysis_report_list = (req, res) => {
-    
-    var arrays = ['1', '2', '3', '4'];
-    console.log(arrays.includes('1'));
-
     analysis_model.analysis_report_list(req.query, req.session.company)
         .then((result) => {
             res.render('analysis', {

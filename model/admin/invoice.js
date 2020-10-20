@@ -75,6 +75,12 @@ exports.invoice_update = (order_id, order_info) => {
             return connection.query(`UPDATE orderdb.order SET order_status = ?, order_remarks = ? WHERE order_id = ?`, [order_info.order_status, order_info.order_remarks, order_id])
         })
         .then((result) => {
+            if (result[0].info.match('Changed: 1'))
+                return (`訂單更新完成`);
+            else throw new Error(`訂單狀態無法變更`)
+        })
+        /*
+        .then((result) => {
             if (result[0].info.match('Changed: 1') && current_status === 1)
                 return connection.query(`SELECT product_id, quantity FROM orderdb.order_product WHERE order_id = ?`, [order_id]);
             else if (result[0].info.match('Changed: 1'))
@@ -90,6 +96,7 @@ exports.invoice_update = (order_id, order_info) => {
             }
             return (`訂單更新完成`);
         })
+        */
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
             throw new Error(err.message);

@@ -61,11 +61,12 @@ exports.order_display = (order_id) => {
             return connection.query(`SELECT * FROM orderdb.order_full_information WHERE order_id = ? GROUP BY product_id`, [order_id])
         })
         .then(([rows, field]) => {
-            return rows;
+            if (rows.length) return rows;
+            else throw new Error(`該訂單已從資料庫中移除`)
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);
-            throw new Error(`系統暫時無法運行該功能`);
+            throw new Error(err.message);
         })
         .finally(() => {
             connection.release();

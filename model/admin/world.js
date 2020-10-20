@@ -58,7 +58,7 @@ exports.world_display_list = (page_info) => {
             number_of_pages = Math.ceil(number_of_rows / number_per_page);
             return connection.query(`SELECT country.country_id, country.country_name_chinese, country.country_name_english, country.country_code,
                                      COUNT(*) AS total_city FROM userdb.country AS country
-                                     LEFT JOIN userdb.city AS city ON country.country_id = city.country_id GROUP BY country.country_id ORDER BY country.country_code`)
+                                     LEFT JOIN userdb.city AS city ON country.country_id = city.country_id GROUP BY country.country_id ORDER BY country.country_code LIMIT ${limit}`)
         })
         .then(([rows, field]) => {
             result = {

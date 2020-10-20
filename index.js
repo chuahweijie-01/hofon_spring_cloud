@@ -35,6 +35,7 @@ const admin = require('./route/admin/admin');
 const album = require('./route/admin/album');
 const world = require('./route/admin/world');
 const analysis = require('./route/admin/analysis');
+const zone = require('./route/admin/zone');
 
 const mobile_auth = require('./route/mobile_user/mobile_auth');
 const m_company = require('./route/mobile_user/company');
@@ -158,6 +159,7 @@ app.use('/api/admin', admin);
 app.use('/api/album', album);
 app.use('/api/world', world);
 app.use('/api/analysis', analysis);
+app.use('/api/zone', zone);
 
 var port = process.env.PORT || 3000
 app.listen(3000, () => console.log(`Listening to Port : ${port} ... `));

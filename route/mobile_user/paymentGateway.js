@@ -6,9 +6,8 @@ router.use(express.static('./public/'));
 
 router.post('/resultInterface', paymentController.resultInterface);
 
-router.get('/notify', paymentController.notifyClient);
-router.get('/:id', paymentController.generateOrder);
+router.get('/:id/:company', paymentController.generateOrder);
 
-router.post('/result/:id', paymentController.paymentResult);
+router.post('/result/:id/:company', paymentController.paymentResult);
 
 module.exports = router;

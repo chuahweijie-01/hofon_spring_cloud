@@ -40,7 +40,10 @@ exports.order_display = (req, res) => {
             });
         })
         .catch((err) => {
-            res.status(404).send({ message: err.message })
+            res.render('mobile_order_view_not_found', {
+                title: "訂單瀏覽",
+                message: err.message
+            });
         })
 }
 

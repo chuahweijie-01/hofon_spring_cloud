@@ -71,17 +71,8 @@ exports.order_update = (order_id) => {
             return connection.query(`UPDATE orderdb.order SET order_status = IF(order_status = 0, 1, order_status) WHERE order_id = ?`, [order_id])
         })
         .then((result) => {
-            if (result[0].info.match('Changed: 1')) return connection.query(`SELECT product_id, quantity FROM orderdb.order_product WHERE order_id = ?`, [order_id]);
+            if (result[0].info.match('Changed: 1')) return (`訂單更新完成`);
             else throw new Error(`該訂單交易已是完成狀態`)
-        })
-        .then(([rows, field]) => {
-            for (var i = 0; i < rows.length; i++) {
-                connection.query(`UPDATE productdb.product SET product_stock = GREATEST(product_stock - ?, 0) WHERE product_id = ?`, [rows[i].quantity, rows[i].product_id])
-                    .then((result) => {
-                        // Update continue ...
-                    })
-            }
-            return (`訂單更新完成`);
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err}`);

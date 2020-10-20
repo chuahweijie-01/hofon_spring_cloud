@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 let baseParameter = {};
 let invoiceParameter = {};
 
-const initiateParameters = (orderId, totalPrice, cummulativeProduct, returnURL) => {
+const initiateParameters = (orderId, totalPrice, cummulativeProduct, returnURL, orderResultURL) => {
     baseParameter = {
         MerchantTradeNo: orderId,
         MerchantTradeDate: getDateTime.currentDateTime().MerchantTradeDate,
@@ -14,12 +14,13 @@ const initiateParameters = (orderId, totalPrice, cummulativeProduct, returnURL) 
         TradeDesc: '交易描述',
         ItemName: cummulativeProduct,
         ReturnURL: returnURL,
-        OrderResultURL: 'https://bb5e0d1be023.ngrok.io/mobile/api/payment/resultInterface'
+        OrderResultURL: orderResultURL
     }
 }
 
 exports.generateOrder = (req, res) => {
     var orderId = req.params.id;
+    var companyId = req.params.company;
     paymentModel.generateOrder(orderId)
         .then((result) => {
             var cummulativeProduct = '';
@@ -29,8 +30,9 @@ exports.generateOrder = (req, res) => {
             }
 
             var totalPrice = (Math.round(result[0].order_final_price)).toString();
-            var returnURL = `https://bb5e0d1be023.ngrok.io/mobile/api/payment/result/${req.params.id}`
-            initiateParameters(orderId, totalPrice, cummulativeProduct, returnURL);
+            var returnURL = `${process.env.NGROK_IP}/mobile/api/payment/result/${orderId}/${companyId}`;
+            var orderResultURL = `${process.env.NGROK_IP}/mobile/api/payment/resultInterface`;
+            initiateParameters(orderId, totalPrice, cummulativeProduct, returnURL, orderResultURL);
 
             let create = new ecpay_payment();
             let htm = create.payment_client.aio_check_out_all(parameters = baseParameter, invoice = invoiceParameter);
@@ -47,16 +49,51 @@ exports.paymentResult = (req, res) => {
     //TradeDate 訂單日期
     //MerchantTradeNo 廠商訂單編號
     //TradeNo 綠界金流訂單編號
-    console.log(req.body)
+    var orderId = req.body.MerchantTradeNo;
+    var orderAmount = req.body.TradeAmt;
+    var orderView = `${process.env.NGROK_IP}/mobile/api/order/${orderId}`;
     var paymentDate = req.body.PaymentDate;
     var tradeDate = req.body.TradeDate;
     var tradeNo = req.body.TradeNo;
 
-    //req.session.returnCode = req.body.RtnCode;
-
     paymentModel.merchantTradeNoUpdate(req.params.id, paymentDate, tradeDate, tradeNo)
         .then((result) => {
-            console.log(result[0].info);
+            return paymentModel.getCompanyEmail(req.params.company);
+        })
+        .then((result) => {
+
+            const transporter = nodemailer.createTransport({
+                service: 'Gmail',
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.EMAIL_PASSWORD
+                }
+            })
+
+            const options = {
+                from: '雲端商城小助手 <hscserverbot-noreply@gmail.com>',
+                to: result[0].company_email,
+                subject: '[雲端商城] 訂單通知',
+                html: 
+                `
+                <p>親愛的管理者你好：</p>
+                <p>系統偵測到新的訂單，請儘快查閲。</p>
+                <hr>
+                <p>訂單序號：${orderId}</p>
+                <p>訂單總額：NT$ ${orderAmount}</p>
+                <a href="${orderView}">查看訂單詳情</a>
+                <br><br><br><br><br><br><br><hr>
+                
+                <p>此信件為系統通知信，請勿直接回復。</p>
+                `
+            }
+
+            transporter.sendMail(options, (err, info) => {
+                if (err)
+                    console.log(err.message);
+                else
+                    console.log(`郵件已發送`);
+            })
         })
         .catch((err) => {
             console.log(err);
@@ -68,30 +105,5 @@ exports.resultInterface = (req, res) => {
     req.session.save(function (err) {
         res.render('paymentResult', { paymentResult: returnCode });
     })
-}
-
-const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: '',
-        pass: ''
-    }
-})
-
-const options = {
-    from: 'HSC Server Bot <hscserverbot-noreply@gmail.com>',
-    to: '',
-    subject: '你有一個新的訂單等待查閲',
-    html: '<h1>Hello</h1><p>Nice to meet you.</p>'
-}
-
-exports.notifyClient = (req, res) => {
-    transporter.sendMail(options, (error, info) => {
-        if (error)
-            res.status(404).send({ error: error.message });
-        else {
-            res.status(200).send({ message: 'SUCCESS' });
-        }
-
-    })
+    req.session.destroy();
 }

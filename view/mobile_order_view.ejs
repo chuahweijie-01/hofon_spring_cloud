@@ -42,7 +42,7 @@
                                 </header>
                                 <main>
                                     <div class="row contacts">
-                                        <div class="col-sm-6 invoice-to">
+                                        <div class="col-sm-4 invoice-to">
                                             <div class="text-gray-light">INVOICE TO:</div>
                                             <h2 class="to"> <%= data[0].user_name%> </h2>
                                             <div class="address">
@@ -54,7 +54,7 @@
                                                 <a href="mailto:<%= data[0].user_email%>"> <%= data[0].user_email%> </a>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6 invoice-details">
+                                        <div class="col-sm-8 invoice-details">
                                             <h1 class="invoice-id">序號</h1>
                                                 <h2 class="invoice-id"><%= data[0].order_id%></h2>
                                             <div class="date">生成日期 : <%= data[0].trade_date%> </div>

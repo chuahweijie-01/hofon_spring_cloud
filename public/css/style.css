@@ -841,3 +841,32 @@ textarea {
 .btn-other:hover {
     color: #0275d8;
 }
+
+.pageNotFound-confirm .icon-box {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    border-radius: 50%;
+    z-index: 9;
+    text-align: center;
+    border: 3px solid #f15e5e;
+}
+
+.pageNotFound-confirm .icon-box i {
+    color: #f15e5e;
+    font-size: 46px;
+    display: inline-block;
+    margin-top: 13px;
+}
+
+.pageNotFound main {
+    padding-bottom: 350px
+}
+
+.pageNotFound footer {
+    width: 100%;
+    text-align: center;
+    color: #777;
+    border-top: 1px solid #aaa;
+    padding: 8px 0
+}
