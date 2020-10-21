@@ -15,7 +15,7 @@ exports.analysis_report_list = (page_info, company_id) => {
                     number_of_rows = rows[0].analysisTotal;
                     number_of_pages = Math.ceil(number_of_rows / number_per_page);
                     return connection.query(`SELECT analysis.analysis_id, user.user_name, user.user_gender, COUNT(*) AS total_method,
-                                             DATE_FORMAT(analysis.created_date, '%D %c %Y %H:%i:%s') AS created_date FROM analysisdb.analysis AS analysis
+                                             DATE_FORMAT(analysis.created_date, '%d-%c-%Y %H:%i:%s') AS created_date FROM analysisdb.analysis AS analysis
                                              JOIN analysisdb.analysis_details AS analysis_details ON analysis.analysis_id = analysis_details.analysis_id
                                              JOIN userdb.user AS user ON analysis.user_id = user.user_id
                                              WHERE analysis.company_id = ? GROUP BY analysis.analysis_id LIMIT ${limit}`, [company_id]);

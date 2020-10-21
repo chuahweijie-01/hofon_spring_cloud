@@ -69,7 +69,7 @@ exports.award_display_list = (company_id, page_info) => {
                     number_of_rows = rows[0].total_product;
                     number_of_pages = Math.ceil(number_of_rows / number_per_page);
                     return connection.query(`SELECT COUNT(*) AS total_award, award.award_id, award.award_name,
-                                             DATE_FORMAT(award.last_update, '%D %M %Y %H:%i:%s') AS last_update
+                                             DATE_FORMAT(award.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
                                              FROM productdb.award AS award
                                              LEFT JOIN productdb.product_award AS product_award ON award.award_id = product_award.award_id
                                              LEFT JOIN productdb.product AS product ON product_award.product_id = product.product_id

@@ -99,7 +99,7 @@ exports.product_list = (company_id, page_info) => {
             number_of_rows = rows[0].total_product;
             number_of_pages = Math.ceil(number_of_rows / number_per_page);
             return connection.query(`SELECT product.product_id, product.product_name, product.product_stock, product.product_status, category.category_id, category.category_name, 
-                                     DATE_FORMAT(product.last_update, '%D %M %Y %H:%i:%s') AS last_update
+                                     DATE_FORMAT(product.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
                                      FROM productdb.product AS product
                                      JOIN productdb.category AS category ON product.category_id = category.category_id
                                      JOIN companydb.company AS company ON product.company_id = company.company_id

@@ -19,7 +19,7 @@ exports.album_display_list = (company_id, page_info) => {
                     number_of_rows = rows[0].total_image;
                     number_of_pages = Math.ceil(number_of_rows / number_per_page);
                     return connection.query(`SELECT image.image_id, image.image_path,
-                                             DATE_FORMAT(image.created_date, '%D %M %Y') AS created_date FROM companydb.image AS image
+                                             DATE_FORMAT(image.created_date, '%d-%c-%Y') AS created_date FROM companydb.image AS image
                                              JOIN companydb.company AS company ON image.company_id = company.company_id
                                              WHERE company.company_id = ? ORDER BY image.image_id LIMIT ${limit}`, [company_id])
                 })

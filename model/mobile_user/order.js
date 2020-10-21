@@ -38,7 +38,7 @@ exports.order_list = (company_id, user_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, DATE_FORMAT(trade_date, '%D %c %Y %H:%i:%s') AS trade_date
+            return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, DATE_FORMAT(trade_date, '%d-%c-%Y %H:%i:%s') AS trade_date
                                      FROM orderdb.order WHERE company_id = ? AND user_id = ?  AND (order_status = 0 OR order_status = 1)`, [company_id, user_id])
         })
         .then(([rows, field]) => {
@@ -78,7 +78,7 @@ exports.order_review = (order_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT address_detail, city_name, country_name_chinese, order_total_price, order_tax, order_final_price,
+            return connection.query(`SELECT address_detail, city_name, country_name_chinese, order_total_price, order_tax, order_final_price, order_zone_charge,
                                      product_name, image_path, discount_price, quantity, total_price
                                      FROM orderdb.order_full_information WHERE order_id = ?`, [order_id])
         })
@@ -129,7 +129,24 @@ exports.update_order_address = (order_address, user_id) => {
             else throw new Error(`訂單地址添加失敗`);
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return (`訂單地址已添加`)
+            if (result[0].affectedRows >= 1)
+                return connection.query(`SELECT zone.zone_charge FROM orderdb.order AS orderr
+                                         JOIN orderdb.order_address AS order_address ON orderr.order_id = order_address.order_id
+                                         JOIN userdb.address AS address ON order_address.address_id = address.address_id
+                                         JOIN userdb.city AS city ON address.city_id = city.city_id
+                                         JOIN companydb.zone_city AS zone_city ON city.city_id = zone_city.city_id
+                                         JOIN companydb.zone AS zone ON zone_city.zone_id = zone.zone_id WHERE orderr.order_id = ?`, [order_address.order_id])
+            else throw new Error(`訂單地址添加失敗`)
+        })
+        .then(([rows, field]) => {
+            var zoneCharge;
+            if(rows.length) zoneCharge= rows[0].zone_charge;
+            else zoneCharge = 0;
+            return connection.query(`UPDATE orderdb.order SET order_zone_charge = ?, order_final_price = order_final_price + order_zone_charge WHERE order_id = ?`,
+                                    [zoneCharge, order_address.order_id])
+        })
+        .then((result) => {
+            if (result[0].info.match('Changed: 1')) return (`訂單更新完成`);
             else throw new Error(`訂單地址添加失敗`)
         })
         .catch((err) => {

@@ -17,7 +17,7 @@ exports.invoice_display_list = (company_id, page_info) => {
         .then(([rows, field]) => {
             number_of_rows = rows[0].total_order;
             number_of_pages = Math.ceil(number_of_rows / number_per_page);
-            return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, DATE_FORMAT(last_update, '%D %c %Y %H:%i:%s') AS last_update FROM orderdb.order
+            return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, DATE_FORMAT(last_update, '%d-%c-%Y %H:%i:%s') AS last_update FROM orderdb.order
                                      WHERE company_id = ? AND order_status <> 0 LIMIT ${limit}`, [company_id])
         })
         .then(([rows, field]) => {

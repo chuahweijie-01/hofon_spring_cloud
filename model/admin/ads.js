@@ -26,7 +26,7 @@ exports.ads_display_list = (company_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT advertisement_id, advertisement_name, DATE_FORMAT(last_update, '%D %M %Y %H:%i:%s') AS last_update
+            return connection.query(`SELECT advertisement_id, advertisement_name, DATE_FORMAT(last_update, '%d-%c-%Y %H:%i:%s') AS last_update
                                      FROM companydb.advertisement WHERE company_id = ?`, [company_id])
         })
         .then(([rows, field]) => {

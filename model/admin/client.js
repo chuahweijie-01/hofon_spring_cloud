@@ -104,11 +104,11 @@ exports.client_display_list = (role, company_id, page_info) => {
             number_of_pages = Math.ceil(number_of_rows / number_per_page);
             if (role == 1) {
                 query = `SELECT admin.admin_id, admin.admin_name, company.company_name, company.company_official_id,
-                         DATE_FORMAT(last_login, '%D %M %Y %H:%i:%s') AS last_login FROM companydb.admin AS admin
+                         DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login FROM companydb.admin AS admin
                          JOIN companydb.company AS company ON admin.company_id = company.company_id
                          WHERE admin_role = 0 LIMIT ${limit}`;
             } else {
-                query = `SELECT admin_id, admin_name, admin_email, DATE_FORMAT(last_login, '%D %M %Y %H:%i:%s') AS last_login
+                query = `SELECT admin_id, admin_name, admin_email, DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login
                          FROM companydb.admin WHERE company_id = ${company_id} LIMIT ${limit}`;
             }
             return connection.query(query)

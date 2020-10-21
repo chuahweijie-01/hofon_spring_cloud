@@ -92,7 +92,7 @@ exports.category_display_list = (page_info) => {
             number_of_rows = rows[0].total_product;
             number_of_pages = Math.ceil(number_of_rows / number_per_page);
             return connection.query(`SELECT COUNT(*) AS total_company, company_category.category_id, category.category_name,
-                                     DATE_FORMAT(category.last_update, '%D %M %Y %H:%i:%s') AS last_update
+                                     DATE_FORMAT(category.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
                                      FROM companydb.company_category AS company_category
                                      JOIN productdb.category AS category ON company_category.category_id = category.category_id
                                      GROUP BY category.category_name LIMIT ${limit}`)

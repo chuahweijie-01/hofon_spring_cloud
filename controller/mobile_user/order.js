@@ -12,6 +12,8 @@ exports.create_order = (req, res) => {
     var alpha_json_array = req.body;
     var product_info = (Object.keys(alpha_json_array).map(function (k) { return alpha_json_array[k]; }));
 
+    console.log(product_info);
+
     order_model.create_order(order_info, product_info[0])
         .then((result) => {
             res.status(200).send({ order_id: result, this_is_what_you_sent: product_info[0] });

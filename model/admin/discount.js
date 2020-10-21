@@ -46,7 +46,7 @@ exports.discount_display_list = (company_id, page_info) => {
             number_of_rows = rows[0].total_discount;
             number_of_pages = Math.ceil(number_of_rows / number_per_page);
             return connection.query(`SELECT discount.discount_id, discount.discount_name, discount.discount_percent, COUNT(*) AS total_product,
-                                     DATE_FORMAT(discount.created_date, '%D %M %Y %H:%i:%s') AS created_date
+                                     DATE_FORMAT(discount.created_date, '%d-%c-%Y %H:%i:%s') AS created_date
                                      FROM productdb.discount AS discount
                                      JOIN productdb.product_discount AS product_discount ON discount.discount_id = product_discount.discount_id
                                      JOIN productdb.product AS product ON product_discount.product_id = product.product_id
@@ -85,7 +85,7 @@ exports.product_list = (company_id) => {
                                      FROM productdb.product AS product
                                      LEFT JOIN productdb.product_discount AS product_discount ON product.product_id = product_discount.product_id
                                      LEFT JOIN productdb.discount AS discount ON product_discount.discount_id = discount.discount_id
-                                     WHERE product.company_id = ? AND product.product_status = 1`, [company_id])
+                                     WHERE product.company_id = ? AND product.product_status = 1 ORDER BY discount.discount_id`, [company_id])
         })
         .then(([rows, field]) => {
             return (rows);

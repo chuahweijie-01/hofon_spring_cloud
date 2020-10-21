@@ -17,7 +17,7 @@ exports.order_display_list = (company_id, page_info) => {
         .then(([rows, field]) => {
             number_of_rows = rows[0].total_order;
             number_of_pages = Math.ceil(number_of_rows / number_per_page);
-            return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, DATE_FORMAT(trade_date, '%D %c %Y %H:%i:%s') AS trade_date
+            return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, DATE_FORMAT(trade_date, '%d-%c-%Y %H:%i:%s') AS trade_date
                                      FROM orderdb.order WHERE company_id = ? AND order_status = 0 LIMIT ${limit}`, [company_id])
         })
         .then(([rows, field]) => {
