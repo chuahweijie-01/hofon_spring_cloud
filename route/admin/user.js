@@ -7,9 +7,9 @@ router.use(express.static('./public/'));
 
 router.use(privilegesValidation.privilegesCheck("4"));
 
-router.get('/', user_controller.user_display_list);
+router.get('/', user_controller.getUserList);
 
-router.post('/:id/reactive', user_controller.user_reactivate);
-router.post('/:id/deactive', user_controller.user_deactivate);
+router.post('/:id/reactive', user_controller.reactivateUser);
+router.post('/:id/deactive', user_controller.deactivateUser);
 
 module.exports = router;

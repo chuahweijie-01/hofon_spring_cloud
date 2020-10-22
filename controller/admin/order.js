@@ -4,8 +4,8 @@ exports.order_create = (req, res) => {
 
 }
 
-exports.order_display = (req, res) => {
-    order_model.order_display(req.params.id, req.session.company)
+exports.getOrder = (req, res) => {
+    order_model.getOrder(req.params.id, req.session.company)
         .then((result) => {
             res.render('order_view', {
                 title: "訂單生成",
@@ -17,7 +17,7 @@ exports.order_display = (req, res) => {
         })
         .catch((err) => {
             req.flash(`flash`, {
-                msg: err, type: `error`
+                msg: err.message, type: `error`
             });
             req.session.save(function (err) {
                 res.redirect('/api/order');
@@ -25,8 +25,8 @@ exports.order_display = (req, res) => {
         })
 }
 
-exports.order_display_list = (req, res) => {
-    order_model.order_display_list(req.session.company, req.query)
+exports.getOrderList = (req, res) => {
+    order_model.getOrderList(req.session.company, req.query)
         .then((result) => {
             res.render('order', {
                 title: "訂單生成",
@@ -58,8 +58,8 @@ exports.order_new = (req, res) => {
 }
 
 
-exports.order_update = (req, res) => {
-    order_model.order_update(req.params.id)
+exports.updateOrder = (req, res) => {
+    order_model.updateOrder(req.params.id)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'

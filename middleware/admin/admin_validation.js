@@ -15,7 +15,7 @@ exports.admin_info_input = [
         }).withMessage('Password Not Matched'),
 
     (req, res, next) => {
-        req.session.admin_info = {
+        req.session.adminInput = {
             admin_email: req.body.admin_email,
             admin_name: req.body.admin_name
         };

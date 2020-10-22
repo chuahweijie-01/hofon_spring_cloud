@@ -1,6 +1,6 @@
 const award_model = require('../../model/admin/award')
 
-exports.award_create = (req, res) => {
+exports.addNewAward = (req, res) => {
 
     var product_id;
     Array.isArray(req.body.product_id) ? product_id = req.body.product_id : product_id = [req.body.product_id];
@@ -11,7 +11,7 @@ exports.award_create = (req, res) => {
         award_description: req.body.award_description
     }
 
-    award_model.award_create(award_info, product_id)
+    award_model.addNewAward(award_info, product_id)
         .then((result) => {
             req.flash(`flash`, {
                 msg: '注冊成功',
@@ -32,16 +32,16 @@ exports.award_create = (req, res) => {
         })
 }
 
-exports.award_display = (req, res) => {
+exports.getAward = (req, res) => {
     var product_info;
-    award_model.product_list(req.session.company)
+    award_model.getProductList(req.session.company)
         .then((product) => {
             product_info = product;
-            return award_model.award_display(req.params.id)
+            return award_model.getAward(req.params.id)
         })
         .then((award) => {
-            var award_info = req.session.award_info;
-            req.session.award_info = null;
+            var awardInput = req.session.awardInput;
+            req.session.awardInput = null;
             res.render('award_edit', {
                 title: "暢銷排行榜",
                 icon: '<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>',
@@ -50,7 +50,7 @@ exports.award_display = (req, res) => {
                 validation: req.flash(`validation`),
                 data: award,
                 product: product_info,
-                award_info: award_info
+                award_info: awardInput
             });
         })
         .catch((err) => {
@@ -64,8 +64,8 @@ exports.award_display = (req, res) => {
         })
 }
 
-exports.award_display_list = (req, res) => {
-    award_model.award_display_list(req.session.company, req.query)
+exports.getAwardList = (req, res) => {
+    award_model.getAwardList(req.session.company, req.query)
         .then((result) => {
             res.render('award', {
                 title: "暢銷排行榜",
@@ -89,10 +89,10 @@ exports.award_display_list = (req, res) => {
 }
 
 exports.award_new = (req, res) => {
-    award_model.product_list(req.session.company)
+    award_model.getProductList(req.session.company)
         .then((result) => {
-            var award_info = req.session.award_info;
-            req.session.award_info = null;
+            var awardInput = req.session.awardInput;
+            req.session.awardInput = null;
             res.render('award_add', {
                 title: "暢銷排行榜",
                 icon: '<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>',
@@ -100,7 +100,7 @@ exports.award_new = (req, res) => {
                 message: req.flash(`flash`),
                 validation: req.flash(`validation`),
                 data: result,
-                award_info: award_info
+                award_info: awardInput
             });
         })
         .catch((err) => {
@@ -115,7 +115,7 @@ exports.award_new = (req, res) => {
 }
 
 
-exports.award_update = (req, res) => {
+exports.updateAward = (req, res) => {
 
     var product_id;
     Array.isArray(req.body.product_id) ? product_id = req.body.product_id : product_id = [req.body.product_id];
@@ -125,7 +125,7 @@ exports.award_update = (req, res) => {
         award_description: req.body.award_description
     }
 
-    award_model.award_update(req.params.id, award_info, product_id)
+    award_model.updateAward(req.params.id, award_info, product_id)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result,
@@ -146,8 +146,8 @@ exports.award_update = (req, res) => {
         })
 }
 
-exports.award_delete = (req, res) => {
-    award_model.award_delete(req.params.id)
+exports.deleteAward = (req, res) => {
+    award_model.deleteAward(req.params.id)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result,

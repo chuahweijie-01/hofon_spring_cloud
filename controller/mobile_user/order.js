@@ -12,8 +12,6 @@ exports.create_order = (req, res) => {
     var alpha_json_array = req.body;
     var product_info = (Object.keys(alpha_json_array).map(function (k) { return alpha_json_array[k]; }));
 
-    console.log(product_info);
-
     order_model.create_order(order_info, product_info[0])
         .then((result) => {
             res.status(200).send({ order_id: result, this_is_what_you_sent: product_info[0] });
@@ -33,8 +31,8 @@ exports.order_list = (req, res) => {
         })
 }
 
-exports.order_display = (req, res) => {
-    order_model.order_display(req.params.id)
+exports.getOrder = (req, res) => {
+    order_model.getOrder(req.params.id)
         .then((result) => {
             res.render('mobile_order_view', {
                 title: "訂單瀏覽",
@@ -50,7 +48,7 @@ exports.order_display = (req, res) => {
 }
 
 exports.order_test = (req, res) => {
-    order_model.order_display(190, 29)
+    order_model.getOrder(190, 29)
         .then((result) => {
             res.render('mobile_order_view', {
                 title: "訂單瀏覽",
@@ -89,7 +87,7 @@ exports.update_order_address = (req, res) => {
         order_id: req.params.id,
         address_id: req.query.address
     }
-    order_model.update_order_address(order_address, req.session.user)
+    order_model.update_order_address(order_address, req.session.user, req.session.company)
         .then((result) => {
             res.status(200).send({ message: result });
         })

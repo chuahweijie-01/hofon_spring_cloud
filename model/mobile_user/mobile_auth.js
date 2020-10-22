@@ -38,7 +38,7 @@ exports.register = (user_info) => {
             return connection.query(`SELECT * FROM userdb.user WHERE user_email = ?`, [user_info.user_email]);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(`數據庫連接失敗`);
         })
         .then(([rows, field]) => {
@@ -50,7 +50,7 @@ exports.register = (user_info) => {
             else throw new Error(`資料新增失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {
@@ -70,7 +70,7 @@ exports.logout = (user_id) => {
             else throw new Error(`無法登出系統`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {

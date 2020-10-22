@@ -57,7 +57,7 @@ exports.album_add = (req, res) => {
     upload_image.upload_product_image(req, res, (err) => {
         if (err) {
             req.flash(`flash`, {
-                msg: err,
+                msg: err.message,
                 type: `error`
             });
             req.session.save(function (err) {
@@ -88,8 +88,8 @@ exports.album_add = (req, res) => {
     })
 }
 
-exports.album_image_delete = (req, res) => {
-    album_model.album_image_delete(req.params.id, req.session.company)
+exports.album_deleteProductImage = (req, res) => {
+    album_model.album_deleteProductImage(req.params.id, req.session.company)
         .then((result) => {
             try {
                 fs.unlinkSync(`public${result}`)

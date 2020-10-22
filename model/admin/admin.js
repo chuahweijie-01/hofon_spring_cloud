@@ -1,109 +1,112 @@
 const connectionPool = require('../../conf/db');
 
-exports.admin_create = (admin_info) => {
-    return connectionPool.getConnection()
-        .then((connection) => {
-            return connection.query(`SELECT * FROM companydb.admin WHERE admin_email = ? AND admin_role = 1`, [admin_info.admin_email])
-                .then(([rows, field]) => {
-                    if (rows.length) throw new Error(`該郵箱已存在，請使用新的郵箱註冊`);
-                    else return connection.query(`INSERT INTO companydb.admin SET ?`, [admin_info])
-                })
-                .then((result) => {
-                    if (result[0].affectedRows === 1) return (`${admin_info.admin_name} 註冊成功`);
-                    else throw new Error(`資料新增失敗`);
-                })
-                .finally(() => {
-                    connection.release();
-                })
-        }, err => {
-            console.error(`CATCH ERROR : ${err}`);
-            throw new Error(`資料新增失敗`);
-        })
-};
-
-exports.admin_display = (admin_id) => {
+exports.getAdmin = (adminId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM companydb.admin WHERE admin_id = ?`, [admin_id])
+            return connection.query(`SELECT * FROM companydb.admin WHERE admin_id = ?`, [adminId]);
         })
         .then(([rows, field]) => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
-            throw new Error(`系統暫時無法運行該功能`);
+            console.error(err);
+            throw new Error('系統暫時無法運行該功能');
         })
         .finally(() => {
             connection.release();
         })
 };
 
-exports.admin_display_list = (page_info) => {
+exports.getAdminList = (pageInfo) => {
     var connection;
-    var page_size = 10;
-    var number_of_rows, number_of_pages;
-    var number_per_page = parseInt(page_size, 10) || 1;
-    var page = parseInt(page_info.page, 10) || 1;
-    var skip = (page - 1) * number_per_page;
-    var limit = `${skip} , ${number_per_page}`;
+    var pageSize = 10;
+    var numberOfRows, numberOfPages;
+    var numberPerPage = parseInt(pageSize, 10) || 1;
+    var page = parseInt(pageInfo.page, 10) || 1;
+    var skip = (page - 1) * numberPerPage;
+    var limit = `${skip} , ${numberPerPage}`;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_admin FROM companydb.admin WHERE admin_role = 1`)
+            return connection.query(`SELECT COUNT(*) AS total_admin FROM companydb.admin WHERE admin_role = 1`);
         })
         .then(([rows, field]) => {
-            number_of_rows = rows[0].total_admin;
-            number_of_pages = Math.ceil(number_of_rows / number_per_page);
+            numberOfRows = rows[0].total_admin;
+            numberOfPages = Math.ceil(numberOfRows / numberPerPage);
             return connection.query(`SELECT admin_id, admin_name, DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login
-                                     FROM companydb.admin WHERE admin_role = 1 LIMIT ${limit}`)
+                                     FROM companydb.admin WHERE admin_role = 1 LIMIT ?`, [limit]);
         })
         .then(([rows, field]) => {
             result = {
                 rows: rows,
                 pagination: {
                     current: page,
-                    number_per_page: number_per_page,
+                    numberPerPage: numberPerPage,
                     has_previous: page > 1,
                     previous: page - 1,
-                    has_next: page < number_of_pages,
+                    has_next: page < numberOfPages,
                     next: page + 1,
-                    last_page: Math.ceil(number_of_rows / page_size)
+                    last_page: Math.ceil(numberOfRows / pageSize)
                 }
             }
             return (result);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
-            throw new Error(`系統暫時無法運行該功能`);
+            console.error(err);
+            throw new Error('系統暫時無法運行該功能');
         })
         .finally(() => {
             connection.release();
         })
 };
 
-exports.admin_update = (admin_id, admin_info) => {
+exports.addNewAdmin = (adminInfo) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`UPDATE companydb.admin SET ? WHERE admin_id = ?`, [admin_info, admin_id])
+            return connection.query(`SELECT * FROM companydb.admin WHERE admin_email = ? AND admin_role = 1`, [adminInfo.admin_email]);
+        })
+        .then(([rows, field]) => {
+            if (rows.length) throw new Error('該郵箱已存在，請使用新的郵箱註冊');
+            else return connection.query(`INSERT INTO companydb.admin SET ?`, [adminInfo]);
         })
         .then((result) => {
-            if (result[0].info.match('Changed: 1')) return (`${admin_info.admin_name} 資料更新成功`);
-            else return (`資料沒有異動`);
+            if (result[0].affectedRows === 1) return (`${adminInfo.admin_name} 註冊成功`);
+            else throw new Error('資料新增失敗');
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
-            throw new Error(`資料更新失敗`);
+            console.error(err);
+            throw new Error('資料新增失敗');
         })
         .finally(() => {
             connection.release();
         })
 };
 
-exports.admin_delete = (admin_id) => {
+exports.updateAdmin = (adminId, admin_info) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`UPDATE companydb.admin SET ? WHERE admin_id = ?`, [admin_info, adminId]);
+        })
+        .then((result) => {
+            if (result[0].info.match('Changed: 1')) return (`${admin_info.admin_name} 資料更新成功`);
+            else return ('資料沒有異動');
+        })
+        .catch((err) => {
+            console.error(err);
+            throw new Error('資料更新失敗');
+        })
+        .finally(() => {
+            connection.release();
+        })
+};
+
+exports.deleteAdmin = (adminId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -111,15 +114,15 @@ exports.admin_delete = (admin_id) => {
             return connection.query(`SELECT * FROM companydb.admin WHERE admin_role = 1`);
         })
         .then(([rows, field]) => {
-            if (rows.length <= 2) throw new Error(`該平臺需保留至少兩名以上的管理者`);
-            else return connection.query(`DELETE FROM companydb.admin WHERE admin_id = ?`, [admin_id])
+            if (rows.length <= 2) throw new Error('該平臺需保留至少兩名以上的管理者');
+            else return connection.query(`DELETE FROM companydb.admin WHERE admin_id = ?`, [adminId]);
         })
         .then((result) => {
-            if (result[0].affectedRows === 1) return (`資料刪除成功`);
-            else throw new Error(`資料刪除失敗`);
+            if (result[0].affectedRows === 1) return ('資料刪除成功');
+            else throw new Error('資料刪除失敗');
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err.message);
         })
         .finally(() => {

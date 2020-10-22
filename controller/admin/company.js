@@ -99,7 +99,7 @@ exports.company_create = (req, res) => {
 
     }
 
-    company_model.add_company(company_info).then((result) => {
+    company_model.addNewCompany(company_info).then((result) => {
         req.flash(`flash`, {
             msg: '接下來，請上傳 公司商標 以及 銀行存摺封面影本。', type: 'success'
         });
@@ -117,7 +117,7 @@ exports.company_create = (req, res) => {
 }
 
 exports.company_display = (req, res) => {
-    company_model.company(req.params.id).then((result) => {
+    company_model.getCompany(req.params.id).then((result) => {
 
         var company_edit_page;
         var company_info = req.session.company_info;
@@ -146,7 +146,7 @@ exports.company_display = (req, res) => {
 }
 
 exports.company_display_list = (req, res) => {
-    company_model.company_list(req.query).then((result) => {
+    company_model.getCompanyList(req.query).then((result) => {
         res.render('company', {
             title: "公司",
             icon: '<span class="glyphicon glyphicon-home" aria-hidden="true"></span>',
@@ -179,7 +179,7 @@ exports.company_new = (req, res) => {
     });
 }
 
-exports.company_update = (req, res) => {
+exports.updateCompany = (req, res) => {
 
     company_id = req.params.id;
     company_info = {}
@@ -220,7 +220,7 @@ exports.company_update = (req, res) => {
         }
     }
 
-    company_model.company_update(company_id, company_info).then((result) => {
+    company_model.updateCompany(company_id, company_info).then((result) => {
         req.flash(`flash`, {
             msg: result, type: 'success'
         });
@@ -237,7 +237,7 @@ exports.company_update = (req, res) => {
     })
 }
 
-exports.company_delete = (req, res) => {
+exports.deleteCompany = (req, res) => {
     if (req.params.id === '1') {
         req.flash(`flash`, {
             msg: `注意！此管理臺公司不可以被刪除。`, type: `error`
@@ -246,7 +246,7 @@ exports.company_delete = (req, res) => {
             res.redirect('/api/company');
         })
     } else {
-        company_model.company_delete(req.params.id)
+        company_model.deleteCompany(req.params.id)
             .then((result) => {
                 req.flash(`flash`, {
                     msg: result, type: 'success'
@@ -266,11 +266,11 @@ exports.company_delete = (req, res) => {
     }
 }
 
-exports.update_company_logo = (req, res) => {
+exports.updateCompanyLogo = (req, res) => {
     image_info = {
         company_logo: `/image/admin/${req.params.id}/${req.file.filename}`
     }
-    company_model.update_company_logo(image_info, req.params.id)
+    company_model.updateCompanyLogo(image_info, req.params.id)
         .then((result) => {
             try {
                 fs.unlinkSync(`public${result[0].company_logo}`)
@@ -295,11 +295,11 @@ exports.update_company_logo = (req, res) => {
         })
 }
 
-exports.update_company_bank_image = (req, res) => {
+exports.updateCompanyBankImage = (req, res) => {
     image_info = {
         company_bank_image: `/image/admin/${req.params.id}/${req.file.filename}`
     }
-    company_model.update_company_bank_image(image_info, req.params.id)
+    company_model.updateCompanyBankImage(image_info, req.params.id)
         .then((result) => {
             if (result[0].company_bank_image != null) {
                 try {

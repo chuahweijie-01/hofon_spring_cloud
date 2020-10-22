@@ -1,272 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('partial/header')-%>
-
 <body>
-  <section id="main">
-    <div class="container">
-      <div class="row">
-        <%- include('partial/sidemenu')-%>
-        <div class="col-md-9">
-          <%- include('partial/flash')-%>
-          <div class="panel panel-default">
-            <div class="panel-heading main-color-bg">
-              <h3 class="panel-title"><%= title%></h3>
-            </div>
-            <div class="panel-body">
-              <form action="/api/product/<%= data[0].product_id%>?_method=PUT" method='POST'>
-                <label style="font-size: 20px;"><%= title%>資料</label>
-
-                <div class="form-group">
-                  <label>名稱</label>
-
-                  <% if (validation.length > 0) { %>
-                  <% if (validation.find(element => element.param == "product_name")) { %>
-                  <div class="has-error">
-                    <input type="text" name="product_name" class="form-control" placeholder="請輸入產品名稱"
-                      value="<%= product_info.product_name %>">
-                    <span
-                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_name"))].msg; %></span>
-                  </div>
-                  <% } else { %>
-                  <input type="text" name="product_name" class="form-control" placeholder="請輸入產品名稱"
-                    value="<%= product_info.product_name %>">
-                  <% } %>
-                  <% } else { %>
-                  <input type="text" name="product_name" class="form-control" placeholder="請輸入產品名稱"
-                    value="<%= data[0].product_name%>">
-                  <% } %>
-
-                </div>
-
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label>建議售價</label>
-
-                    <% if (validation.length > 0) { %>
-                    <% if (validation.find(element => element.param == "product_price")) { %>
-                    <div class="has-error">
-                      <input type="text" name="product_price" class="form-control" placeholder="請輸入建議售價"
-                        value="<%= product_info.product_price %>">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_price"))].msg; %></span>
-                    </div>
-                    <% } else { %>
-                    <input type="text" name="product_price" class="form-control" placeholder="請輸入建議售價"
-                      value="<%= product_info.product_price %>">
-                    <% } %>
-                    <% } else { %>
-                    <input type="text" name="product_price" class="form-control" placeholder="請輸入建議售價"
-                      value="<%= data[0].product_price%>">
-                    <% } %>
-
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label>會員價</label>
-
-                    <% if (validation.length > 0) { %>
-                    <% if (validation.find(element => element.param == "product_member_price")) { %>
-                    <div class="has-error">
-                      <input type="text" name="product_member_price" class="form-control" placeholder="請輸入會員價"
-                        value="<%= product_info.product_member_price %>">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_member_price"))].msg; %></span>
-                    </div>
-                    <% } else { %>
-                    <input type="text" name="product_member_price" class="form-control" placeholder="請輸入會員價"
-                      value="<%= product_info.product_member_price %>">
-                    <% } %>
-                    <% } else { %>
-                    <input type="text" name="product_member_price" class="form-control" placeholder="請輸入會員價"
-                      value="<%= data[0].product_member_price%>">
-                    <% } %>
-
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label>庫存</label>
-
-                    <% if (validation.length > 0) { %>
-                    <% if (validation.find(element => element.param == "product_stock")) { %>
-                    <div class="has-error">
-                      <input type="text" name="product_stock" class="form-control" placeholder="請輸入庫存"
-                        value="<%= product_info.product_stock %>">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_stock"))].msg; %></span>
-                    </div>
-                    <% } else { %>
-                    <input type="text" name="product_stock" class="form-control" placeholder="請輸入庫存"
-                      value="<%= product_info.product_stock %>">
-                    <% } %>
-                    <% } else { %>
-                    <input type="text" name="product_stock" class="form-control" placeholder="請輸入庫存"
-                      value="<%= data[0].product_stock%>">
-                    <% } %>
-
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label>產品屬性</label>
-                    <div>
-                      <select class="form-control minimal" name="category_id">
-
-                        <% if (category.length) { %>
-                        <% for (var i=0; i< category.length; i++) { %>
-                        <% if (category[i].category_id === data[0].category_id) { %>
-                        <option value="<%= category[i].category_id%>" selected><%= category[i].category_name%></option>
-                        <% } else { %>
-                        <option value="<%= category[i].category_id%>"><%= category[i].category_name%></option>
-                        <% } %>
-                        <% } %>
-                        <% } %>
-
-                      </select>
-                    </div>
-
-                    <% if (validation.length > 0) { %>
-                    <% if (validation.find(element => element.param == "category_id")) { %>
-                    <div class="has-error" style="padding-bottom: 10px;">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "category_id"))].msg; %></span>
-                    </div>
-                    <% } %>
-                    <% } %>
-
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label>評分</label>
-                    <div style="height: 30px;">
-                      <div class="rating">
-
-                        <% for (var i=1; i <=5; i++) { %>
-                        <label>
-                          <% if(data[0].product_rating === i) { %>
-                          <input type="radio" name="product_rating" value="<%= i%>" checked />
-                          <% } else { %>
-                          <input type="radio" name="product_rating" value="<%= i%>" />
-                          <% } %>
-                          <% var j=0;%>
-                          <% while (j < i) { %>
-                          <span class="icon">★</span>
-                          <% j++; %>
-                          <% } %>
-                        </label>
-                        <% } %>
-
-                      </div>
-                    </div>
-
-                    <% if (validation.length > 0) { %>
-                    <% if (validation.find(element => element.param == "product_rating")) { %>
-                    <div class="has-error" style="padding-bottom: 10px;">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_rating"))].msg; %></span>
-                    </div>
-                    <% } %>
-                    <% } %>
-
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label>簡介</label>
-
-                  <% if (validation.length > 0) { %>
-                  <% if (validation.find(element => element.param == "product_description")) { %>
-                  <div class="has-error">
-                    <textarea class="form-control" name="product_description" placeholder="產品介紹" rows="6"
-                      style="resize:none;"><%= product_info.product_description %></textarea>
-                    <span
-                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_description"))].msg; %></span>
-                  </div>
-                  <% } else { %>
-                  <textarea class="form-control" name="product_description" placeholder="產品介紹" rows="6"
-                    style="resize:none;"><%= product_info.product_description %></textarea>
-                  <% } %>
-                  <% } else { %>
-                  <textarea class="form-control" name="product_description" placeholder="產品介紹" rows="6"
-                    style="resize:none;"><%= data[0].product_description%></textarea>
-                  <% } %>
-
-                </div>
-                <input type="submit" class="btn btn-danger" value="更新">
-              </form>
-
-              <hr>
-
-              <form action="/api/product/<%= data[0].product_id%>/image?_method=PUT" method='POST' enctype="multipart/form-data">
-                <label style="font-size: 20px;"><%= title%>图片</label>
-                <div class="form-group">
-                  <label>已保存圖片</label>
-                  <br>
-                  <div class="row">
-                    <% if (image.length) { %>
-                    <% for (var i=0; i< image.length; i++) { %>
-                    <div class="col-sm-4 col-md-4 col-lg-3">
-                      <div class="thumbnail img-wrap">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><a
-                            href="#imageDeleteModal_<%= image[i].image_id %>" style="text-decoration: none;"
-                            data-toggle="modal">&times;</a></button>
-                        <div style="text-align: center; padding: 30px 12px;">
-                          <img src="<%= image[i].image_path%>" width="150" height="150">
+    <section id="main">
+        <div class="container">
+            <div class="row">
+                <%- include('partial/sidemenu')-%>
+                <div class="col-md-9">
+                    <%- include('partial/flash')-%>
+                    <div class="panel panel-default">
+                        <div class="panel-heading main-color-bg">
+                            <h3 class="panel-title"><%= title%></h3>
                         </div>
-                      </div>
-                    </div>
-
-                    <div id="imageDeleteModal_<%= image[i].image_id %>" class="modal fade">
-                      <div class="modal-dialog modal-confirm">
-                        <div class="modal-content">
-                          <div class="modal-header flex-column">
-                            <div class="icon-box">
-                              <i class="material-icons">&#xE5CD;</i>
-                            </div>
-                            <h4 class="modal-title w-100">即將刪除該相片</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                          </div>
-                          <div class="modal-body">
-                            <p>該作業無法復原，確認要繼續執行嗎？</p>
-                          </div>
-                          <div class="modal-footer justify-content-center">
-                            <a type="button" class="btn btn-secondary" data-dismiss="modal" style="color: white;">取消</a>
-                            <a type="button" class="btn btn-danger"
-                              href="/api/product/<%= data[0].product_id%>/image/<%= image[i].image_id%>?_method=DELETE"
-                              style="color: white;">刪除</a>
-                          </div>
+                        <div class="panel-body">
+                            <form action="/api/product/<%= data[0].product_id%>?_method=PUT" method='POST'>
+                                <label style="font-size: 20px;"><%= title%>資料</label>
+                                <div class="form-group">
+                                    <label>名稱</label>
+                                    <% if (validation.length > 0) { %>
+                                    <% if (validation.find(element => element.param == "product_name")) { %>
+                                    <div class="has-error">
+                                        <input type="text" name="product_name" class="form-control" value="<%= product_info.product_name %>">
+                                        <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_name"))].msg; %></span>
+                                    </div>
+                                    <% } else { %>
+                                    <input type="text" name="product_name" class="form-control" value="<%= product_info.product_name %>">
+                                    <% } %>
+                                    <% } else { %>
+                                    <input type="text" name="product_name" class="form-control" value="<%= data[0].product_name%>">
+                                    <% } %>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>建議售價</label>
+                                        <% if (validation.length > 0) { %>
+                                        <% if (validation.find(element => element.param == "product_price")) { %>
+                                        <div class="has-error">
+                                            <input type="text" name="product_price" class="form-control" value="<%= product_info.product_price %>">
+                                            <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_price"))].msg; %></span>
+                                        </div>
+                                        <% } else { %>
+                                        <input type="text" name="product_price" class="form-control" value="<%= product_info.product_price %>">
+                                        <% } %>
+                                        <% } else { %>
+                                        <input type="text" name="product_price" class="form-control" value="<%= data[0].product_price%>">
+                                        <% } %>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>會員價</label>
+                                        <% if (validation.length > 0) { %>
+                                        <% if (validation.find(element => element.param == "product_member_price")) { %>
+                                        <div class="has-error">
+                                            <input type="text" name="product_member_price" class="form-control" value="<%= product_info.product_member_price %>">
+                                            <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_member_price"))].msg; %></span>
+                                        </div>
+                                        <% } else { %>
+                                        <input type="text" name="product_member_price" class="form-control" value="<%= product_info.product_member_price %>">
+                                        <% } %>
+                                        <% } else { %>
+                                        <input type="text" name="product_member_price" class="form-control" value="<%= data[0].product_member_price%>">
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>庫存</label>
+                                        <% if (validation.length > 0) { %>
+                                        <% if (validation.find(element => element.param == "product_stock")) { %>
+                                        <div class="has-error">
+                                            <input type="text" name="product_stock" class="form-control" value="<%= product_info.product_stock %>">
+                                            <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_stock"))].msg; %></span>
+                                        </div>
+                                        <% } else { %>
+                                        <input type="text" name="product_stock" class="form-control" value="<%= product_info.product_stock %>">
+                                        <% } %>
+                                        <% } else { %>
+                                        <input type="text" name="product_stock" class="form-control" value="<%= data[0].product_stock%>">
+                                        <% } %>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>產品屬性</label>
+                                        <div>
+                                            <select class="form-control minimal" name="category_id">
+                                                <% if (category.length) { %>
+                                                <% for (var i=0; i< category.length; i++) { %>
+                                                <% if (category[i].category_id === data[0].category_id) { %>
+                                                <option value="<%= category[i].category_id%>" selected>
+                                                <%= category[i].category_name%></option>
+                                                <% } else { %>
+                                                <option value="<%= category[i].category_id%>">
+                                                <%= category[i].category_name%></option>
+                                                <% } %>
+                                                <% } %>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                        <% if (validation.length > 0) { %>
+                                        <% if (validation.find(element => element.param == "category_id")) { %>
+                                        <div class="has-error" style="padding-bottom: 10px;">
+                                            <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "category_id"))].msg; %></span>
+                                        </div>
+                                        <% } %>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>評分</label>
+                                        <div style="height: 30px;">
+                                            <div class="rating">
+                                                <% for (var i=1; i <=5; i++) { %>
+                                                <label>
+                                                <% if(data[0].product_rating === i) { %>
+                                                <input type="radio" name="product_rating" value="<%= i%>" checked />
+                                                <% } else { %>
+                                                <input type="radio" name="product_rating" value="<%= i%>" />
+                                                <% } %>
+                                                <% var j=0;%>
+                                                <% while (j < i) { %>
+                                                <span class="icon">★</span>
+                                                <% j++; %>
+                                                <% } %>
+                                                </label>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                        <% if (validation.length > 0) { %>
+                                        <% if (validation.find(element => element.param == "product_rating")) { %>
+                                        <div class="has-error" style="padding-bottom: 10px;">
+                                            <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_rating"))].msg; %></span>
+                                        </div>
+                                        <% } %>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>簡介</label>
+                                    <% if (validation.length > 0) { %>
+                                    <% if (validation.find(element => element.param == "product_description")) { %>
+                                    <div class="has-error">
+                                        <textarea class="form-control" name="product_description" style="resize:none;"><%= product_info.product_description %></textarea>
+                                        <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_description"))].msg; %></span>
+                                    </div>
+                                    <% } else { %>
+                                    <textarea class="form-control" name="product_description" rows="6" style="resize:none;"><%= product_info.product_description %></textarea>
+                                    <% } %>
+                                    <% } else { %>
+                                    <textarea class="form-control" name="product_description" rows="6" style="resize:none;"><%= data[0].product_description%></textarea>
+                                    <% } %>
+                                </div>
+                                <input type="submit" class="btn btn-danger" value="更新">
+                            </form>
+                            <hr>
+                            <form action="/api/product/<%= data[0].product_id%>/image?_method=PUT" method='POST'
+                                enctype="multipart/form-data">
+                                <label style="font-size: 20px;"><%= title%>图片</label>
+                                <div class="form-group">
+                                    <label>已保存圖片</label>
+                                    <br>
+                                    <div class="row">
+                                        <% if (image.length) { %>
+                                        <% for (var i=0; i< image.length; i++) { %>
+                                        <div class="col-sm-4 col-md-4 col-lg-3">
+                                            <div class="thumbnail img-wrap">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                    <a href="#imageDeleteModal_<%= image[i].image_id %>" style="text-decoration: none;" data-toggle="modal">&times;</a></button>
+                                                <div style="text-align: center; padding: 30px 12px;">
+                                                    <img src="<%= image[i].image_path%>" width="150" height="150">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="imageDeleteModal_<%= image[i].image_id %>" class="modal fade">
+                                            <div class="modal-dialog modal-confirm">
+                                                <div class="modal-content">
+                                                    <div class="modal-header flex-column">
+                                                        <div class="icon-box">
+                                                            <i class="material-icons">&#xE5CD;</i>
+                                                        </div>
+                                                        <h4 class="modal-title w-100">即將刪除該相片</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>該作業無法復原，確認要繼續執行嗎？</p>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center">
+                                                        <a type="button" class="btn btn-secondary" data-dismiss="modal" style="color: white;">取消</a>
+                                                        <a type="button" class="btn btn-danger" href="/api/product/<%= data[0].product_id%>/image/<%= image[i].image_id%>?_method=DELETE" style="color: white;">刪除</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <% } %>
+                                    </div>
+                                    <div style="position:relative;">
+                                        <input type="file" name="image_path" id="upload_file" class="hidden" multiple />
+                                        <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
+                                    </div>
+                                    <br>
+                                    <div class="wrapper">
+                                        <div class="scrolls">
+                                            <div class="imageDiv" id='preview'></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="submit" class="btn btn-danger" value="更新">
+                            </form>
                         </div>
-                      </div>
                     </div>
-
-                    <% } %>
-                    <% } %>
-                  </div>
-
-                  <div style="position:relative;">
-                    <input type="file" name="image_path" id="upload_file" class="hidden" multiple />
-                    <button type="button" id="custom-button" class="btn btn-danger">上傳圖片</button>
-                  </div>
-                  <br>
-                  <div class="wrapper">
-                    <div class="scrolls">
-                      <div class="imageDiv" id='preview'></div>
-                    </div>
-                  </div>
                 </div>
-
-                <input type="submit" class="btn btn-danger" value="更新">
-              </form>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <%- include('partial/footer')-%>
-
+    </section>
+    <%- include('partial/footer')-%>
 </body>
-
 </html>

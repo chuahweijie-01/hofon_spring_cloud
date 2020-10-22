@@ -1,42 +1,41 @@
 const connectionPool = require('../../conf/db');
 
-exports.order_display_list = (company_id, page_info) => {
+exports.getOrderList = (companyId, pageInfo) => {
     var connection;
-    var page_size = 10;
-    var number_of_rows, number_of_pages;
-    var number_per_page = parseInt(page_size, 10) || 1;
-    var page = parseInt(page_info.page, 10) || 1;
-    var skip = (page - 1) * number_per_page;
-    var limit = `${skip} , ${number_per_page}`;
-
+    var pageSize = 10;
+    var numberOfRows, numberOfPages;
+    var numberPerPage = parseInt(pageSize, 10) || 1;
+    var page = parseInt(pageInfo.page, 10) || 1;
+    var skip = (page - 1) * numberPerPage;
+    var limit = `${skip} , ${numberPerPage}`;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_order FROM orderdb.order WHERE company_id = ? AND order_status = 0`, [company_id])
+            return connection.query(`SELECT COUNT(*) AS total_order FROM orderdb.order WHERE company_id = ? AND order_status = 0`, [companyId]);
         })
         .then(([rows, field]) => {
-            number_of_rows = rows[0].total_order;
-            number_of_pages = Math.ceil(number_of_rows / number_per_page);
+            numberOfRows = rows[0].total_order;
+            numberOfPages = Math.ceil(numberOfRows / numberPerPage);
             return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, DATE_FORMAT(trade_date, '%d-%c-%Y %H:%i:%s') AS trade_date
-                                     FROM orderdb.order WHERE company_id = ? AND order_status = 0 LIMIT ${limit}`, [company_id])
+                                     FROM orderdb.order WHERE company_id = ? AND order_status = 0 LIMIT ${limit}`, [companyId]);
         })
         .then(([rows, field]) => {
             result = {
                 rows: rows,
                 pagination: {
                     current: page,
-                    number_per_page: number_per_page,
+                    numberPerPage: numberPerPage,
                     has_previous: page > 1,
                     previous: page - 1,
-                    has_next: page < number_of_pages,
+                    has_next: page < numberOfPages,
                     next: page + 1,
-                    last_page: Math.ceil(number_of_rows / page_size)
+                    last_page: Math.ceil(numberOfRows / pageSize)
                 }
             }
             return (result);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {
@@ -44,38 +43,39 @@ exports.order_display_list = (company_id, page_info) => {
         })
 }
 
-exports.order_display = (order_id, company_id) => {
+exports.getOrder = (orderId, companyId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM orderdb.order_full_information WHERE order_id = ? AND company_id = ? GROUP BY product_id`, [order_id, company_id])
+            return connection.query(`SELECT * FROM orderdb.order_full_information WHERE order_id = ? AND company_id = ? GROUP BY product_id`, [orderId, companyId]);
         })
         .then(([rows, field]) => {
-            return rows;
+            if (rows.length) return rows;
+            else throw new Error('該訂單已從資料庫中移除')
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
-            throw new Error(`系統暫時無法運行該功能`);
+            console.error(err);
+            throw new Error(err);
         })
         .finally(() => {
             connection.release();
         })
 }
 
-exports.order_update = (order_id) => {
+exports.updateOrder = (orderId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`UPDATE orderdb.order SET order_status = IF(order_status = 0, 1, order_status) WHERE order_id = ?`, [order_id])
+            return connection.query(`UPDATE orderdb.order SET order_status = IF(order_status = 0, 1, order_status) WHERE order_id = ?`, [orderId]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return (`訂單更新完成`);
-            else throw new Error(`該訂單交易已是完成狀態`)
+            else throw new Error('該訂單交易已是完成狀態')
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err.message);
         })
         .finally(() => {

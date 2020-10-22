@@ -8,14 +8,14 @@ router.use(express.static('./public/'));
 
 router.use(privilegesValidation.privilegesCheck("3"));
 
-router.post('/', admin_validation.admin_info_input, admin_controller.admin_create);
+router.post('/', admin_validation.admin_info_input, admin_controller.addNewAdmin);
 
-router.get('/new', admin_controller.admin_new);
-router.get('/', admin_controller.admin_display_list);
-router.get('/:id', admin_controller.admin_display);
+router.get('/new', admin_controller.addNewAdminPage);
+router.get('/', admin_controller.getAdminList);
+router.get('/:id', admin_controller.getAdmin);
 
-router.put('/:id', admin_validation.admin_info_input_edit, admin_controller.admin_update);
+router.put('/:id', admin_validation.admin_info_input_edit, admin_controller.updateAdmin);
 
-router.delete('/:id', admin_controller.admin_delete);
+router.delete('/:id', admin_controller.deleteAdmin);
 
 module.exports = router;

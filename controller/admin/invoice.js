@@ -1,7 +1,7 @@
 const invoice_model = require('../../model/admin/invoice');
 
-exports.invoice_display_list = (req, res) => {
-    invoice_model.invoice_display_list(req.session.company, req.query)
+exports.getInvoiceList = (req, res) => {
+    invoice_model.getInvoiceList(req.session.company, req.query)
         .then((result) => {
             res.render('invoice', {
                 title: "訂單維護",
@@ -24,8 +24,8 @@ exports.invoice_display_list = (req, res) => {
         })
 }
 
-exports.invoice_display = (req, res) => {
-    invoice_model.invoice_display(req.params.id, req.session.company)
+exports.getInvoice = (req, res) => {
+    invoice_model.getInvoice(req.params.id, req.session.company)
         .then((result) => {
             res.render('invoice_view', {
                 title: "訂單維護",
@@ -37,7 +37,7 @@ exports.invoice_display = (req, res) => {
         })
         .catch((err) => {
             req.flash(`flash`, {
-                msg: err, type: `error`
+                msg: err.message, type: `error`
             });
             req.session.save(function (err) {
                 res.redirect('/api/invoice');
@@ -45,13 +45,13 @@ exports.invoice_display = (req, res) => {
         })
 }
 
-exports.invoice_update = (req, res) => {
+exports.updateInvoice = (req, res) => {
     invoice_info = {
         order_status: req.params.status,
         order_remarks: req.body.order_remarks
     }
 
-    invoice_model.invoice_update(req.params.id, invoice_info)
+    invoice_model.updateInvoice(req.params.id, invoice_info)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'

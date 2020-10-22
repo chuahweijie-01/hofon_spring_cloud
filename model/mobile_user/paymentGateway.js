@@ -13,7 +13,7 @@ exports.generateOrder = (order_id) => {
             else throw new Error(`訂單生成失敗`)
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {
@@ -43,7 +43,7 @@ exports.merchantTradeNoUpdate = (orderId, paymentDate, tradeDate, tradeNo) => {
             return (`訂單更新完成`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {
@@ -62,7 +62,7 @@ exports.getCompanyEmail = (compnany_id) => {
             return rows;
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {

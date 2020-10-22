@@ -1,13 +1,13 @@
 const world_model = require('../../model/admin/world');
 
-exports.world_create = (req, res) => {
+exports.addNewCountry = (req, res) => {
     world_info = {
         country_code: req.body.country_code,
         country_name_chinese: req.body.country_name_chinese,
         country_name_english: req.body.country_name_english
     }
 
-    world_model.world_create(world_info)
+    world_model.addNewCountry(world_info)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'
@@ -26,12 +26,12 @@ exports.world_create = (req, res) => {
         })
 }
 
-exports.world_city_create = (req, res) => {
+exports.addNewCity = (req, res) => {
     world_info = {
         country_id: req.params.id,
         city_name: req.body.city_name
     }
-    world_model.world_city_create(world_info)
+    world_model.addNewCity(world_info)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'
@@ -50,8 +50,8 @@ exports.world_city_create = (req, res) => {
         })
 }
 
-exports.world_display_list = (req, res) => {
-    world_model.world_display_list(req.query)
+exports.getCountryList = (req, res) => {
+    world_model.getCountryList(req.query)
         .then((result) => {
             res.render('world', {
                 title: "區域",
@@ -73,6 +73,31 @@ exports.world_display_list = (req, res) => {
         })
 }
 
+exports.updateCountry = (req, res) => {
+    var countryInfo = {
+        country_code: req.body.country_code,
+        country_name_chinese: req.body.country_name_chinese,
+        country_name_english: req.body.country_name_english
+    }
+    world_model.updateCountry(countryInfo, req.params.id)
+        .then((result) => {
+            req.flash(`flash`, {
+                msg: result, type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/world');
+            })
+        })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message, type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/world');
+            })
+        })
+}
+
 exports.world_new = (req, res) => {
     var world_info = req.session.world_info;
     req.session.world_info = null;
@@ -86,8 +111,8 @@ exports.world_new = (req, res) => {
     });
 }
 
-exports.world_display = (req, res) => {
-    world_model.world_display(req.params.id)
+exports.getCountry = (req, res) => {
+    world_model.getCountry(req.params.id)
         .then((result) => {
             var world_info = req.session.world_info;
             req.session.world_info = null;
@@ -111,8 +136,8 @@ exports.world_display = (req, res) => {
         })
 }
 
-exports.world_delete = (req, res) => {
-    world_model.world_delete(req.params.id)
+exports.deleteCountry = (req, res) => {
+    world_model.deleteCountry(req.params.id)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'
@@ -131,8 +156,8 @@ exports.world_delete = (req, res) => {
         })
 }
 
-exports.world_city_delete = (req, res) => {
-    world_model.world_city_delete(req.params.city_id)
+exports.deleteCity = (req, res) => {
+    world_model.deleteCity(req.params.city_id)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'

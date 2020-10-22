@@ -1,7 +1,6 @@
 const analysis_model = require('../../model/mobile_user/analysis');
 
 exports.insertAnalysisData = (req, res) => {
-    console.log(req.body.analysisInfo)
     var analysisInfo = req.body.analysisInfo;
     var analysisDetails = req.body.analysisDetails;
     analysis_model.insertAnalysisData(analysisInfo, analysisDetails)

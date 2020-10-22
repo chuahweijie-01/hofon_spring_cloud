@@ -17,7 +17,7 @@ exports.user_address = (user_id) => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料選取失敗');
         })
         .finally(() => {
@@ -36,7 +36,7 @@ exports.city = (country_id) => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料選取失敗');
         })
         .finally(() => {
@@ -55,7 +55,7 @@ exports.country = () => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料選取失敗');
         })
         .finally(() => {
@@ -75,7 +75,7 @@ exports.address_delete = (address_id) => {
             else throw new Error(`資料刪除失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {
@@ -85,7 +85,6 @@ exports.address_delete = (address_id) => {
 
 exports.address_create = (user_id, address_info) => {
     var connection;
-    console.log(address_info);
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
@@ -100,7 +99,7 @@ exports.address_create = (user_id, address_info) => {
             else throw new Error(`地址新增失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {

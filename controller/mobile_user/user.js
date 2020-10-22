@@ -37,7 +37,7 @@ exports.address_create = (req, res) => {
     }
     user_model.address_create(req.session.user, address_info)
         .then((result) => {
-            res.redirect(`/mobile/api/user/address`);
+            res.status(200).send({ message: result });
         })
         .catch((err) => {
             res.status(404).send({ message: err.message });
@@ -47,7 +47,7 @@ exports.address_create = (req, res) => {
 exports.address_delete = (req, res) => {
     user_model.address_delete(req.params.id)
         .then((result) => {
-            res.redirect(`/mobile/api/user/address`);
+            res.status(200).send({ message: result });
         })
         .catch((err) => {
             res.status(404).send({ message: err.message });

@@ -2,14 +2,14 @@ const product_model = require('../../model/mobile_user/product');
 
 exports.product_display_list = (req, res) => {
     var product_info, ads_info, category_info, company_info;
-    product_model.product_list(req.session.company)
+    product_model.getProductList(req.session.company)
         .then((result) => {
             product_info = result;
             return product_model.ads_list(req.session.company)
         })
         .then((result) => {
             ads_info = result;
-            return product_model.category_list(req.session.company)
+            return product_model.getCategoryList(req.session.company)
         })
         .then((result) => {
             category_info = result;
@@ -29,7 +29,6 @@ exports.product_display = (req, res) => {
         })
         .then((result) => {
             award_info = result;
-            console.log(product_info[0].product_id)
             return product_model.product_image(product_info[0].product_id)
         })
         .then((result) => {

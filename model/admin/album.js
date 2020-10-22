@@ -1,12 +1,12 @@
 const connectionPool = require('../../conf/db');
 
-exports.album_display_list = (company_id, page_info) => {
-    var page_size = 10;
-    var number_of_rows, number_of_pages;
-    var number_per_page = parseInt(page_size, 10) || 1;
-    var page = parseInt(page_info.page, 10) || 1;
-    var skip = (page - 1) * number_per_page;
-    var limit = `${skip} , ${number_per_page}`;
+exports.album_display_list = (company_id, pageInfo) => {
+    var pageSize = 10;
+    var numberOfRows, numberOfPages;
+    var numberPerPage = parseInt(pageSize, 10) || 1;
+    var page = parseInt(pageInfo.page, 10) || 1;
+    var skip = (page - 1) * numberPerPage;
+    var limit = `${skip} , ${numberPerPage}`;
 
     var connection;
     return connectionPool.getConnection()
@@ -16,8 +16,8 @@ exports.album_display_list = (company_id, page_info) => {
                                      JOIN companydb.company AS company ON image.company_id = company.company_id
                                      WHERE company.company_id = ?`, [company_id])
                 .then(([rows, field]) => {
-                    number_of_rows = rows[0].total_image;
-                    number_of_pages = Math.ceil(number_of_rows / number_per_page);
+                    numberOfRows = rows[0].total_image;
+                    numberOfPages = Math.ceil(numberOfRows / numberPerPage);
                     return connection.query(`SELECT image.image_id, image.image_path,
                                              DATE_FORMAT(image.created_date, '%d-%c-%Y') AS created_date FROM companydb.image AS image
                                              JOIN companydb.company AS company ON image.company_id = company.company_id
@@ -25,16 +25,16 @@ exports.album_display_list = (company_id, page_info) => {
                 })
                 .then(([rows, field]) => {
                     result = {
-                        total_image: number_of_rows,
+                        total_image: numberOfRows,
                         rows: rows,
                         pagination: {
                             current: page,
-                            number_per_page: number_per_page,
+                            numberPerPage: numberPerPage,
                             has_previous: page > 1,
                             previous: page - 1,
-                            has_next: page < number_of_pages,
+                            has_next: page < numberOfPages,
                             next: page + 1,
-                            last_page: Math.ceil(number_of_rows / page_size)
+                            last_page: Math.ceil(numberOfRows / pageSize)
                         }
                     }
                     return (result);
@@ -44,18 +44,18 @@ exports.album_display_list = (company_id, page_info) => {
                 })
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(`系統暫時無法運行該功能`);
         })
 }
 
-exports.album_category = (company_id, category_id, page_info) => {
-    var page_size = 10;
-    var number_of_rows, number_of_pages;
-    var number_per_page = parseInt(page_size, 10) || 1;
-    var page = parseInt(page_info.page, 10) || 1;
-    var skip = (page - 1) * number_per_page;
-    var limit = `${skip} , ${number_per_page}`;
+exports.album_category = (company_id, category_id, pageInfo) => {
+    var pageSize = 10;
+    var numberOfRows, numberOfPages;
+    var numberPerPage = parseInt(pageSize, 10) || 1;
+    var page = parseInt(pageInfo.page, 10) || 1;
+    var skip = (page - 1) * numberPerPage;
+    var limit = `${skip} , ${numberPerPage}`;
 
     var connection;
     return connectionPool.getConnection()
@@ -67,8 +67,8 @@ exports.album_category = (company_id, category_id, page_info) => {
                                      JOIN companydb.company AS company ON company.company_id = company_category.company_id
                                      WHERE company.company_id = ? AND category.category_id = ?`, [company_id, category_id])
                 .then(([rows, field]) => {
-                    number_of_rows = rows[0].total_image;
-                    number_of_pages = Math.ceil(number_of_rows / number_per_page);
+                    numberOfRows = rows[0].total_image;
+                    numberOfPages = Math.ceil(numberOfRows / numberPerPage);
                     return connection.query(`SELECT category.category_id, category.category_name, image.image_id, image.image_path
                                              FROM productdb.category AS category
                                              LEFT JOIN productdb.image AS image ON category.category_id = image.category_id
@@ -81,12 +81,12 @@ exports.album_category = (company_id, category_id, page_info) => {
                         rows: rows,
                         pagination: {
                             current: page,
-                            number_per_page: number_per_page,
+                            numberPerPage: numberPerPage,
                             has_previous: page > 1,
                             previous: page - 1,
-                            has_next: page < number_of_pages,
+                            has_next: page < numberOfPages,
                             next: page + 1,
-                            last_page: Math.ceil(number_of_rows / page_size)
+                            last_page: Math.ceil(numberOfRows / pageSize)
                         }
                     }
                     return (result);
@@ -97,7 +97,7 @@ exports.album_category = (company_id, category_id, page_info) => {
 
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('系統暫時無法運行該功能');
         })
 }
@@ -120,7 +120,7 @@ exports.album_add = (image_path, company_id) => {
             else throw new Error(`圖片新增失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err.message);
         })
         .finally(() => {
@@ -128,7 +128,7 @@ exports.album_add = (image_path, company_id) => {
         })
 }
 
-exports.album_image_delete = (image_id, company_id) => {
+exports.album_deleteProductImage = (image_id, company_id) => {
     var connection, image_path;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -146,7 +146,7 @@ exports.album_image_delete = (image_id, company_id) => {
             else throw new Error(`資料刪除失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err.message);
         })
         .finally(() => {

@@ -8,7 +8,7 @@ router.get('/test', order_controller.order_test);
 
 
 router.get('/', order_controller.order_list);
-router.get('/:id', order_controller.order_display);
+router.get('/:id', order_controller.getOrder);
 router.get('/review/:id', order_controller.order_review);
 
 router.post('/', order_controller.create_order);

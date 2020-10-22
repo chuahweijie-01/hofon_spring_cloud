@@ -10,10 +10,16 @@ exports.create_order = (order_info, product_info) => {
         .then((result) => {
             order_id = order_info.order_id;
             for (var i = 0; i < product_info.length; i++) {
+                /*
+                INSERT INTO orderdb.order_product(order_id, product_id, quantity, nett_price, discount_price, total_price)
+                SELECT ?,?,?, product.product_member_price, IFNULL(product_with_discount.discount_price, product.product_member_price), IFNULL(product_with_discount.discount_price * ?, product.product_member_price * ?)
+                FROM productdb.product AS product JOIN productdb.product_with_discount AS product_with_discount ON product_with_discount.product_id = product.product_id
+                WHERE product.product_id = ?
+                */
                 connection.query(`INSERT INTO orderdb.order_product(order_id, product_id, quantity, nett_price, discount_price, total_price)
-                                  SELECT ?,?,?, product.product_member_price, IFNULL(product_with_discount.discount_price, product.product_member_price), IFNULL(product_with_discount.discount_price * ?, product.product_member_price * ?)
+                                  SELECT ?,?,?, product.product_member_price, product_with_discount.discount_price, product_with_discount.discount_price * ?
                                   FROM productdb.product AS product JOIN productdb.product_with_discount AS product_with_discount ON product_with_discount.product_id = product.product_id
-                                  WHERE product.product_id = ?`, [order_id, product_info[i].product_id, product_info[i].quantity, product_info[i].quantity, product_info[i].quantity, product_info[i].product_id])
+                                  WHERE product.product_id = ?`, [order_id, product_info[i].product_id, product_info[i].quantity, product_info[i].quantity, product_info[i].product_id])
                     .then((result) => {
                         // Update continue ...
                     })
@@ -25,7 +31,7 @@ exports.create_order = (order_info, product_info) => {
             if (result[0].affectedRows >= 1) return (order_id);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {
@@ -53,7 +59,7 @@ exports.order_list = (company_id, user_id) => {
         })
 }
 
-exports.order_display = (order_id) => {
+exports.getOrder = (order_id) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -65,7 +71,7 @@ exports.order_display = (order_id) => {
             else throw new Error(`該訂單已從資料庫中移除`)
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err.message);
         })
         .finally(() => {
@@ -87,7 +93,7 @@ exports.order_review = (order_id) => {
             else throw new Error(`訂單生成失敗`)
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err.message);
         })
         .finally(() => {
@@ -107,7 +113,7 @@ exports.delete_order = (order_id) => {
             else throw new Error(`訂單移除失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err.message);
         })
         .finally(() => {
@@ -115,7 +121,7 @@ exports.delete_order = (order_id) => {
         })
 }
 
-exports.update_order_address = (order_address, user_id) => {
+exports.update_order_address = (order_address, user_id, company_id) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -135,7 +141,7 @@ exports.update_order_address = (order_address, user_id) => {
                                          JOIN userdb.address AS address ON order_address.address_id = address.address_id
                                          JOIN userdb.city AS city ON address.city_id = city.city_id
                                          JOIN companydb.zone_city AS zone_city ON city.city_id = zone_city.city_id
-                                         JOIN companydb.zone AS zone ON zone_city.zone_id = zone.zone_id WHERE orderr.order_id = ?`, [order_address.order_id])
+                                         JOIN companydb.zone AS zone ON zone_city.zone_id = zone.zone_id WHERE orderr.order_id = ? and zone.company_id = ?`, [order_address.order_id, company_id])
             else throw new Error(`訂單地址添加失敗`)
         })
         .then(([rows, field]) => {
@@ -150,7 +156,7 @@ exports.update_order_address = (order_address, user_id) => {
             else throw new Error(`訂單地址添加失敗`)
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err.message);
         })
         .finally(() => {

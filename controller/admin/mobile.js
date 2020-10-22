@@ -1,6 +1,6 @@
 const mobile_model = require(`../../model/admin/mobile`)
 
-exports.mobile_create = (req, res) => {
+exports.updateAppInterfaceSetting = (req, res) => {
 
     setting_info = {
         header_color: req.body.header_color,
@@ -17,7 +17,7 @@ exports.mobile_create = (req, res) => {
         button_1_color: req.body.button_1_color
     }
 
-    mobile_model.mobile_create(setting_info, req.session.company, setting_info_company).then((result) => {
+    mobile_model.updateAppInterfaceSetting(setting_info, req.session.company, setting_info_company).then((result) => {
         req.flash(`flash`, {
             msg : result,
             type: `success`
@@ -40,8 +40,8 @@ exports.mobile_display = (req, res) => {
 
 }
 
-exports.mobile_display_list = (req, res) => {
-    mobile_model.mobile_display_list(req.session.company).then((result) => {
+exports.getAppInterfaceSetting = (req, res) => {
+    mobile_model.getAppInterfaceSetting(req.session.company).then((result) => {
         if (Object.keys(result).length === 0) {
             result = [
                 TextRow = {

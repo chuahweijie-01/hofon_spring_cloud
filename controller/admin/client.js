@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const client_model = require('../../model/admin/client');
 
-exports.client_create = (req, res) => {
+exports.addNewClient = (req, res) => {
     var privileges_id, client_info;
     Array.isArray(req.body.privileges_id) ? privileges_id = req.body.privileges_id : privileges_id = [req.body.privileges_id];
 
@@ -22,7 +22,7 @@ exports.client_create = (req, res) => {
             }
         }
 
-        client_model.client_create(client_info, privileges_id)
+        client_model.addNewClient(client_info, privileges_id)
             .then((result) => {
                 req.flash(`flash`, {
                     msg: result, type: 'success'
@@ -42,12 +42,12 @@ exports.client_create = (req, res) => {
     })
 }
 
-exports.client_display = (req, res) => {
+exports.getClient = (req, res) => {
     var privileges_info;
-    client_model.privileges_list()
+    client_model.getPrivilegesList()
         .then((result) => {
             privileges_info = result;
-            return client_model.client_display(req.params.id)
+            return client_model.getClient(req.params.id)
         })
         .then((result) => {
             var client_info = req.session.client_info;
@@ -73,8 +73,8 @@ exports.client_display = (req, res) => {
         })
 }
 
-exports.client_display_list = (req, res) => {
-    client_model.client_display_list(req.session.role, req.session.company, req.query)
+exports.getClientList = (req, res) => {
+    client_model.getClientList(req.session.role, req.session.company, req.query)
         .then((result) => {
             res.render('client', {
                 title: "管理者",
@@ -98,10 +98,10 @@ exports.client_display_list = (req, res) => {
 
 exports.client_new = (req, res) => {
     var company_info, privileges_info;
-    client_model.company_list()
+    client_model.getCompanyList()
         .then((result) => {
             company_info = result;
-            return client_model.privileges_list()
+            return client_model.getPrivilegesList()
         })
         .then((result) => {
             privileges_info = result;
@@ -129,7 +129,7 @@ exports.client_new = (req, res) => {
 }
 
 
-exports.client_update = (req, res) => {
+exports.updateClient = (req, res) => {
     var privileges_id;
     Array.isArray(req.body.privileges_id) ? privileges_id = req.body.privileges_id : privileges_id = [req.body.privileges_id];
 
@@ -138,7 +138,7 @@ exports.client_update = (req, res) => {
         admin_name: req.body.admin_name,
     }
 
-    client_model.client_update(req.params.id, client_info, privileges_id, req.session.company)
+    client_model.updateClient(req.params.id, client_info, privileges_id, req.session.company)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'
@@ -157,8 +157,8 @@ exports.client_update = (req, res) => {
         })
 }
 
-exports.client_delete = (req, res) => {
-    client_model.client_delete(req.params.id, req.user)
+exports.deleteClient = (req, res) => {
+    client_model.deleteClient(req.params.id, req.user)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'

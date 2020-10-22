@@ -1,7 +1,7 @@
 const cart_model = require('../../model/mobile_user/cart');
 
-exports.cart_products = (req, res) => {
-    cart_model.cart_products(req.session.user, req.session.company)
+exports.getCartProductList = (req, res) => {
+    cart_model.getCartProductList(req.session.user, req.session.company)
         .then((result) => {
             res.status(200).send({ cart_info: result });
         })
@@ -10,9 +10,9 @@ exports.cart_products = (req, res) => {
         })
 }
 
-exports.add_to_cart = (req, res) => {
+exports.addToCart = (req, res) => {
     var quantity = req.body.quantity;
-    cart_model.add_to_cart(req.session.user, req.session.company, req.params.id, quantity)
+    cart_model.addToCart(req.session.user, req.session.company, req.params.id, quantity)
         .then((result) => {
             res.status(200).send({ message: result });
         })
@@ -21,20 +21,20 @@ exports.add_to_cart = (req, res) => {
         })
 }
 
-exports.remove_from_cart = (req, res) => {
-    cart_model.remove_from_cart(req.params.id)
+exports.deleteFromCart = (req, res) => {
+    cart_model.deleteFromCart(req.params.id)
         .then((result) => {
-            res.redirect(`/mobile/api/cart`);
+            res.status(200).send({ message: result });
         })
         .catch((err) => {
             res.status(404).send({ message: err.message });
         })
 }
 
-exports.delete_cart = (req, res) => {
-    cart_model.delete_cart(req.session.user, req.session.company)
+exports.deleteCart = (req, res) => {
+    cart_model.deleteCart(req.session.user, req.session.company)
         .then((result) => {
-            res.redirect(`/mobile/api/cart`);
+            res.status(200).send({ message: result });
         })
         .catch((err) => {
             res.status(404).send({ message: err.message });

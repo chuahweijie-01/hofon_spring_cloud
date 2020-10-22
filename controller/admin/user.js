@@ -1,7 +1,7 @@
 const user_model = require('../../model/admin/user')
 
-exports.user_display_list = (req, res) => {
-    user_model.user_display_list(req.query, req.session.company, req.session.role).then((result) => {
+exports.getUserList = (req, res) => {
+    user_model.getUserList(req.query, req.session.company, req.session.role).then((result) => {
         res.render('user', {
             title: "消費者",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
@@ -21,8 +21,8 @@ exports.user_display_list = (req, res) => {
     })
 }
 
-exports.user_deactivate = (req, res) => {
-    user_model.user_deactivate(req.params.id)
+exports.deactivateUser = (req, res) => {
+    user_model.deactivateUser(req.params.id)
         .then((result) => {
             res.status(200).send(result);
         })
@@ -31,8 +31,8 @@ exports.user_deactivate = (req, res) => {
         })
 }
 
-exports.user_reactivate = (req, res) => {
-    user_model.user_reactivate(req.params.id)
+exports.reactivateUser = (req, res) => {
+    user_model.reactivateUser(req.params.id)
         .then((result) => {
             res.status(200).send(result);
         })

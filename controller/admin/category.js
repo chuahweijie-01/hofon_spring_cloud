@@ -1,12 +1,12 @@
 const category_model = require('../../model/admin/category')
 
-exports.category_create = (req, res) => {
+exports.addNewCategory = (req, res) => {
 
     var company_id;
     category_name = req.body.category_name;
     Array.isArray(req.body.company_id) ? company_id = req.body.company_id : company_id = [req.body.company_id];
 
-    category_model.category_create(category_name, company_id)
+    category_model.addNewCategory(category_name, company_id)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result,
@@ -27,9 +27,9 @@ exports.category_create = (req, res) => {
         })
 }
 
-exports.category_display = (req, res) => {
-    category_model.company_list().then((company) => {
-        category_model.category_display(req.params.id).then((category) => {
+exports.getCategory = (req, res) => {
+    category_model.getCompanyList().then((company) => {
+        category_model.getCategory(req.params.id).then((category) => {
             var category_info = req.session.category_info;
             req.session.category_info = null;
             res.render('category_edit', {
@@ -63,8 +63,8 @@ exports.category_display = (req, res) => {
 
 }
 
-exports.category_display_list = (req, res) => {
-    category_model.category_display_list(req.query)
+exports.getCategoryList = (req, res) => {
+    category_model.getCategoryList(req.query)
         .then((result) => {
             res.render('category', {
                 title: "產品屬性",
@@ -88,7 +88,7 @@ exports.category_display_list = (req, res) => {
 }
 
 exports.category_new = (req, res) => {
-    category_model.company_list()
+    category_model.getCompanyList()
         .then((result) => {
             var category_info = req.session.category_info;
             req.session.category_info = null;
@@ -113,7 +113,7 @@ exports.category_new = (req, res) => {
         })
 }
 
-exports.category_update = (req, res) => {
+exports.updateCategory = (req, res) => {
 
     category_info = {
         category_id: req.params.id,
@@ -123,7 +123,7 @@ exports.category_update = (req, res) => {
     var company_id;
     Array.isArray(req.body.company_id) ? company_id = req.body.company_id : company_id = [req.body.company_id];
 
-    category_model.category_update(category_info, company_id)
+    category_model.updateCategory(category_info, company_id)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result,
@@ -144,8 +144,8 @@ exports.category_update = (req, res) => {
         })
 }
 
-exports.category_delete = (req, res) => {
-    category_model.category_delete(req.params.id)
+exports.deleteCategory = (req, res) => {
+    category_model.deleteCategory(req.params.id)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result,

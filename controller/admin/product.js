@@ -34,7 +34,7 @@ exports.upload_product_images = (req, res, next) => {
     })
 }
 
-exports.product_create = (req, res) => {
+exports.addNewProduct = (req, res) => {
 
     product_info = {
         product_name: req.body.product_name,
@@ -48,13 +48,13 @@ exports.product_create = (req, res) => {
         product_latest_price: req.body.product_price,
     }
 
-    product_model.product_create(product_info)
+    product_model.addNewProduct(product_info)
         .then((product_id) => {
             var image_path = [];
             for (var i = 0; i < (req.files).length; i++) {
                 image_path.push([product_id, `/image/admin/${req.session.company}/product/${req.files[i].filename}`])
             }
-            return product_model.insert_product_image(image_path)
+            return product_model.addNewProductImage(image_path)
         })
         .then((result) => {
             req.flash(`flash`, {
@@ -76,14 +76,14 @@ exports.product_create = (req, res) => {
 
 exports.product_display = (req, res) => {
     var category, image;
-    product_model.category_list(req.session.company)
+    product_model.getCategoryList(req.session.company)
         .then((result) => {
             category = result;
-            return product_model.product_image(req.params.id)
+            return product_model.getProductImage(req.params.id)
         })
         .then((result) => {
             image = result;
-            return product_model.product(req.params.id, req.session.company)
+            return product_model.getProduct(req.params.id, req.session.company)
         })
         .then((result) => {
             var product_info_temp = req.session.product_info;
@@ -110,16 +110,16 @@ exports.product_display = (req, res) => {
         })
 }
 
-exports.product_publish = (req, res) => {
-    product_model.product_publish(req.params.product_id, req.params.category_id, req.session.company).then((result) => {
+exports.publishProduct = (req, res) => {
+    product_model.publishProduct(req.params.product_id, req.params.category_id, req.session.company).then((result) => {
         res.status(200).send(result);
     }).catch((err) => {
         res.status(404).send(err);
     })
 }
 
-exports.product_unpublish = (req, res) => {
-    product_model.product_unpublish(req.params.product_id, req.session.company).then((result) => {
+exports.unpublishProduct = (req, res) => {
+    product_model.unpublishProduct(req.params.product_id, req.session.company).then((result) => {
         res.status(200).send(result);
     }).catch((err) => {
         res.status(404).send(err);
@@ -127,7 +127,7 @@ exports.product_unpublish = (req, res) => {
 }
 
 exports.product_display_list = (req, res) => {
-    product_model.product_list(req.session.company, req.query).then((result) => {
+    product_model.getProductList(req.session.company, req.query).then((result) => {
         res.render('product', {
             title: "產品",
             icon: '<span class="glyphicon glyphicon-book" aria-hidden="true"></span>',
@@ -148,7 +148,7 @@ exports.product_display_list = (req, res) => {
 }
 
 exports.product_new = (req, res) => {
-    product_model.category_list(req.session.company).then((result => {
+    product_model.getCategoryList(req.session.company).then((result => {
         var product_info = req.session.product_info;
         req.session.product_info = null;
         res.render('product_add', {
@@ -170,7 +170,7 @@ exports.product_new = (req, res) => {
     })
 }
 
-exports.product_update = (req, res) => {
+exports.updateProduct = (req, res) => {
 
     var product_info = {
         product_name: req.body.product_name,
@@ -183,7 +183,7 @@ exports.product_update = (req, res) => {
         product_latest_price: req.body.product_price,
     }
 
-    product_model.product_update(req.params.id, product_info)
+    product_model.updateProduct(req.params.id, product_info)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'
@@ -202,8 +202,8 @@ exports.product_update = (req, res) => {
         })
 }
 
-exports.product_delete = (req, res) => {
-    product_model.product_delete(req.params.id)
+exports.deleteProduct = (req, res) => {
+    product_model.deleteProduct(req.params.id)
         .then((result) => {
             try {
                 for (var i = 0; i < result.length; i++) {
@@ -230,8 +230,8 @@ exports.product_delete = (req, res) => {
         })
 }
 
-exports.image_delete = (req, res) => {
-    product_model.image_delete(req.params.id)
+exports.deleteProductImage = (req, res) => {
+    product_model.deleteProductImage(req.params.id)
         .then((result) => {
             try {
                 fs.unlinkSync(`public${result[0].image_path}`);
@@ -261,7 +261,7 @@ exports.product_image_update = (req, res) => {
     for (var i = 0; i < (req.files).length; i++) {
         image_path.push([req.params.id, `/image/admin/${req.session.company}/product/${req.files[i].filename}`]);
     }
-    product_model.insert_product_image(image_path)
+    product_model.addNewProductImage(image_path)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'
@@ -280,8 +280,8 @@ exports.product_image_update = (req, res) => {
         })
 }
 
-exports.product_image_total = (req, res, next) => {
-    product_model.product_image_total(req.params.id)
+exports.getTotalOfProductImage = (req, res, next) => {
+    product_model.getTotalOfProductImage(req.params.id)
         .then((result) => {
             if (result[0].total_image >= 3) throw new Error(`已超出可以添加的图片上限，请先删除部分图片后再进行添加。`)
             else next()

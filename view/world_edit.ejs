@@ -15,7 +15,7 @@
               <h3 class="panel-title"><%= title%></h3>
             </div>
             <div class="panel-body">
-              <form action="/api/admin" method='POST'>
+              <form action="/api/world/<%= data[0].country_id%>?_method=PUT" method='POST'>
                 <label style="font-size: 20px;">國家</label>
                 <div class="row">
                   <div class="form-group col-md-6">

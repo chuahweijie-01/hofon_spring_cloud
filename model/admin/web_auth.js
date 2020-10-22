@@ -16,7 +16,7 @@ exports.insert = (user) => {
             else throw new Error(`資料新增失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(`資料新增失敗`);
         })
         .finally(() => {

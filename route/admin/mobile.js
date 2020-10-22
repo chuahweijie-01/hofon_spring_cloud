@@ -7,9 +7,9 @@ router.use(express.static('./public/'));
 
 router.use(privilegesValidation.privilegesCheck("9"));
 
-router.post('/', mobile_controller.mobile_create)
+router.post('/', mobile_controller.updateAppInterfaceSetting)
 
-router.get('/', mobile_controller.mobile_display_list);
+router.get('/', mobile_controller.getAppInterfaceSetting);
 router.get('/:id', mobile_controller.mobile_display)
 
 router.put('/:id', mobile_controller.mobile_update)

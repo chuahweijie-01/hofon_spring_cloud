@@ -9,6 +9,6 @@ router.get('/:id', album_controller.album_category);
 
 router.post('/',album_controller.album_add);
 
-router.delete('/:id', album_controller.album_image_delete);
+router.delete('/:id', album_controller.album_deleteProductImage);
 
 module.exports = router;

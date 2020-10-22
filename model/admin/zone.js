@@ -1,6 +1,6 @@
 const connectionPool = require('../../conf/db');
 
-exports.displayZoneList = (pageInfo, companyId) => {
+exports.getZoneList = (pageInfo, companyId) => {
     var connection;
     var pageSize = 10;
     var numberOfRows, numberOfPages;
@@ -8,7 +8,6 @@ exports.displayZoneList = (pageInfo, companyId) => {
     var page = parseInt(pageInfo.page, 10) || 1;
     var skip = (page - 1) * numberPerPage;
     var limit = `${skip} , ${numberPerPage}`;
-
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
@@ -27,7 +26,7 @@ exports.displayZoneList = (pageInfo, companyId) => {
                 rows: rows,
                 pagination: {
                     current: page,
-                    number_per_page: numberPerPage,
+                    numberPerPage: numberPerPage,
                     has_previous: page > 1,
                     previous: page - 1,
                     has_next: page < numberOfPages,
@@ -38,7 +37,7 @@ exports.displayZoneList = (pageInfo, companyId) => {
             return (result);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(`系統暫時無法運行該功能`);
         })
         .finally(() => {
@@ -51,13 +50,13 @@ exports.getCountry = () => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT country_id, country_name_chinese FROM userdb.country ORDER BY country_id`)
+            return connection.query(`SELECT country_id, country_name_chinese FROM userdb.country WHERE country_id = 1 ORDER BY country_id`)
         })
         .then(([rows, field]) => {
             return rows;
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(`系統暫時無法運行該功能`);
         })
         .finally(() => {
@@ -79,7 +78,7 @@ exports.getCity = (countryId) => {
             return rows;
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(`系統暫時無法運行該功能`);
         })
         .finally(() => {
@@ -109,7 +108,7 @@ exports.addNewZone = (zoneInfo, city_id) => {
             else throw new Error(`資料新增失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {
@@ -117,7 +116,7 @@ exports.addNewZone = (zoneInfo, city_id) => {
         })
 }
 
-exports.displayZone = (zoneId) => {
+exports.getZone = (zoneId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -130,7 +129,7 @@ exports.displayZone = (zoneId) => {
             return rows;
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(`系統暫時無法運行該功能`);
         })
         .finally(() => {
@@ -163,7 +162,7 @@ exports.updateZone = (zoneInfo, zoneId, city_id) => {
             else throw new Error(`資料更新失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err);
         })
         .finally(() => {
@@ -183,7 +182,7 @@ exports.deleteZone = (zoneId) => {
             else throw new Error(`資料刪除失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error(err.message);
         })
         .finally(() => {

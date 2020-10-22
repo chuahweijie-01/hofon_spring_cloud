@@ -1,6 +1,6 @@
 const connectionPool = require('../../conf/db');
 
-exports.company_list = (user_id) => {
+exports.getCompanyList = (user_id) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -25,7 +25,7 @@ exports.company_list = (user_id) => {
         })
 }
 
-exports.company_details = (company_id) => {
+exports.getCompanyDetails = (company_id) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {

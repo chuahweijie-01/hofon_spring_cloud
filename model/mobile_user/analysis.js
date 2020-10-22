@@ -25,8 +25,8 @@ exports.insertAnalysisData = (analysisInfo, analysisDetails) => {
             else throw new Error(`項目新增失敗`)
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
-            throw new Error(analysis_id); //If insertion failed, then return id and perform delete to remove all data (Conceptual)
+            console.error(err);
+            throw new Error(analysis_id);
         })
         .finally(() => {
             connection.release();

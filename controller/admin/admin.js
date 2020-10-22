@@ -1,16 +1,19 @@
 const bcrypt = require('bcrypt');
 const admin_model = require('../../model/admin/admin')
 
-exports.admin_create = (req, res) => {
-    bcrypt.hash(req.body.admin_password, 10, (err, hash) => {
-        admin_info = {
-            admin_email: req.body.admin_email,
-            admin_name: req.body.admin_name,
+exports.addNewAdmin = (req, res) => {
+    var adminPassword = req.body.admin_password;
+    var adminEmail = req.body.admin_email;
+    var adminName = req.body.admin_name;
+    bcrypt.hash(adminPassword, 10, (err, hash) => {
+        var adminInfo = {
+            admin_email: adminEmail,
+            admin_name: adminName,
             admin_password: hash,
             company_id: 1,
             admin_role: 1
         }
-        admin_model.admin_create(admin_info)
+        admin_model.addNewAdmin(adminInfo)
             .then((result) => {
                 req.flash(`flash`, {
                     msg: result, type: 'success'
@@ -30,11 +33,12 @@ exports.admin_create = (req, res) => {
     })
 }
 
-exports.admin_display = (req, res) => {
-    admin_model.admin_display(req.params.id)
+exports.getAdmin = (req, res) => {
+    var adminId = req.params.id;
+    admin_model.getAdmin(adminId)
         .then((result) => {
-            var admin_info = req.session.admin_info;
-            req.session.admin_info = null;
+            var adminInput = req.session.adminInput;
+            req.session.adminInput = null;
             res.render('admin_edit', {
                 title: "禾豐春總管",
                 icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
@@ -42,7 +46,7 @@ exports.admin_display = (req, res) => {
                 message: req.flash(`flash`),
                 validation: req.flash(`validation`),
                 data: result,
-                admin_info: admin_info
+                admin_info: adminInput
             })
         })
         .catch((err) => {
@@ -55,8 +59,9 @@ exports.admin_display = (req, res) => {
         })
 }
 
-exports.admin_display_list = (req, res) => {
-    admin_model.admin_display_list(req.query)
+exports.getAdminList = (req, res) => {
+    var pageInfo = req.query;
+    admin_model.getAdminList(pageInfo)
         .then((result) => {
             res.render('admin', {
                 title: "禾豐春總管",
@@ -78,26 +83,29 @@ exports.admin_display_list = (req, res) => {
         })
 }
 
-exports.admin_new = (req, res) => {
-    var admin_info = req.session.admin_info;
-    req.session.admin_info = null;
+exports.addNewAdminPage = (req, res) => {
+    var adminInput = req.session.adminInput;
+    req.session.adminInput = null;
     res.render('admin_add', {
         title: "禾豐春總管",
         icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
         navigation: '<li><a href="/api/dashboard">管理總表</a></li><li><a href="/api/admin">禾豐春總管</a></li><li class="active">新增禾豐春總管</li>',
         message: req.flash(`flash`),
         validation: req.flash(`validation`),
-        admin_info: admin_info
+        admin_info: adminInput
     });
 }
 
 
-exports.admin_update = (req, res) => {
-    admin_info = {
-        admin_name: req.body.admin_name,
-        admin_email: req.body.admin_email
+exports.updateAdmin = (req, res) => {
+    var adminId = req.params.id;
+    var adminEmail = req.body.admin_email;
+    var adminName = req.body.admin_name;
+    var adminInfo = {
+        admin_name: adminName,
+        admin_email: adminEmail
     }
-    admin_model.admin_update(req.params.id, admin_info)
+    admin_model.updateAdmin(adminId, adminInfo)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'
@@ -116,8 +124,9 @@ exports.admin_update = (req, res) => {
         })
 }
 
-exports.admin_delete = (req, res) => {
-    admin_model.admin_delete(req.params.id)
+exports.deleteAdmin = (req, res) => {
+    var adminId = req.params.id;
+    admin_model.deleteAdmin(adminId)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result, type: 'success'

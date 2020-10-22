@@ -1,7 +1,7 @@
 const zoneModel = require('../../model/admin/zone');
 
-exports.displayZoneList = (req, res) => {
-    zoneModel.displayZoneList(req.query, req.session.company)
+exports.getZoneList = (req, res) => {
+    zoneModel.getZoneList(req.query, req.session.company)
         .then((result) => {
             res.render('zone', {
                 title: "物流區域",
@@ -84,7 +84,7 @@ exports.addNewZone = (req, res) => {
         })
 }
 
-exports.displayZone = (req, res) => {
+exports.getZone = (req, res) => {
     var countryInfo, cityInfo, cityInCurrentZone;
     zoneModel.getCountry()
         .then((result) => {
@@ -93,7 +93,7 @@ exports.displayZone = (req, res) => {
         })
         .then((result) => {
             cityInfo = result;
-            return zoneModel.displayZone(req.params.id);
+            return zoneModel.getZone(req.params.id);
         })
         .then((result) => {
             cityInCurrentZone = result;

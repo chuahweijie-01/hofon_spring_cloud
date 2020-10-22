@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <%- include('partial/header')-%>
-
 <body>
     <section id="main">
         <div class="container">
@@ -35,14 +33,13 @@
                                         <span class="error text-danger"></span>
                                         <% } %>
                                     </div>
-
                                     <div class="form-group col-md-6">
                                         <label>運費</label>
                                         <% if (validation.length > 0) { %>
                                         <% if (validation.find(element => element.param == "zone_charge")) { %>
                                         <div class="has-error">
                                             <input type="text" name="zone_charge" id="zone_charge" class="form-control" placeholder="" value="<%= zone_info.zone_charge %>">
-                                            <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "country_code"))].msg; %></span>
+                                            <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "zone_charge"))].msg; %></span>
                                         </div>
                                         <% } else { %>
                                         <input type="text" name="zone_charge" id="zone_charge" class="form-control" placeholder="" value="<%= zone_info.zone_charge %>">
@@ -55,7 +52,6 @@
                                     </div>
                                 </div>
                                 <hr>
-
                                 <label style="font-size: 20px;">國家選擇</label>
                                 <div class="row">
                                     <div class="form-group col-md-6">
@@ -73,14 +69,20 @@
                                     </div>
                                 </div>
                                 <hr>
-
                                 <label style="font-size: 20px; margin-bottom: 10px;">地區選擇</label>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <input class="form-control" id="tableSearch" type="text" placeholder="Search">
+                                        <input class="form-control" id="tableSearch" type="text" placeholder="搜索">
                                     </div>
                                 </div>
                                 <br>
+                                <% if (validation.length > 0) { %>
+                                <% if (validation.find(element => element.param == "city_id")) { %>
+                                <div class="has-error" style="padding-bottom: 10px;">
+                                    <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "city_id"))].msg; %></span>
+                                </div>
+                                <% } %>
+                                <% } %>
                                 <table class="table table-striped table-hover">
                                     <tbody id="myTable">
 
@@ -104,7 +106,6 @@
                                         </tr>
                                         <% } %>
                                         <% } %>
-
                                     </tbody>
                                 </table>
                                 <input type="submit" class="btn btn-danger" value="更新">
@@ -115,9 +116,6 @@
             </div>
         </div>
     </section>
-
     <%- include('partial/footer')-%>
-
 </body>
-
 </html>

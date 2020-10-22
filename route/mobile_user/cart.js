@@ -4,12 +4,11 @@ const cart_controller = require('../../controller/mobile_user/cart');
 router = express.Router();
 router.use(express.static('./public/'));
 
-router.get('/', cart_controller.cart_products);
+router.get('/', cart_controller.getCartProductList);
 
-router.post('/product/:id', cart_controller.add_to_cart);
+router.post('/product/:id', cart_controller.addToCart);
 
-router.delete('/', cart_controller.delete_cart);
-router.delete('/product/:id', cart_controller.remove_from_cart);
-
+router.delete('/product/:id', cart_controller.deleteFromCart);
+router.delete('/', cart_controller.deleteCart);
 
 module.exports = router;

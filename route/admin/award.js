@@ -1,21 +1,21 @@
 const express = require('express');
-const award_controller = require('../../controller/admin/award');
-const award_validation = require('../../middleware/admin/award_validation');
+const awardController = require('../../controller/admin/award');
+const awardValidation = require('../../middleware/admin/award_validation');
 const privilegesValidation = require('../../middleware/admin/privilegesValidation');
 
 router = express.Router();
 router.use(express.static('./public/'));
 
-router.use(privilegesValidation.privilegesCheck("7"));
+router.use(privilegesValidation.privilegesCheck('7'));
 
-router.post('/', award_validation.award_info_input, award_controller.award_create)
+router.post('/', awardValidation.awardInputValidation, awardController.addNewAward)
 
-router.get('/new', award_controller.award_new);
-router.get('/', award_controller.award_display_list);
-router.get('/:id', award_controller.award_display)
+router.get('/new', awardController.award_new);
+router.get('/', awardController.getAwardList);
+router.get('/:id', awardController.getAward)
 
-router.put('/:id', award_validation.award_info_input, award_controller.award_update)
+router.put('/:id', awardValidation.awardInputValidation, awardController.updateAward)
 
-router.delete('/:id', award_controller.award_delete)
+router.delete('/:id', awardController.deleteAward)
 
 module.exports = router;

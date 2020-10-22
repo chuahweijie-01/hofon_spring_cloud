@@ -1,6 +1,6 @@
 const connectionPool = require('../../conf/db');
 
-exports.product_list = (company_id) => {
+exports.getProductList = (company_id) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -16,7 +16,7 @@ exports.product_list = (company_id) => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料選取失敗');
         })
         .finally(() => {
@@ -38,7 +38,7 @@ exports.award_details = (product_id) => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料選取失敗');
         })
         .finally(() => {
@@ -57,7 +57,7 @@ exports.ads_list = (company_id) => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料選取失敗');
         })
         .finally(() => {
@@ -65,7 +65,7 @@ exports.ads_list = (company_id) => {
         })
 }
 
-exports.category_list = (company_id) => {
+exports.getCategoryList = (company_id) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -80,7 +80,7 @@ exports.category_list = (company_id) => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料新增失敗');
         })
         .finally(() => {
@@ -104,7 +104,7 @@ exports.product_display = (product_id, company_id) => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料新增失敗');
         })
         .finally(() => {
@@ -125,7 +125,7 @@ exports.product_image = (product_id) => {
             return rows;
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料新增失敗');
         })
         .finally(() => {

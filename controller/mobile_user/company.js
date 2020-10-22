@@ -1,7 +1,7 @@
 const company_model = require('../../model/mobile_user/company');
 
-exports.company_list = (req, res) => {
-    company_model.company_list(req.session.user)
+exports.getCompanyList = (req, res) => {
+    company_model.getCompanyList(req.session.user)
         .then((result) => {
             res.status(200).send({ company_info: result });
         })
@@ -10,8 +10,8 @@ exports.company_list = (req, res) => {
         })
 }
 
-exports.company_details = (req, res) => {
-    company_model.company_details(req.session.company)
+exports.getCompanyDetails = (req, res) => {
+    company_model.getCompanyDetails(req.session.company)
         .then((result) => {
             res.status(200).send({ company_info: result });
         })

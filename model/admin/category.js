@@ -1,31 +1,32 @@
 const connectionPool = require('../../conf/db');
 
-exports.category_create = (category_name, company_id) => {
-    var connection, company = [];
+exports.addNewCategory = (categoryName, companyId) => {
+    var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM productdb.category WHERE category_name = ?`, [category_name])
+            return connection.query(`SELECT * FROM productdb.category WHERE category_name = ?`, [categoryName])
         })
         .then(([rows, field]) => {
             if (rows.length) throw new Error(`該類別已存在數據庫，請使用新的類別名稱`);
-            else return connection.query(`INSERT INTO productdb.category (category_name) VALUES (?)`, [category_name])
+            else return connection.query(`INSERT INTO productdb.category (category_name) VALUES (?)`, [categoryName])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) {
-                for (var i = 0; i < company_id.length; i++) {
-                    company.push([company_id[i], result[0].insertId])
+                var company = [];
+                for (var i = 0; i < companyId.length; i++) {
+                    company.push([companyId[i], result[0].insertId])
                 }
                 return connection.query(`INSERT INTO companydb.company_category (company_id, category_id) VALUES ?`, [company]);
             }
             else throw new Error(`資料新增失敗`);
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return (`${category_name} 新增成功`);
+            if (result[0].affectedRows >= 1) return (`${categoryName} 新增成功`);
             else throw new Error(`資料新增失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料新增失敗');
         })
         .finally(() => {
@@ -33,7 +34,7 @@ exports.category_create = (category_name, company_id) => {
         })
 };
 
-exports.company_list = () => {
+exports.getCompanyList = () => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -44,7 +45,7 @@ exports.company_list = () => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('系統暫時無法運行該功能');
         })
         .finally(() => {
@@ -52,21 +53,20 @@ exports.company_list = () => {
         })
 };
 
-exports.category_display = (category_id) => {
+exports.getCategory = (categoryId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
             return connection.query(`SELECT category.category_id, category.category_name, company.company_id, company.company_name FROM productdb.category AS category
                                      JOIN companydb.company_category AS company_category ON category.category_id = company_category.category_id
-                                     JOIN companydb.company as company ON company_category.company_id = company.company_id
-                                     WHERE category.category_id = ?`, [category_id])
+                                     JOIN companydb.company as company ON company_category.company_id = company.company_id WHERE category.category_id = ?`, [categoryId])
         })
         .then(([rows, field]) => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('系統暫時無法運行該功能');
         })
         .finally(() => {
@@ -74,23 +74,22 @@ exports.category_display = (category_id) => {
         })
 };
 
-exports.category_display_list = (page_info) => {
+exports.getCategoryList = (pageInfo) => {
     var connection;
-    var page_size = 10;
-    var number_of_rows, number_of_pages;
-    var number_per_page = parseInt(page_size, 10) || 1;
-    var page = parseInt(page_info.page, 10) || 1;
-    var skip = (page - 1) * number_per_page;
-    var limit = `${skip} , ${number_per_page}`;
-
+    var pageSize = 10;
+    var numberOfRows, numberOfPages;
+    var numberPerPage = parseInt(pageSize, 10) || 1;
+    var page = parseInt(pageInfo.page, 10) || 1;
+    var skip = (page - 1) * numberPerPage;
+    var limit = `${skip} , ${numberPerPage}`;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
             return connection.query(`SELECT COUNT(*) AS total_category FROM productdb.category`)
         })
         .then(([rows, field]) => {
-            number_of_rows = rows[0].total_product;
-            number_of_pages = Math.ceil(number_of_rows / number_per_page);
+            numberOfRows = rows[0].total_product;
+            numberOfPages = Math.ceil(numberOfRows / numberPerPage);
             return connection.query(`SELECT COUNT(*) AS total_company, company_category.category_id, category.category_name,
                                      DATE_FORMAT(category.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
                                      FROM companydb.company_category AS company_category
@@ -102,18 +101,18 @@ exports.category_display_list = (page_info) => {
                 rows: rows,
                 pagination: {
                     current: page,
-                    number_per_page: number_per_page,
+                    numberPerPage: numberPerPage,
                     has_previous: page > 1,
                     previous: page - 1,
-                    has_next: page < number_of_pages,
+                    has_next: page < numberOfPages,
                     next: page + 1,
-                    last_page: Math.ceil(number_of_rows / page_size)
+                    last_page: Math.ceil(numberOfRows / pageSize)
                 }
             }
             return (result);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('系統暫時無法運行該功能');
         })
         .finally(() => {
@@ -121,31 +120,32 @@ exports.category_display_list = (page_info) => {
         })
 };
 
-exports.category_update = (category_info, company_id) => {
-    var connection, company = [];
+exports.updateCategory = (categoryInfo, companyId) => {
+    var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM companydb.company_category WHERE category_id = ?`, [category_info.category_id])
+            return connection.query(`DELETE FROM companydb.company_category WHERE category_id = ?`, [categoryInfo.category_id])
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) {
-                for (var i = 0; i < company_id.length; i++) {
-                    company.push([company_id[i], category_info.category_id])
+                var company = [];
+                for (var i = 0; i < companyId.length; i++) {
+                    company.push([companyId[i], categoryInfo.category_id])
                 }
                 return connection.query(`INSERT INTO companydb.company_category (company_id, category_id) VALUES ?`, [company])
             } else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return connection.query(`UPDATE productdb.category SET ? WHERE category_id = ?`, [category_info, category_info.category_id]);
+            if (result[0].affectedRows >= 1) return connection.query(`UPDATE productdb.category SET ? WHERE category_id = ?`, [categoryInfo, categoryInfo.category_id]);
             else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
-            if (result[0].info.match('Changed: 1')) return (`${category_info.category_name} 資料更新成功`);
+            if (result[0].info.match('Changed: 1')) return (`${categoryInfo.category_name} 資料更新成功`);
             else return (`關聯公司刷新成功`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料更新失敗');
         })
         .finally(() => {
@@ -153,19 +153,19 @@ exports.category_update = (category_info, company_id) => {
         })
 };
 
-exports.category_delete = (category_id) => {
+exports.deleteCategory = (categoryId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM productdb.category WHERE category_id = ?`, [category_id])
+            return connection.query(`DELETE FROM productdb.category WHERE category_id = ?`, [categoryId])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);
             else throw new Error(`資料刪除失敗`);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err}`);
+            console.error(err);
             throw new Error('資料刪除失敗');
         })
         .finally(() => {
