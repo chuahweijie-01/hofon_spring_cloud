@@ -1,16 +1,15 @@
 const connectionPool = require('../../conf/db');
 
-exports.getProductList = (company_id) => {
+exports.getProductList = (company_id, categoryId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT product.product_id, product.product_name, product.product_price, product.product_member_price, product.product_rating, image.image_path,
-                                     category.category_id, category.category_name, product_with_discount.discount_price FROM productdb.product AS product
-                                     LEFT JOIN productdb.image AS image ON product.product_id = image.product_id
-                                     JOIN productdb.category AS category ON product.category_id = category.category_id
-                                     LEFT JOIN productdb.product_with_discount AS product_with_discount ON product.product_id = product_with_discount.product_id
-                                     WHERE product.company_id = ? AND product.product_status = 1 GROUP BY product.product_id`, [company_id]);
+            if (categoryId) {
+                return connection.query(`SELECT * FROM productdb.product_full_information WHERE company_id = ? AND category_id = ?`, [company_id, categoryId]);
+            } else {
+                return connection.query(`SELECT * FROM productdb.product_full_information WHERE company_id = ?`, [company_id]);
+            }
         })
         .then(([rows, field]) => {
             return (rows);

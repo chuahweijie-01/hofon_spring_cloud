@@ -44,7 +44,8 @@ const m_cart = require('./route/mobile_user/cart');
 const m_user = require('./route/mobile_user/user');
 const m_order = require('./route/mobile_user/order');
 const m_paymentGateway = require('./route/mobile_user/paymentGateway');
-const m_analysis = require('./route/mobile_user/analysis');
+
+const analysisResult = require('./route/third_party_application/analysis');
 
 //const paymentGateway = require('./route/mobile_user/paymentGateway');
 
@@ -135,7 +136,8 @@ app.use('/mobile/api/cart', m_cart);
 app.use('/mobile/api/user', m_user);
 app.use('/mobile/api/order', m_order);
 app.use('/mobile/api/payment', m_paymentGateway);
-app.use('/mobile/api/analysis', m_analysis);
+
+app.use('/analysisResult', analysisResult);
 
 //app.use('/payment', paymentGateway);
 

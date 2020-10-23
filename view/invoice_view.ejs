@@ -135,12 +135,10 @@
                                                 </tr>
                                             </tfoot>
                                         </table>
-                                        <% if (data[0].order_status === 3) { %>
                                         <div class="notices">
                                             <div>NOTICE :</div>
-                                            <div class="notice other_option"><%= data[0].order_remarks%></div>
+                                            <div class="notice"><%= data[0].order_remarks%></div>
                                         </div>
-                                        <% } %>
                                     </main>
                                     <footer>
                                         This is a computer-generated document. No signature is required.
@@ -185,8 +183,7 @@
                             class="btn btn-other" id="other_button" style="color: white;">其他</button>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <textarea class="form-control" rows="5" placeholder="該欄位只會保存針對 其他 選項的備注信息"
-                            name="order_remarks"></textarea>
+                        <textarea class="form-control" rows="5" placeholder="備注信息" name="order_remarks"><%= data[0].order_remarks%></textarea>
                     </div>
                 </form>
 

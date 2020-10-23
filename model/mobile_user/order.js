@@ -10,12 +10,6 @@ exports.create_order = (order_info, product_info) => {
         .then((result) => {
             order_id = order_info.order_id;
             for (var i = 0; i < product_info.length; i++) {
-                /*
-                INSERT INTO orderdb.order_product(order_id, product_id, quantity, nett_price, discount_price, total_price)
-                SELECT ?,?,?, product.product_member_price, IFNULL(product_with_discount.discount_price, product.product_member_price), IFNULL(product_with_discount.discount_price * ?, product.product_member_price * ?)
-                FROM productdb.product AS product JOIN productdb.product_with_discount AS product_with_discount ON product_with_discount.product_id = product.product_id
-                WHERE product.product_id = ?
-                */
                 connection.query(`INSERT INTO orderdb.order_product(order_id, product_id, quantity, nett_price, discount_price, total_price)
                                   SELECT ?,?,?, product.product_member_price, product_with_discount.discount_price, product_with_discount.discount_price * ?
                                   FROM productdb.product AS product JOIN productdb.product_with_discount AS product_with_discount ON product_with_discount.product_id = product.product_id

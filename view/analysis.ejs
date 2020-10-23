@@ -28,8 +28,9 @@
                                         <th></th>
                                         <th>名稱</th>
                                         <th>性別</th>
+                                        <th>分析報告序號</th>
                                         <th>項目總數</th>
-                                        <th>分析日期</th>
+                                        <th>上傳日期</th>
                                         <th class="col-md-1 col-lg-1 col-sm-1"></th>
                                     </tr>
                                     <tr>
@@ -41,6 +42,7 @@
                                         <td><%= i + 1; %></td>
                                         <td><%= data[i].user_name %></td>
                                         <td><%= data[i].user_gender %></td>
+                                        <td><%= data[i].analysis_date %></td>
                                         <td><%= data[i].total_method %></td>
                                         <td><%= data[i].created_date %></td>
                                         <td><a class="btn btn-danger" href="/api/analysis/<%= data[i].analysis_id%>"">分析報告</a></td>
