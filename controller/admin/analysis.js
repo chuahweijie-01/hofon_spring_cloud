@@ -1,4 +1,5 @@
 const analysisModel = require('../../model/admin/analysis');
+const fs = require('fs');
 
 exports.getAnalysisReportList = (req, res) => {
     analysisModel.getAnalysisReportList(req.query, req.session.company)
@@ -24,11 +25,11 @@ exports.getAnalysisReportList = (req, res) => {
 
 exports.analysis_report = (req, res) => {
     var analysisId = req.params.id;
-    analysisModel.getAnalysisReport(analysisId)
+    var companyId = req.session.company;
+    analysisModel.getAnalysisReport(analysisId, companyId)
         .then((result) => {
-            //res.send('Hello World ! ')
             res.render('analysis_report', {
-                title: "分析報告",
+                title: '分析報告',
                 icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',
                 navigation: '<li><a href="/api/dashboard">管理總表</a><li class="active">分析報告</li>',
                 message: req.flash(`flash`),
@@ -43,4 +44,27 @@ exports.analysis_report = (req, res) => {
             })
         })
 
+}
+
+exports.deleteAnalysisData = (req, res) => {
+    var analysisId = req.params.id;
+    analysisModel.deleteAnalysisData(analysisId)
+        .then((result) => {
+            fs.rmdirSync(`public/${result[0].image_path}`, { recursive: true });
+            req.flash(`flash`, {
+                msg: '已刪除分析報告',
+                type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/analysis');
+            })
+        })
+        .catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message, type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/analysis');
+            })
+        })
 }

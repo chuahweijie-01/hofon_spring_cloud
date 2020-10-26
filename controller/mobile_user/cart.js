@@ -12,6 +12,7 @@ exports.getCartProductList = (req, res) => {
 
 exports.addToCart = (req, res) => {
     var quantity = req.body.quantity;
+    console.log(`Cart Quantity : ${quantity}`);
     cart_model.addToCart(req.session.user, req.session.company, req.params.id, quantity)
         .then((result) => {
             res.status(200).send({ message: result });

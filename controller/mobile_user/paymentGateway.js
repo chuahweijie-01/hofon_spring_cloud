@@ -21,17 +21,20 @@ const initiateParameters = (orderId, totalPrice, cummulativeProduct, returnURL, 
 exports.generateOrder = (req, res) => {
     var orderId = req.params.id;
     var companyId = req.params.company;
+
     paymentModel.generateOrder(orderId)
         .then((result) => {
             var cummulativeProduct = '';
+
+            var ngrokTunnel = "https://ca69254f1733.ngrok.io";
 
             for (var i in result) {
                 cummulativeProduct = cummulativeProduct + result[i].product_name + '#'
             }
 
             var totalPrice = (Math.round(result[0].order_final_price)).toString();
-            var returnURL = `${process.env.NGROK_IP}/mobile/api/payment/result/${orderId}/${companyId}`;
-            var orderResultURL = `${process.env.NGROK_IP}/mobile/api/payment/resultInterface`;
+            var returnURL = `${ngrokTunnel}/mobile/api/payment/result/${orderId}/${companyId}`;
+            var orderResultURL = `${ngrokTunnel}/mobile/api/payment/resultInterface`;
             initiateParameters(orderId, totalPrice, cummulativeProduct, returnURL, orderResultURL);
 
             let create = new ecpay_payment();

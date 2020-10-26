@@ -109,7 +109,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get('/download', (req, res) => {
+/*app.get('/download', (req, res) => {
     res.render('login', {
         title: "登入頁面",
         message: req.flash(`flash`)
@@ -123,7 +123,7 @@ app.get('/download', (req, res) => {
         //res.send(html)
     });
     //res.download("./public/image/pdf_file_download.pdf")
-})
+})*/
 
 app.get('/session', (req, res) => {
     res.send(`Expires in ${req.session.cookie.maxAge / 1000} 's`);

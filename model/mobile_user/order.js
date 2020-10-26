@@ -45,7 +45,7 @@ exports.order_list = (company_id, user_id) => {
             return (rows);
         })
         .catch((err) => {
-            console.error(`CATCH ERROR : ${err.message}`);
+            console.error(`CATCH ERROR ORDER : ${err.message}`);
             throw new Error(err.message);
         })
         .finally(() => {

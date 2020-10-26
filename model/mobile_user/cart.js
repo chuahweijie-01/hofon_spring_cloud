@@ -28,7 +28,7 @@ exports.getCartProductList = (userId, companyId) => {
         })
 }
 
-exports.addToCart = (userId, companyId, productId, quantity) => {
+exports.addToCart2 = (userId, companyId, productId, quantity) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -39,6 +39,8 @@ exports.addToCart = (userId, companyId, productId, quantity) => {
             return connection.query(`INSERT INTO userdb.cart_product(cart_id, product_id, quantity)
                                      VALUES ((SELECT cart_id FROM userdb.cart WHERE user_id = ?), ?, ?)
                                      ON DUPLICATE KEY UPDATE quantity = ? `, [userId, productId, quantity, quantity]);
+            return connection.query(`SELECT cart_id FROM userdb.cart WHERE user_id = ? AND company_id = ?`, [userId, companyId])
+            if (!rows.length) return
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) return (`產品已添加至購物車`);
@@ -46,6 +48,47 @@ exports.addToCart = (userId, companyId, productId, quantity) => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR : ${err.message}`);
+            throw new Error(`無法添加至購物車`);
+        })
+        .finally(() => {
+            connection.release();
+        })
+}
+
+exports.addToCart = (userId, companyId, productId, quantity) => {
+    var connection;
+    var cartId;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`START TRANSACTION`);
+        })
+        .then((result) => {
+            return connection.query(`INSERT INTO userdb.cart (user_id, company_id) VALUES (?,?) ON DUPLICATE KEY UPDATE user_id = user_id `, [userId, companyId]);
+        })
+        .then((result) => {
+            return connection.query(`SELECT cart_id FROM userdb.cart WHERE user_id = ? AND company_id = ?`, [userId, companyId]);
+        })
+        .then(([rows, field]) => {
+            cartId = rows[0].cart_id;
+            return connection.query(`SELECT * FROM userdb.cart_product WHERE cart_Id = ? AND product_id = ?`, [cartId, productId]);
+        })
+        .then(([rows, field]) => {
+            if (!rows.length) {
+                return connection.query(`INSERT INTO userdb.cart_product(cart_id, product_id, quantity) VALUES (?,?,?)`, [cartId, productId, quantity]);
+            } else {
+                return connection.query(`UPDATE userdb.cart_product SET quantity = ? WHERE cart_id = ? AND product_id = ?`, [quantity, cartId, productId]);
+            }
+        })
+        .then((result) => {
+            if (result[0].affectedRows >= 1) return connection.query(`COMMIT`);
+            else throw new Error(`無法添加至購物車`);
+        })
+        .then((result) => {
+            return (`產品已添加至購物車`);
+        })
+        .catch((err) => {
+            console.error(`CATCH ERROR CART: ${err.message}`);
             throw new Error(`無法添加至購物車`);
         })
         .finally(() => {

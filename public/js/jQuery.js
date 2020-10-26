@@ -68,6 +68,7 @@ $(function () {
             filename: currentDate + '.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
+            pagebreak: { mode: 'avoid-all', after: '#invoice' },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
         html2pdf().from(invoice).set(opt).save();
