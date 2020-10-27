@@ -47,6 +47,8 @@ const m_paymentGateway = require('./route/mobile_user/paymentGateway');
 
 const analysisResult = require('./route/third_party_application/analysis');
 
+const testEndPoint = require('./route/test/test');
+
 //const paymentGateway = require('./route/mobile_user/paymentGateway');
 
 const middlewares = require('./middleware/middlewares');
@@ -138,6 +140,8 @@ app.use('/mobile/api/order', m_order);
 app.use('/mobile/api/payment', m_paymentGateway);
 
 app.use('/analysisResult', analysisResult);
+
+app.use('/test/v1', testEndPoint);
 
 //app.use('/payment', paymentGateway);
 

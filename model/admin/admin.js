@@ -36,7 +36,7 @@ exports.getAdminList = (pageInfo) => {
             numberOfRows = rows[0].total_admin;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
             return connection.query(`SELECT admin_id, admin_name, DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login
-                                     FROM companydb.admin WHERE admin_role = 1 LIMIT ?`, [limit]);
+                                     FROM companydb.admin WHERE admin_role = 1 LIMIT ${limit}`);
         })
         .then(([rows, field]) => {
             result = {

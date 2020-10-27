@@ -6,7 +6,7 @@ exports.getCartProductList = (userId, companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT product.product_id, product.product_name, product.product_price, product.product_member_price, cart_product.quantity, image.image_path,
+            return connection.query(`SELECT cart.cart_id, product.product_id, product.product_name, product.product_price, product.product_member_price, cart_product.quantity, image.image_path,
                                      SUM(product.product_member_price * cart_product.quantity) AS total_price, product_with_discount.discount_price,
                                      SUM(product_with_discount.discount_price * cart_product.quantity) AS total_discount_price FROM userdb.cart AS cart
                                      JOIN userdb.cart_product AS cart_product ON cart.cart_id = cart_product.cart_id
@@ -22,33 +22,6 @@ exports.getCartProductList = (userId, companyId) => {
         .catch((err) => {
             console.error(err);
             throw new Error(`無法使用購物車功能`);
-        })
-        .finally(() => {
-            connection.release();
-        })
-}
-
-exports.addToCart2 = (userId, companyId, productId, quantity) => {
-    var connection;
-    return connectionPool.getConnection()
-        .then((connect) => {
-            connection = connect;
-            return connection.query(`INSERT INTO userdb.cart (user_id, company_id) VALUES (?,?) ON DUPLICATE KEY UPDATE user_id = user_id `, [userId, companyId]);
-        })
-        .then(() => {
-            return connection.query(`INSERT INTO userdb.cart_product(cart_id, product_id, quantity)
-                                     VALUES ((SELECT cart_id FROM userdb.cart WHERE user_id = ?), ?, ?)
-                                     ON DUPLICATE KEY UPDATE quantity = ? `, [userId, productId, quantity, quantity]);
-            return connection.query(`SELECT cart_id FROM userdb.cart WHERE user_id = ? AND company_id = ?`, [userId, companyId])
-            if (!rows.length) return
-        })
-        .then((result) => {
-            if (result[0].affectedRows >= 1) return (`產品已添加至購物車`);
-            else throw new Error(`無法添加至購物車`);
-        })
-        .catch((err) => {
-            console.error(`CATCH ERROR : ${err.message}`);
-            throw new Error(`無法添加至購物車`);
         })
         .finally(() => {
             connection.release();
@@ -96,12 +69,12 @@ exports.addToCart = (userId, companyId, productId, quantity) => {
         })
 }
 
-exports.deleteFromCart = (productId) => {
+exports.deleteFromCart = (cartId, productId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM userdb.cart_product WHERE product_id = ? `, [productId]);
+            return connection.query(`DELETE FROM userdb.cart_product WHERE cart_id = ? AND product_id = ?`, [cartId, productId]);
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) return (`產品已從購物車移除`);

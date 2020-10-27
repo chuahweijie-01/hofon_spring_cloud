@@ -870,3 +870,12 @@ textarea {
     border-top: 1px solid #aaa;
     padding: 8px 0
 }
+
+.information {
+    text-align: left
+}
+
+.information .information-title {
+    margin-top: 0;
+    color: #c0392b
+}

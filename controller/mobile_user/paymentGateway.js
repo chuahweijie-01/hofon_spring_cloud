@@ -21,20 +21,23 @@ const initiateParameters = (orderId, totalPrice, cummulativeProduct, returnURL, 
 exports.generateOrder = (req, res) => {
     var orderId = req.params.id;
     var companyId = req.params.company;
+    var userId = req.session.user;
 
-    paymentModel.generateOrder(orderId)
+    var cartId;
+
+    paymentModel.getCartId(userId, companyId)
+        .then((result) => {
+            cartId = result;
+            return paymentModel.generateOrder(orderId)
+        })
         .then((result) => {
             var cummulativeProduct = '';
-
-            var ngrokTunnel = "https://ca69254f1733.ngrok.io";
-
             for (var i in result) {
                 cummulativeProduct = cummulativeProduct + result[i].product_name + '#'
             }
-
             var totalPrice = (Math.round(result[0].order_final_price)).toString();
-            var returnURL = `${ngrokTunnel}/mobile/api/payment/result/${orderId}/${companyId}`;
-            var orderResultURL = `${ngrokTunnel}/mobile/api/payment/resultInterface`;
+            var returnURL = `${process.env.NGROK_IP}/mobile/api/payment/result/${cartId}/${companyId}`;
+            var orderResultURL = `${process.env.NGROK_IP}/mobile/api/payment/resultInterface`;
             initiateParameters(orderId, totalPrice, cummulativeProduct, returnURL, orderResultURL);
 
             let create = new ecpay_payment();
@@ -48,20 +51,23 @@ exports.generateOrder = (req, res) => {
 }
 
 exports.paymentResult = (req, res) => {
-    //PaymentDate 結賬日期
-    //TradeDate 訂單日期
-    //MerchantTradeNo 廠商訂單編號
-    //TradeNo 綠界金流訂單編號
     var orderId = req.body.MerchantTradeNo;
     var orderAmount = req.body.TradeAmt;
-    var orderView = `${process.env.NGROK_IP}/mobile/api/order/${orderId}`;
     var paymentDate = req.body.PaymentDate;
     var tradeDate = req.body.TradeDate;
     var tradeNo = req.body.TradeNo;
 
-    paymentModel.merchantTradeNoUpdate(req.params.id, paymentDate, tradeDate, tradeNo)
+    var companyId = req.params.company;
+    var cartId = req.params.cart;
+    
+    var orderView = `${process.env.NGROK_IP}/mobile/api/order/${orderId}`;
+    
+    paymentModel.merchantTradeNoUpdate(orderId, paymentDate, tradeDate, tradeNo)
         .then((result) => {
-            return paymentModel.getCompanyEmail(req.params.company);
+            return paymentModel.deleteCartItem(cartId, orderId)
+        })
+        .then((result) => {
+            return paymentModel.getCompanyEmail(companyId);
         })
         .then((result) => {
 
@@ -70,15 +76,16 @@ exports.paymentResult = (req, res) => {
                 auth: {
                     user: process.env.EMAIL,
                     pass: process.env.EMAIL_PASSWORD
-                }
+                },
+                from: process.env.EMAIL
             })
 
             const options = {
                 from: '雲端商城小助手 <hscserverbot-noreply@gmail.com>',
                 to: result[0].company_email,
                 subject: '[雲端商城] 訂單通知',
-                html: 
-                `
+                html:
+                    `
                 <p>親愛的管理者你好：</p>
                 <p>系統偵測到新的訂單，請儘快查閲。</p>
                 <hr>

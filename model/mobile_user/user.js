@@ -5,8 +5,7 @@ exports.user_address = (user_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT address.address_id, address.address_detail, city.city_name, country.country_name_chinese
-                                     FROM userdb.user AS user
+            return connection.query(`SELECT address.address_id, address.address_detail, city.city_name, country.country_name_chinese FROM userdb.user AS user
                                      JOIN userdb.user_address AS user_address ON user.user_id = user_address.user_id
                                      JOIN userdb.address AS address ON user_address.address_id = address.address_id
                                      JOIN userdb.city AS city ON address.city_id = city.city_id
@@ -49,7 +48,7 @@ exports.country = () => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT country_id, country_name_chinese FROM userdb.country`)
+            return connection.query(`SELECT country_id, country_name_chinese FROM userdb.country WHERE country_id = 1`)
         })
         .then(([rows, field]) => {
             return (rows);

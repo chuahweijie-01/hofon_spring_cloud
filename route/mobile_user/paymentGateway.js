@@ -8,6 +8,6 @@ router.post('/resultInterface', paymentController.resultInterface);
 
 router.get('/:id/:company', paymentController.generateOrder);
 
-router.post('/result/:id/:company', paymentController.paymentResult);
+router.post('/result/:cart/:company', paymentController.paymentResult);
 
 module.exports = router;
