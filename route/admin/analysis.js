@@ -5,7 +5,7 @@ router = express.Router();
 router.use(express.static('./public/'));
 
 router.get('/', analysis_controller.getAnalysisReportList);
-router.get('/:id', analysis_controller.analysis_report);
+router.get('/:id', analysis_controller.getAnalysisReport);
 
 router.delete('/:id', analysis_controller.deleteAnalysisData);
 

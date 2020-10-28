@@ -20,7 +20,7 @@ exports.getAnalysisReportList = (pageInfo, company_id) => {
                                      DATE_FORMAT(analysis.created_date, '%d-%c-%Y %H:%i:%s') AS created_date FROM analysisdb.analysis AS analysis
                                      JOIN analysisdb.analysis_details AS analysis_details ON analysis.analysis_id = analysis_details.analysis_id
                                      JOIN userdb.user AS user ON analysis.user_id = user.user_id
-                                     WHERE analysis.company_id = ? GROUP BY analysis.analysis_id LIMIT ${limit}`, [company_id]);
+                                     WHERE analysis.company_id = ? AND analysis_details.image_name <> 'null' GROUP BY analysis.analysis_id LIMIT ${limit}`, [company_id]);
         })
         .then(([rows, field]) => {
             result = {

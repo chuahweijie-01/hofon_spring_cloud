@@ -44,12 +44,11 @@ const m_cart = require('./route/mobile_user/cart');
 const m_user = require('./route/mobile_user/user');
 const m_order = require('./route/mobile_user/order');
 const m_paymentGateway = require('./route/mobile_user/paymentGateway');
+const m_analysis = require('./route/mobile_user/analysis');
 
 const analysisResult = require('./route/third_party_application/analysis');
 
 const testEndPoint = require('./route/test/test');
-
-//const paymentGateway = require('./route/mobile_user/paymentGateway');
 
 const middlewares = require('./middleware/middlewares');
 
@@ -111,22 +110,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-/*app.get('/download', (req, res) => {
-    res.render('login', {
-        title: "登入頁面",
-        message: req.flash(`flash`)
-    }, (err, html) => {
-        pdf.create(html, options).toStream((err, stream_file) => {
-            if (err) console.log(err);
-            res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', 'attachment; filename=file_download.pdf;');
-            stream_file.pipe(res)
-        })
-        //res.send(html)
-    });
-    //res.download("./public/image/pdf_file_download.pdf")
-})*/
-
 app.get('/session', (req, res) => {
     res.send(`Expires in ${req.session.cookie.maxAge / 1000} 's`);
 })
@@ -138,34 +121,33 @@ app.use('/mobile/api/cart', m_cart);
 app.use('/mobile/api/user', m_user);
 app.use('/mobile/api/order', m_order);
 app.use('/mobile/api/payment', m_paymentGateway);
+app.use('/mobile/api/analysis', m_analysis);
 
 app.use('/analysisResult', analysisResult);
 
 app.use('/test/v1', testEndPoint);
 
-//app.use('/payment', paymentGateway);
-
 app.use('/', web_auth);
 
-app.use('*', middlewares.checkAuthenticated)
+//app.use('*', middlewares.checkAuthenticated)
 
-app.use('/api/client', client);
-app.use('/api/company', company);
-app.use('/api/user', user);
-app.use('/api/product', product);
-app.use('/api/discount', discount);
-app.use('/api/dashboard', dashboard);
-app.use('/api/category', category);
-app.use('/api/award', award);
-app.use('/api/order', order);
-app.use('/api/invoice', invoice);
-app.use('/api/ads', ads);
-app.use('/api/mobile', mobile);
-app.use('/api/admin', admin);
-app.use('/api/album', album);
-app.use('/api/world', world);
-app.use('/api/analysis', analysis);
-app.use('/api/zone', zone);
+app.use('/api/client', middlewares.checkAuthenticated, client);
+app.use('/api/company', middlewares.checkAuthenticated, company);
+app.use('/api/user', middlewares.checkAuthenticated, user);
+app.use('/api/product', middlewares.checkAuthenticated, product);
+app.use('/api/discount', middlewares.checkAuthenticated, discount);
+app.use('/api/dashboard', middlewares.checkAuthenticated, dashboard);
+app.use('/api/category', middlewares.checkAuthenticated, category);
+app.use('/api/award', middlewares.checkAuthenticated, award);
+app.use('/api/order', middlewares.checkAuthenticated, order);
+app.use('/api/invoice', middlewares.checkAuthenticated, invoice);
+app.use('/api/ads', middlewares.checkAuthenticated, ads);
+app.use('/api/mobile', middlewares.checkAuthenticated, mobile);
+app.use('/api/admin', middlewares.checkAuthenticated, admin);
+app.use('/api/album', middlewares.checkAuthenticated, album);
+app.use('/api/world', middlewares.checkAuthenticated, world);
+app.use('/api/analysis', middlewares.checkAuthenticated, analysis);
+app.use('/api/zone', middlewares.checkAuthenticated, zone);
 
 var port = process.env.PORT || 3000
 app.listen(3000, () => console.log(`Listening to Port : ${port} ... `));

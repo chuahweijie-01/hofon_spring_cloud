@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> <%= title%> </title>
+    <link href="css/classic.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+</head>
+
+<body>
+    <section id="main">
+        <div class="container" style="padding-top: 50px;">
+            <div class="col-md-2 col-lg-2"></div>
+            <div class="col-md-8 col-lg-8">
+                <div class="panel panel-default">
+                    <div class="toolbar hidden-print">
+                        <div class="row">
+                            <div class="text-left col-sm-6" style="padding-top: 20px; padding-left: 45px;">
+                                <button class="btn btn-danger btn-info" id="download"><i class="fa fa-file-pdf-o"></i> 下載PDF檔案</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="padding-bottom: 0;">
+                    <div class="panel-body" style="padding-top: 0;">
+                        <div class="invoice overflow-auto" style="padding-top: 0;" id="invoice">
+                            <div style="min-width: 600px">
+                                <header>
+                                    <div class="row information">
+                                        <div class="col-sm-4">
+                                            <h1 class="information-title">個人資料</h1><br>
+                                        </div>
+                                    </div>
+                                    <div class="row contacts">
+                                        <div class="col-sm-4 invoice-to">
+                                            <h2 class="to"> <%= analysisId1Report[0].user_name%> </h2>
+                                            <div>公司：<%= analysisId1Report[0].company_name%></div>
+                                            <div>性別：<%= analysisId1Report[0].user_gender%></div>
+                                            <div>出身：<%= analysisId1Report[0].user_birth_year%> 年 <%= analysisId1Report[0].user_birth_month%> 月
+                                                <%= analysisId1Report[0].user_birth_day%> 日</div>
+                                            <div class="email"><a
+                                                    href="mailto:<%= analysisId1Report[0].user_email%>"><%= analysisId1Report[0].user_email%></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </header>
+                                <header>
+                                    <div class="row information">
+                                        <div class="col-sm-4">
+                                            <h1 class="information-title">數據總覽</h1><br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6"><canvas id="radarchart1" height="350" width="350"></canvas></div>
+                                        <div class="col-sm-6"><canvas id="radarchart2" height="350" width="350"></canvas></div>
+                                    </div>
+                                </header>
+                                <main>
+                                    <div class="row">
+                                        <% if (analysisItem1.length) { %>
+                                        <% for (var i=0; i< analysisItem1.length; i++) { %>
+                                        <% if(analysisId1Report[i].image_name != 'null') { %>
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="thumbnail img-wrap">
+                                                <div style="text-align: center; padding: 5px 15px;">
+                                                    <img src="<%= analysisId1Report[i].image_path%>/<%= analysisId1Report[i].image_name%>" width="220" height="350">
+                                                </div>
+                                                <div class="caption" style="text-align: center;">
+                                                    <div><strong><%= analysisId1Report[i].model_name_chn%></strong></div>
+                                                    <div>分數：<%= analysisId1Report[i].score%></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } else { %>
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="thumbnail img-wrap">
+                                                <div style="text-align: center; padding: 5px 15px;">
+                                                    <img src="" width="220" height="350">
+                                                </div>
+                                                <div class="caption" style="text-align: center;">
+                                                    <div><strong>NULL</strong></div>
+                                                    <div>分數：NULL</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <% if(analysisId2Report[i].image_name != 'null') { %>
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="thumbnail img-wrap">
+                                                <div style="text-align: center; padding: 5px 15px;">
+                                                    <img src="<%= analysisId2Report[i].image_path%>/<%= analysisId2Report[i].image_name%>" width="220" height="350">
+                                                </div>
+                                                <div class="caption" style="text-align: center;">
+                                                    <div><strong><%= analysisId2Report[i].model_name_chn%></strong></div>
+                                                    <div>分數：<%= analysisId2Report[i].score%></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } else { %>
+                                        <div class="col-sm-6 col-md-6">
+                                            <div class="thumbnail img-wrap">
+                                                <div style="text-align: center; padding: 5px 15px;">
+                                                    <img src="/image/image_not_found.jpg" width="220" height="350">
+                                                </div>
+                                                <div class="caption" style="text-align: center;">
+                                                    <div><strong><%= analysisId2Report[i].model_name_chn%></strong></div>
+                                                    <div>分數：<%= analysisId2Report[i].score%></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <% } %>
+                                        <% } %>
+                                    </div>
+                                </main>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jQuery.js"></script>
+    <script>
+        function getLabelArray(labelArray) {
+            var analysisString = labelArray;
+            return analysisString.split(',')
+        }
+        function getDataArray(dataArray) {
+            var scoreString = dataArray;
+            return scoreString.split(',')
+        }
+        var radarchart1 = document.getElementById('radarchart1').getContext('2d');
+        var radarchart1 = new Chart(radarchart1, {
+            type: 'radar',
+            data: {
+                labels: getLabelArray("<%= analysisItem1%>"),
+                datasets: [{
+                    backgroundColor: 'rgba(255, 153, 0, 0.3)',
+                    borderColor: 'rgba(255, 153, 0, 1)',
+                    pointBackgroundColor: 'rgba(255, 153, 0, 1)',
+                    borderWidth: 2,
+                    data: getDataArray("<%= itemScore1%>"),
+                    pointRadius: 3,
+                    pointHoverRadius: 5
+                }]
+            },
+            options: {
+                scale: {
+                    pointLabels: {
+                        fontSize: 16,
+                    },
+                    ticks: {
+                        display: false,
+                        beginAtZero: true,
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+        var radarchart2 = document.getElementById('radarchart2').getContext('2d');
+        var radarchart2 = new Chart(radarchart2, {
+            type: 'radar',
+            data: {
+                labels: getLabelArray("<%= analysisItem2%>"),
+                datasets: [{
+                    backgroundColor: 'rgba(255, 153, 0, 0.3)',
+                    borderColor: 'rgba(255, 153, 0, 1)',
+                    pointBackgroundColor: 'rgba(255, 153, 0, 1)',
+                    borderWidth: 2,
+                    data: getDataArray("<%= itemScore2%>"),
+                    pointRadius: 3,
+                    pointHoverRadius: 5
+                }]
+            },
+            options: {
+                scale: {
+                    pointLabels: {
+                        fontSize: 16,
+                    },
+                    ticks: {
+                        display: false,
+                        beginAtZero: true,
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

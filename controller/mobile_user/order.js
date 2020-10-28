@@ -9,8 +9,8 @@ exports.create_order = (req, res) => {
         company_id: req.session.company,
     }
 
-    var alpha_json_array = req.body;
-    var product_info = (Object.keys(alpha_json_array).map(function (k) { return alpha_json_array[k]; }));
+    var productArray = req.body;
+    var product_info = (Object.keys(productArray).map(function (k) { return productArray[k]; }));
 
     order_model.create_order(order_info, product_info[0])
         .then((result) => {

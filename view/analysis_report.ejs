@@ -57,10 +57,10 @@
                                         <div class="row">
                                             <% if (data.length) { %>
                                             <% for (var i=0; i< data.length; i++) { %>
+                                            <% if (data[i].image_name != "null") { %>
                                             <div class="col-sm-6 col-md-6">
                                                 <div class="thumbnail img-wrap">
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-hidden="true"></button>
+                                                    <button type="button" class="close" data-dismiss="modal"aria-hidden="true"></button>
                                                     <div style="text-align: center; padding: 5px 15px;">
                                                         <img src="<%= data[i].image_path%>/<%= data[i].image_name%>" width="220" height="350">
                                                     </div>
@@ -70,6 +70,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <% } %>
                                             <% } %>
                                             <% } %>
                                         </div>

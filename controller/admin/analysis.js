@@ -23,7 +23,7 @@ exports.getAnalysisReportList = (req, res) => {
         })
 }
 
-exports.analysis_report = (req, res) => {
+exports.getAnalysisReport = (req, res) => {
     var analysisId = req.params.id;
     var companyId = req.session.company;
     analysisModel.getAnalysisReport(analysisId, companyId)
@@ -32,9 +32,7 @@ exports.analysis_report = (req, res) => {
             var itemScore = [];
             for (var item in result) {
                 analysisItem.push(result[item].model_name_chn);
-            }
-            for (var score in result) {
-                itemScore.push(result[score].score);
+                itemScore.push(result[item].score);
             }
             res.render('analysis_report', {
                 title: '分析報告',
@@ -53,7 +51,6 @@ exports.analysis_report = (req, res) => {
                 res.redirect('/api/dashboard');
             })
         })
-
 }
 
 exports.deleteAnalysisData = (req, res) => {

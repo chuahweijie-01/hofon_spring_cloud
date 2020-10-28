@@ -2,7 +2,7 @@ const connectionPool = require('../../conf/db');
 
 exports.getOrderList = (companyId, pageInfo) => {
     var connection;
-    var pageSize = 10;
+    var pageSize = 50;
     var numberOfRows, numberOfPages;
     var numberPerPage = parseInt(pageSize, 10) || 1;
     var page = parseInt(pageInfo.page, 10) || 1;
