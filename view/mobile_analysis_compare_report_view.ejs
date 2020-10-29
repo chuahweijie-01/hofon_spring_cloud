@@ -19,7 +19,7 @@
     <section id="main">
         <div class="container" style="padding-top: 50px;">
             <div class="col-md-2 col-lg-2"></div>
-            <div class="col-md-8 col-lg-8">
+            <div class="col-md-8 col-lg-8" style="min-width: 720px;">
                 <div class="panel panel-default">
                     <div class="toolbar hidden-print">
                         <div class="row">
@@ -43,11 +43,8 @@
                                             <h2 class="to"> <%= analysisId1Report[0].user_name%> </h2>
                                             <div>公司：<%= analysisId1Report[0].company_name%></div>
                                             <div>性別：<%= analysisId1Report[0].user_gender%></div>
-                                            <div>出身：<%= analysisId1Report[0].user_birth_year%> 年 <%= analysisId1Report[0].user_birth_month%> 月
-                                                <%= analysisId1Report[0].user_birth_day%> 日</div>
-                                            <div class="email"><a
-                                                    href="mailto:<%= analysisId1Report[0].user_email%>"><%= analysisId1Report[0].user_email%></a>
-                                            </div>
+                                            <div>出身：<%= analysisId1Report[0].user_birth_year%> 年 <%= analysisId1Report[0].user_birth_month%> 月 <%= analysisId1Report[0].user_birth_day%> 日</div>
+                                            <div class="email"><a href="mailto:<%= analysisId1Report[0].user_email%>"><%= analysisId1Report[0].user_email%></a></div>
                                         </div>
                                     </div>
                                 </header>
@@ -58,8 +55,8 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6"><canvas id="radarchart1" height="350" width="350"></canvas></div>
-                                        <div class="col-sm-6"><canvas id="radarchart2" height="350" width="350"></canvas></div>
+                                        <div class="col-sm-6 col-xs-6"><canvas id="radarchart1" height="350" width="350"></canvas></div>
+                                        <div class="col-sm-6 col-xs-6"><canvas id="radarchart2" height="350" width="350"></canvas></div>
                                     </div>
                                 </header>
                                 <main>
@@ -67,7 +64,7 @@
                                         <% if (analysisItem1.length) { %>
                                         <% for (var i=0; i< analysisItem1.length; i++) { %>
                                         <% if(analysisId1Report[i].image_name != 'null') { %>
-                                        <div class="col-sm-6 col-md-6">
+                                        <div class="col-sm-6 col-md-6 col-xs-6">
                                             <div class="thumbnail img-wrap">
                                                 <div style="text-align: center; padding: 5px 15px;">
                                                     <img src="<%= analysisId1Report[i].image_path%>/<%= analysisId1Report[i].image_name%>" width="220" height="350">
@@ -79,7 +76,7 @@
                                             </div>
                                         </div>
                                         <% } else { %>
-                                        <div class="col-sm-6 col-md-6">
+                                        <div class="col-sm-6 col-md-6 col-xs-6">
                                             <div class="thumbnail img-wrap">
                                                 <div style="text-align: center; padding: 5px 15px;">
                                                     <img src="" width="220" height="350">
@@ -92,7 +89,7 @@
                                         </div>
                                         <% } %>
                                         <% if(analysisId2Report[i].image_name != 'null') { %>
-                                        <div class="col-sm-6 col-md-6">
+                                        <div class="col-sm-6 col-md-6 col-xs-6">
                                             <div class="thumbnail img-wrap">
                                                 <div style="text-align: center; padding: 5px 15px;">
                                                     <img src="<%= analysisId2Report[i].image_path%>/<%= analysisId2Report[i].image_name%>" width="220" height="350">
@@ -104,7 +101,7 @@
                                             </div>
                                         </div>
                                         <% } else { %>
-                                        <div class="col-sm-6 col-md-6">
+                                        <div class="col-sm-6 col-md-6 col-xs-6">
                                             <div class="thumbnail img-wrap">
                                                 <div style="text-align: center; padding: 5px 15px;">
                                                     <img src="/image/image_not_found.jpg" width="220" height="350">

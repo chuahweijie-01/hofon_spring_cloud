@@ -1,9 +1,12 @@
-const discount_model = require('../../model/admin/discount')
+const discount_model = require('../../model/admin/discount');
+const UUID = require('uuid');
 
 exports.addNewDiscount = (req, res) => {
     var product_id;
+    var discountId = UUID.v4();
     Array.isArray(req.body.product_id) ? product_id = req.body.product_id : product_id = [req.body.product_id];
     discount_info = {
+        discount_id: discountId,
         company_id: req.session.company,
         discount_name: req.body.discount_name,
         discount_percent: req.body.discount_percent
@@ -19,7 +22,7 @@ exports.addNewDiscount = (req, res) => {
         })
         .catch((err) => {
             req.flash(`flash`, {
-                msg: err, type: `error`
+                msg: err.message, type: `error`
             });
             req.session.save(function (err) {
                 res.redirect('/api/discount');

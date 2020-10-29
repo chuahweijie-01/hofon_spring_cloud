@@ -19,7 +19,7 @@ exports.addNewClient = (clientInfo, privilegesId) => {
             if (result[0].affectedRows === 1) {
                 var privileges = [];
                 for (var i = 0; i < privilegesId.length; i++) {
-                    privileges.push([result[0].insertId, privilegesId[i]])
+                    privileges.push([clientInfo.admin_id, privilegesId[i]])
                 }
                 return connection.query(`INSERT INTO companydb.admin_privileges (admin_id, privileges_id) VALUES ?`, [privileges]);
             }

@@ -8,7 +8,6 @@ exports.create_order = (req, res) => {
         user_id: req.session.user,
         company_id: req.session.company,
     }
-
     var productArray = req.body;
     var product_info = (Object.keys(productArray).map(function (k) { return productArray[k]; }));
 

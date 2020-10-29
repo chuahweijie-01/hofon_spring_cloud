@@ -1,13 +1,16 @@
 const bcrypt = require('bcrypt');
 const client_model = require('../../model/admin/client');
+const UUID = require('uuid');
 
 exports.addNewClient = (req, res) => {
     var privileges_id, client_info;
+    var clientId = UUID.v4();
     Array.isArray(req.body.privileges_id) ? privileges_id = req.body.privileges_id : privileges_id = [req.body.privileges_id];
 
     bcrypt.hash(req.body.admin_password, 10, (err, hash) => {
         if (req.session.role == 1) {
             client_info = {
+                admin_id: clientId,
                 admin_email: req.body.admin_email,
                 admin_name: req.body.admin_name,
                 admin_password: hash,
@@ -15,6 +18,7 @@ exports.addNewClient = (req, res) => {
             }
         } else {
             client_info = {
+                admin_id: clientId,
                 admin_email: req.body.admin_email,
                 admin_name: req.body.admin_name,
                 admin_password: hash,

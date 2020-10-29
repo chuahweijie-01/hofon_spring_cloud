@@ -5,20 +5,26 @@ exports.addNewDiscount = (discountInfo, productId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
+            return connection.query(`START TRANSACTION`)
+        })
+        .then((result) => {
             return connection.query(`INSERT INTO productdb.discount SET ?`, [discountInfo]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) {
                 var product = [];
                 for (var i = 0; i < productId.length; i++) {
-                    product.push([result[0].insertId, productId[i]])
+                    product.push([discountInfo.discount_id, productId[i]])
                 }
                 return connection.query(`INSERT INTO productdb.product_discount(discount_id, product_id) VALUES ?`, [product]);
             } else throw new Error(`資料新增失敗`);
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return (`已新增${discountInfo.discount_name}促銷`);
+            if (result[0].affectedRows >= 1) return connection.query(`COMMIT`);
             else throw new Error(`資料新增失敗`);
+        })
+        .then((result) => {
+            return (`已新增${discountInfo.discount_name}促銷`);
         })
         .catch((err) => {
             console.error(err);

@@ -19,7 +19,7 @@
     <section id="main">
         <div class="container" style="padding-top: 50px;">
             <div class="col-md-2 col-lg-2"></div>
-            <div class="col-md-8 col-lg-8">
+            <div class="col-md-8 col-lg-8" style="min-width: 720px;">
                 <div class="panel panel-default">
                     <div class="toolbar hidden-print">
                         <div class="row">
@@ -43,11 +43,8 @@
                                             <h2 class="to"> <%= data[0].user_name%> </h2>
                                             <div>公司：<%= data[0].company_name%></div>
                                             <div>性別：<%= data[0].user_gender%></div>
-                                            <div>出身：<%= data[0].user_birth_year%> 年 <%= data[0].user_birth_month%> 月
-                                                <%= data[0].user_birth_day%> 日</div>
-                                            <div class="email"><a
-                                                    href="mailto:<%= data[0].user_email%>"><%= data[0].user_email%></a>
-                                            </div>
+                                            <div>出身：<%= data[0].user_birth_year%> 年 <%= data[0].user_birth_month%> 月 <%= data[0].user_birth_day%> 日</div>
+                                            <div class="email"><a href="mailto:<%= data[0].user_email%>"><%= data[0].user_email%></a></div>
                                         </div>
                                     </div>
                                 </header>
@@ -57,10 +54,9 @@
                                             <h1 class="information-title">數據總覽</h1><br>
                                         </div>
                                     </div>
-                                    <div class=row>
-                                        <div class="col-sm-6"><canvas id="barchart" height="350" width="350"></canvas>
-                                        </div>
-                                        <div class="col-sm-6"><canvas id="radarchart"></canvas></div>
+                                    <div class="row">
+                                        <div class="form-group col-sm-6 col-xs-6"><canvas id="barchart" height="350" width="350"></canvas></div>
+                                        <div class="form-group col-sm-6 col-xs-6"><canvas id="radarchart" height="250" width="250"></canvas></div>
                                     </div>
                                 </header>
                                 <main>
@@ -68,10 +64,9 @@
                                         <% if (data.length) { %>
                                         <% for (var i=0; i< data.length; i++) { %>
                                         <% if (data[i].image_name != "null") { %>
-                                        <div class="col-sm-6 col-md-6">
+                                        <div class="col-sm-6 col-md-6 col-xs-6">
                                             <div class="thumbnail img-wrap">
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-hidden="true"></button>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                                                 <div style="text-align: center; padding: 5px 15px;">
                                                     <img src="<%= data[i].image_path%>/<%= data[i].image_name%>" width="220" height="350">
                                                 </div>

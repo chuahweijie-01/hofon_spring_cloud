@@ -1,6 +1,7 @@
 const connectionPool = require('../../conf/db');
 
 exports.generateOrder = (order_id) => {
+    console.log('Generate Order : ' + order_id)
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -28,7 +29,6 @@ exports.getCartId = (userId, companyId) => {
             return connection.query(`SELECT cart_id FROM userdb.cart WHERE user_id = ? AND company_id = ?`, [userId, companyId]);
         })
         .then(([rows, field]) => {
-            console.log(rows)
             if (rows.length) return rows[0].cart_id;
             else throw new Error('無法獲得購物車資料');
         })

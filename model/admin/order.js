@@ -17,7 +17,7 @@ exports.getOrderList = (companyId, pageInfo) => {
             numberOfRows = rows[0].total_order;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
             return connection.query(`SELECT order_id, order_total_item, order_final_price, order_status, DATE_FORMAT(trade_date, '%d-%c-%Y %H:%i:%s') AS trade_date
-                                     FROM orderdb.order WHERE company_id = ? AND order_status = 0 LIMIT ${limit}`, [companyId]);
+                                     FROM orderdb.order WHERE company_id = ? AND order_status = 0 ORDER BY trade_date DESC LIMIT ${limit}`, [companyId]);
         })
         .then(([rows, field]) => {
             result = {

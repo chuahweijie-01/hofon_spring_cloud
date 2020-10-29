@@ -1,11 +1,12 @@
-const award_model = require('../../model/admin/award')
+const award_model = require('../../model/admin/award');
+const UUID = require('uuid');
 
 exports.addNewAward = (req, res) => {
-
     var product_id;
+    var awardId = UUID.v4();
     Array.isArray(req.body.product_id) ? product_id = req.body.product_id : product_id = [req.body.product_id];
-
     award_info = {
+        award_id: awardId,
         company_id: req.session.company,
         award_name: req.body.award_name,
         award_description: req.body.award_description

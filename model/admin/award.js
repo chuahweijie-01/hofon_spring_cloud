@@ -11,7 +11,7 @@ exports.addNewAward = (awardInfo, productId) => {
             if (result[0].affectedRows === 1) {
                 var product = [];
                 for (var i = 0; i < productId.length; i++) {
-                    product.push([productId[i], result[0].insertId])
+                    product.push([productId[i], awardInfo.award_id])
                 }
                 return connection.query(`INSERT INTO productdb.product_award (product_id, award_id) VALUES ?`, [product]);
             }

@@ -47,7 +47,7 @@ exports.addNewProduct = (productInfo) => {
             return connection.query(`INSERT INTO productdb.product SET ?`, [productInfo]);
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return (result[0].insertId);
+            if (result[0].affectedRows >= 1) return (result);
             else throw new Error(`資料新增失敗`);
         })
         .catch((err) => {

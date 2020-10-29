@@ -3,7 +3,7 @@ const analysisModel = require('../../model/mobile_user/analysis');
 exports.getAnalysisReport = (req, res) => {
     var analysisId = req.params.id;
     var companyId = req.query.company;
-    /*analysisModel.getAnalysisReport(analysisId, companyId)
+    analysisModel.getAnalysisReport(analysisId, companyId)
         .then((result) => {
             var analysisItem = [];
             var itemScore = [];
@@ -18,14 +18,8 @@ exports.getAnalysisReport = (req, res) => {
                 itemScore: itemScore
             });
         }).catch((err) => {
-            req.flash(`flash`, {
-                msg: err.message, type: `error`
-            });
-            req.session.save(function (err) {
-                res.redirect('/api/dashboard');
-            })
-        })*/
-    res.status(200).send('MAINTENANCE ...');
+            res.status(404).send({ message: err.message });
+        })
 }
 
 exports.getAnalysisReportList = (req, res) => {
@@ -50,7 +44,7 @@ exports.getAnalysisCompareReport = (req, res) => {
     var companyId = req.query.company;
     var analysisId1Report, analysisId2Report;
 
-    /*analysisModel.getAnalysisReport(analysisId1, companyId)
+    analysisModel.getAnalysisReport(analysisId1, companyId)
         .then((result) => {
             analysisId1Report = result;
             for (var item in result) {
@@ -76,7 +70,6 @@ exports.getAnalysisCompareReport = (req, res) => {
             });
         })
         .catch((err) => {
-            res.status(404).send({ message: err.message })
-        })*/
-    res.status(200).send('MAINTENANCE ...');
+            res.status(404).send({ message: err.message });
+        })
 }

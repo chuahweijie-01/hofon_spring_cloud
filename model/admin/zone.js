@@ -98,7 +98,7 @@ exports.addNewZone = (zoneInfo, city_id) => {
             if (result[0].affectedRows === 1) {
                 var city = [];
                 for (var i = 0; i < city_id.length; i++) {
-                    city.push([result[0].insertId, city_id[i]])
+                    city.push([zoneInfo.zone_id, city_id[i]])
                 }
                 return connection.query(`INSERT INTO companydb.zone_city(zone_id, city_id) VALUES ?`, [city])
             } else throw new Error(`資料新增失敗`);

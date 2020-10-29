@@ -64,7 +64,7 @@ exports.currentDateTime = () => {
 
     currentDateTimeFormat = {
         MerchantTradeDate: MerchantTradeDate,
-        MerchantTradeNo: MerchantTradeNo
+        MerchantTradeNo: MerchantTradeNo,
     }
 
     return currentDateTimeFormat;

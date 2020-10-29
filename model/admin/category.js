@@ -1,28 +1,28 @@
 const connectionPool = require('../../conf/db');
 
-exports.addNewCategory = (categoryName, companyId) => {
+exports.addNewCategory = (categoryInfo, companyId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM productdb.category WHERE category_name = ?`, [categoryName])
+            return connection.query(`SELECT * FROM productdb.category WHERE category_name = ?`, [categoryInfo.category_name])
         })
         .then(([rows, field]) => {
             if (rows.length) throw new Error(`該類別已存在數據庫，請使用新的類別名稱`);
-            else return connection.query(`INSERT INTO productdb.category (category_name) VALUES (?)`, [categoryName])
+            else return connection.query(`INSERT INTO productdb.category SET ?`, [categoryInfo])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) {
                 var company = [];
                 for (var i = 0; i < companyId.length; i++) {
-                    company.push([companyId[i], result[0].insertId])
+                    company.push([companyId[i], categoryInfo.category_id])
                 }
                 return connection.query(`INSERT INTO companydb.company_category (company_id, category_id) VALUES ?`, [company]);
             }
             else throw new Error(`資料新增失敗`);
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return (`${categoryName} 新增成功`);
+            if (result[0].affectedRows >= 1) return (`${categoryInfo.category_name} 新增成功`);
             else throw new Error(`資料新增失敗`);
         })
         .catch((err) => {

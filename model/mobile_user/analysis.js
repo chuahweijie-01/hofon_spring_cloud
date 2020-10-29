@@ -28,8 +28,7 @@ exports.getAnalysisReportList = (userId, companyId) => {
             return connection.query(`SELECT analysis_id, analysis_date, created_date FROM analysisdb.analysis WHERE company_id = ? AND user_id = ?`, [companyId, userId]);
         })
         .then(([rows, field]) => {
-            if (rows.length) return rows;
-            else throw new Error('該用戶沒有分析資料');
+            return rows;
         })
         .catch((err) => {
             console.error(err);

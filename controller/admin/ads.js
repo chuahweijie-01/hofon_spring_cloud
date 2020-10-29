@@ -1,6 +1,7 @@
 const fs = require('fs');
 const ads_model = require(`../../model/admin/ads`);
-const upload_image = require('../../middleware/admin/upload_image')
+const upload_image = require('../../middleware/admin/upload_image');
+const UUID = require('uuid');
 
 exports.upload_ads_image = (req, res, next) => {
     var adsId = req.params.id;
@@ -36,8 +37,9 @@ exports.upload_ads_image = (req, res, next) => {
 }
 
 exports.addNewAds = (req, res) => {
-
+    var adsId = UUID.v4();
     adsInfo = {
+        advertisement_id: adsId,
         company_id: req.session.company,
         advertisement_name: req.body.advertisement_name,
         advertisement_image: `/image/admin/${req.session.company}/ads/${req.file.filename}`,

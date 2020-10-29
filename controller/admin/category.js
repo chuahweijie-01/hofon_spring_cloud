@@ -1,12 +1,15 @@
-const category_model = require('../../model/admin/category')
+const category_model = require('../../model/admin/category');
+const UUID = require('uuid');
 
 exports.addNewCategory = (req, res) => {
-
     var company_id;
-    category_name = req.body.category_name;
+    var categoryId = UUID.v4();
+    var categoryInfo = {
+        category_id : categoryId,
+        category_name : req.body.category_name
+    }
     Array.isArray(req.body.company_id) ? company_id = req.body.company_id : company_id = [req.body.company_id];
-
-    category_model.addNewCategory(category_name, company_id)
+    category_model.addNewCategory(categoryInfo, company_id)
         .then((result) => {
             req.flash(`flash`, {
                 msg: result,

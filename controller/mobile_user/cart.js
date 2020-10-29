@@ -1,4 +1,5 @@
 const cart_model = require('../../model/mobile_user/cart');
+const UUID = require('uuid');
 
 exports.getCartProductList = (req, res) => {
     cart_model.getCartProductList(req.session.user, req.session.company)
@@ -12,7 +13,8 @@ exports.getCartProductList = (req, res) => {
 
 exports.addToCart = (req, res) => {
     var quantity = req.body.quantity;
-    cart_model.addToCart(req.session.user, req.session.company, req.params.id, quantity)
+    var cartId = UUID.v4();
+    cart_model.addToCart(cartId, req.session.user, req.session.company, req.params.id, quantity)
         .then((result) => {
             res.status(200).send({ message: result });
         })

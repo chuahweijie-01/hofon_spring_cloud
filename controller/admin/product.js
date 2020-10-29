@@ -1,6 +1,7 @@
 const fs = require('fs');
 const product_model = require('../../model/admin/product');
 const upload_image = require('../../middleware/admin/upload_image');
+const UUID = require('uuid');
 
 exports.upload_product_images = (req, res, next) => {
     upload_image.upload_product_image(req, res, (err) => {
@@ -35,8 +36,9 @@ exports.upload_product_images = (req, res, next) => {
 }
 
 exports.addNewProduct = (req, res) => {
-
+    var productId = UUID.v4();
     product_info = {
+        product_id : productId,
         product_name: req.body.product_name,
         product_price: req.body.product_price,
         product_member_price: req.body.product_member_price,
@@ -49,10 +51,10 @@ exports.addNewProduct = (req, res) => {
     }
 
     product_model.addNewProduct(product_info)
-        .then((product_id) => {
+        .then((result) => {
             var image_path = [];
             for (var i = 0; i < (req.files).length; i++) {
-                image_path.push([product_id, `/image/admin/${req.session.company}/product/${req.files[i].filename}`])
+                image_path.push([productId, `/image/admin/${req.session.company}/product/${req.files[i].filename}`])
             }
             return product_model.addNewProductImage(image_path)
         })

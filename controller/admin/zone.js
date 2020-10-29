@@ -1,4 +1,5 @@
 const zoneModel = require('../../model/admin/zone');
+const UUID = require('uuid');
 
 exports.getZoneList = (req, res) => {
     zoneModel.getZoneList(req.query, req.session.company)
@@ -59,8 +60,10 @@ exports.openNewZone = (req, res) => {
 
 exports.addNewZone = (req, res) => {
     var city_id;
+    var zoneId = UUID.v4();
     Array.isArray(req.body.city_id) ? city_id = req.body.city_id : city_id = [req.body.city_id];
     var zoneInfo = {
+        zone_id: zoneId,
         company_id: req.session.company,
         zone_name: req.body.zone_name,
         zone_charge: req.body.zone_charge

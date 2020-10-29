@@ -1,12 +1,15 @@
 const bcrypt = require('bcrypt');
-const admin_model = require('../../model/admin/admin')
+const admin_model = require('../../model/admin/admin');
+const UUID = require('uuid');
 
 exports.addNewAdmin = (req, res) => {
+    var adminId = UUID.v4();
     var adminPassword = req.body.admin_password;
     var adminEmail = req.body.admin_email;
     var adminName = req.body.admin_name;
     bcrypt.hash(adminPassword, 10, (err, hash) => {
         var adminInfo = {
+            admin_id: adminId,
             admin_email: adminEmail,
             admin_name: adminName,
             admin_password: hash,

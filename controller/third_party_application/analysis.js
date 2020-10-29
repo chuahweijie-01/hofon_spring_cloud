@@ -4,14 +4,6 @@ const fs = require('fs');
 const mv = require('mv');
 
 exports.upload = (req, res, next) => {
-    /*uploadImage.analysisImage(req, res, (err) => {
-        if (err) res.status(404).send(err);
-        else {
-            console.log(req.files);
-            next();
-        }
-    })*/
-
     var tempFolderName = Date.now();
     req.session.tempFolderName = tempFolderName;
     uploadImage.analysisImageFunction(tempFolderName)(req, res, (err) => {

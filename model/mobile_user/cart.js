@@ -28,7 +28,7 @@ exports.getCartProductList = (userId, companyId) => {
         })
 }
 
-exports.addToCart = (userId, companyId, productId, quantity) => {
+exports.addToCart = (cartId, userId, companyId, productId, quantity) => {
     var connection;
     var cartId;
     return connectionPool.getConnection()
@@ -37,7 +37,7 @@ exports.addToCart = (userId, companyId, productId, quantity) => {
             return connection.query(`START TRANSACTION`);
         })
         .then((result) => {
-            return connection.query(`INSERT INTO userdb.cart (user_id, company_id) VALUES (?,?) ON DUPLICATE KEY UPDATE user_id = user_id `, [userId, companyId]);
+            return connection.query(`INSERT INTO userdb.cart (cart_id, user_id, company_id) VALUES (?,?,?) ON DUPLICATE KEY UPDATE user_id = user_id `, [cartId, userId, companyId]);
         })
         .then((result) => {
             return connection.query(`SELECT cart_id FROM userdb.cart WHERE user_id = ? AND company_id = ?`, [userId, companyId]);
