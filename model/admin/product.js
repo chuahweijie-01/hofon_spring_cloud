@@ -82,7 +82,7 @@ exports.getCategoryList = (companyId) => {
 
 exports.getProductList = (companyId, pageInfo) => {
     var connection;
-    var pageSize = 10;
+    var pageSize = 20;
     var numberOfRows, numberOfPages;
     var numberPerPage = parseInt(pageSize, 10) || 1;
     var page = parseInt(pageInfo.page, 10) || 1;
@@ -101,7 +101,7 @@ exports.getProductList = (companyId, pageInfo) => {
                                      FROM productdb.product AS product
                                      JOIN productdb.category AS category ON product.category_id = category.category_id
                                      JOIN companydb.company AS company ON product.company_id = company.company_id
-                                     WHERE company.company_id = ? LIMIT ${limit}`, [companyId]);
+                                     WHERE company.company_id = ? AND product.deleted = 0 LIMIT ${limit}`, [companyId]);
         })
         .then(([rows, field]) => {
             result = {
@@ -178,7 +178,8 @@ exports.deleteProduct = (productId) => {
         })
         .then(([rows, field]) => {
             image_path = rows;
-            return connection.query(`DELETE FROM productdb.product WHERE product_id = ?`, [productId]);
+            //return connection.query(`DELETE FROM productdb.product WHERE product_id = ?`, [productId]);
+            return connection.query(`UPDATE productdb.product SET deleted = 1, product_status = 0 WHERE product_id = ?`, [productId]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (image_path);

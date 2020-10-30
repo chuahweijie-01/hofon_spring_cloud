@@ -46,7 +46,8 @@ const m_order = require('./route/mobile_user/order');
 const m_paymentGateway = require('./route/mobile_user/paymentGateway');
 const m_analysis = require('./route/mobile_user/analysis');
 
-const analysisResult = require('./route/third_party_application/analysis');
+const analysis3rdParty = require('./route/third_party_application/analysis');
+const user3rdParty = require('./route/third_party_application/user');
 
 const testEndPoint = require('./route/test/test');
 
@@ -114,6 +115,7 @@ app.get('/session', (req, res) => {
     res.send(`Expires in ${req.session.cookie.maxAge / 1000} 's`);
 })
 
+//REACT NATIVE ENDPOINT
 app.use('/mobile', mobile_auth);
 app.use('/mobile/api/company', m_company);
 app.use('/mobile/api/product', m_product);
@@ -123,14 +125,15 @@ app.use('/mobile/api/order', m_order);
 app.use('/mobile/api/payment', m_paymentGateway);
 app.use('/mobile/api/analysis', m_analysis);
 
-app.use('/analysisResult', analysisResult);
+//3RD PARTY ENDPOINT
+app.use('/analysisResult', analysis3rdParty);
+app.use('/user', user3rdParty);
 
+//TEST CASE ENDPOINT
 app.use('/test/v1', testEndPoint);
 
+//WEB ADMIN ENDPOINT
 app.use('/', web_auth);
-
-//app.use('*', middlewares.checkAuthenticated)
-
 app.use('/api/client', middlewares.checkAuthenticated, client);
 app.use('/api/company', middlewares.checkAuthenticated, company);
 app.use('/api/user', middlewares.checkAuthenticated, user);
