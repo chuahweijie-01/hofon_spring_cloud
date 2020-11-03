@@ -49,10 +49,12 @@ const m_analysis = require('./route/mobile_user/analysis');
 const analysis3rdParty = require('./route/third_party_application/analysis');
 const user3rdParty = require('./route/third_party_application/user');
 
+const errorPage = require('./route/admin/error');
+
 const testEndPoint = require('./route/test/test');
 
-const middlewares = require('./middleware/middlewares');
 
+const middlewares = require('./middleware/middlewares');
 const passport_conf = require('./conf/passport_conf')(passport);
 
 app.use(cookieParser());
@@ -131,6 +133,9 @@ app.use('/user', user3rdParty);
 
 //TEST CASE ENDPOINT
 app.use('/test/v1', testEndPoint);
+
+//ERROR PAGE ENDPOINT
+app.use('/api/error', errorPage);
 
 //WEB ADMIN ENDPOINT
 app.use('/', web_auth);

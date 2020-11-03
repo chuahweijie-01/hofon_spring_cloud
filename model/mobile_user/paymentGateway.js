@@ -1,7 +1,6 @@
 const connectionPool = require('../../conf/db');
 
 exports.generateOrder = (order_id) => {
-    console.log('Generate Order : ' + order_id)
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -82,7 +81,7 @@ exports.merchantTradeNoUpdate = (orderId, paymentDate, tradeDate, tradeNo) => {
         })
         .then(([rows, field]) => {
             for (var i = 0; i < rows.length; i++) {
-                connection.query(`UPDATE productdb.product SET product_stock = GREATEST(product_stock - ?, 0) WHERE product_id = ?`, [rows[i].quantity, rows[i].product_id])
+                connection.query(`UPDATE productdb.product SET product_stock = GREATEST(product_stock - ?, 0), total_sales = (total_sales + ?) WHERE product_id = ?`, [rows[i].quantity, rows[i].quantity, rows[i].product_id])
                     .then((result) => {
                         // Update continue ...
                     })

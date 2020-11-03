@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partial/header')-%>
+
+<body>
+    <section id="main">
+        <div class="container">
+            <div class="row">
+                <%- include('partial/sidemenu')-%>
+                <div class="col-md-9">
+                    <%- include('partial/flash')-%>
+                    <div class="panel panel-default" style="background-color: lightgray;">
+                        <div class="panel-body text-center" style="min-height: 650px;">
+                            <div class="error-page">
+                            <span class="material-icons">sentiment_very_dissatisfied</span>
+                            </div>
+                            <h1 style="font-size: 100px; margin-top: 0;">404</h1>
+                            <h5>系統暫時無法運行該功能，請稍後再試。</h5>
+                            <h5>There is an error for this page. Please try again later.</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('partial/footer')-%>
+
+</body>
+
+</html>
