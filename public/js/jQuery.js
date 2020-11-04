@@ -184,7 +184,7 @@ $(function () {
         }
     })
 
-    $('#getDateButton').on('click', () => {
+    /*$('#getDateButton').on('click', () => {
         var dateInfo = $('#orderDate').val().split(/\//g);
         var month = dateInfo[0];
         var year = dateInfo[1];
@@ -196,7 +196,7 @@ $(function () {
                 type: "GET",
                 url: `/api/dashboard/?year=${year}&month=${month}`
             }).done((result) => {
-                
+
                 function getLabelArray() {
                     var analysisString = result.orderDay + '';
                     return analysisString.split(',')
@@ -205,7 +205,7 @@ $(function () {
                     var scoreString = result.orderDailyReport + '';
                     return scoreString.split(',')
                 }
-        
+
                 var radarchart = document.getElementById('orderMonthlyReport').getContext('2d');
                 var radarchart = new Chart(radarchart, {
                     type: 'line',
@@ -218,7 +218,7 @@ $(function () {
                             data: getDataArray(),
                             fill: false,
                             label: " 訂單總數"
-        
+
                         }]
                     },
                     options: {
@@ -246,11 +246,78 @@ $(function () {
             })
         }
     });
+    */
 
-    /*$('#datetimepicker10').datetimepicker({
-        viewMode: 'years',
-        format: 'MM/YYYY'
-    });*/
+    $('#datetimepicker10').datetimepicker({
+        startView: 4,
+        minView: 3,
+        maxView: 4,
+        format: 'mm/yyyy',
+        language: 'zh-TW'
+    })
+
+    .on('change', () => {
+        var dateInfo = $('#orderDate').val().split(/\//g);
+        var month = dateInfo[0];
+        var year = dateInfo[1];
+
+        if (dateInfo.length == 0) {
+            console.log("Cannot be empty ! ")
+        } else {
+            $.ajax({
+                type: "GET",
+                url: `/api/dashboard/?year=${year}&month=${month}`
+            }).done((result) => {
+
+                function getLabelArray() {
+                    var analysisString = result.orderDay + '';
+                    return analysisString.split(',')
+                }
+                function getDataArray() {
+                    var scoreString = result.orderDailyReport + '';
+                    return scoreString.split(',')
+                }
+
+                var lineChart = document.getElementById('orderMonthlyReport').getContext('2d');
+                var lineChart = new Chart(lineChart, {
+                    type: 'line',
+                    data: {
+                        labels: getLabelArray(),
+                        datasets: [{
+                            borderColor: "#3e95cd",
+                            pointBackgroundColor: "#3e95cd",
+                            borderWidth: 2,
+                            data: getDataArray(),
+                            fill: true,
+                            label: " 訂單總數"
+
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: '日期'
+                                }
+                            }],
+                            yAxes: [{
+                                display: true,
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: '總數'
+                                }
+                            }]
+                        },
+                        legend: {
+                            display: false
+                        }
+                    }
+                });
+            })
+        }
+    })
 
 });
 
