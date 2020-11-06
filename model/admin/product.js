@@ -244,9 +244,9 @@ exports.publishProduct = (productId, categoryId, companyId) => {
         .then((connect) => {
             connection = connect;
             return connection.query(`SELECT company_product_max, (SELECT COUNT(*) FROM productdb.product AS product
-                                     JOIN companydb.company AS company ON product.company_id = company.company_id
-                                     WHERE product.product_status = 1 AND product.category_id = ? AND product.company_id = ?) AS total_product
-                                     FROM companydb.company WHERE company_id = ?`, [categoryId, companyId, companyId]);
+            JOIN companydb.company AS company ON product.company_id = company.company_id
+            WHERE product.product_status = 1 AND product.category_id = ? AND product.company_id = ?) AS total_product
+            FROM companydb.company WHERE company_id = ?`, [categoryId, companyId, companyId]);
         })
         .then(([rows, field]) => {
             if (rows[0].total_product >= rows[0].company_product_max) throw new Error(`該產品屬性已超過可以發佈的產品上限`);

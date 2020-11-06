@@ -29,12 +29,7 @@ exports.getAppInterfaceSetting = (companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT mobile.header_color, body_color, footer_color, button_1_color,
-                                     company_category.category_id, category.category_name, company_category.button_color
-                                     FROM companydb.mobile_setting AS mobile
-                                     JOIN companydb.company_category AS company_category ON mobile.company_id = company_category.company_id
-                                     JOIN productdb.category AS category ON company_category.category_id = category.category_id
-                                     WHERE mobile.company_id = ?`, [companyId]);
+            return connection.query(`SELECT header_color, body_color, footer_color, button_1_color FROM companydb.mobile_setting WHERE company_id = ?`, [companyId]);
         })
         .then(([rows, field]) => {
             return (rows);

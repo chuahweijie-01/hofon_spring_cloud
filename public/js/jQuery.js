@@ -247,76 +247,144 @@ $(function () {
         }
     });
     */
-
-    $('#datetimepicker10').datetimepicker({
+    $('#revenueDateTimePicker').datetimepicker({
         startView: 4,
         minView: 3,
         maxView: 4,
         format: 'mm/yyyy',
         language: 'zh-TW'
+    }).on('change', () => {
+        var dateInfo = $('#revenueDate').val().split(/\//g);
+        var month = dateInfo[0];
+        var year = dateInfo[1];
+        $.ajax({
+            type: "GET",
+            url: `/api/dashboard/revenuestatistic/month/?year=${year}&month=${month}`
+        }).done((result) => {
+            var randomColor = [];
+
+            for (var i in "<%= revenueMonth%>") {
+                randomColor.push(rgbColorGenerator());
+            }
+
+            function rgbColorGenerator() {
+                var r = Math.floor(Math.random() * 255);
+                var g = Math.floor(Math.random() * 255);
+                var b = Math.floor(Math.random() * 255);
+                return "rgb(" + r + "," + g + "," + b + ")";
+            }
+
+            function getLabelArray() {
+                var analysisString = result.revenueMonth + '';
+                return analysisString.split(',')
+            }
+            function getDataArray() {
+                var scoreString = result.revenueMonthlyReport + '';
+                return scoreString.split(',')
+            }
+
+            $('#revenueMonthlyReport').remove();
+
+            var revenueCanvasParent = document.getElementById('revenueCanvasParent');
+            revenueCanvasParent.innerHTML = '&nbsp;';
+            $('#revenueCanvasParent').append('<canvas id="revenueMonthlyReport"></canvas>');
+
+            var barChart = document.getElementById('revenueMonthlyReport').getContext('2d');
+            var barChart = new Chart(barChart, {
+                type: 'bar',
+                data: {
+                    labels: getLabelArray(),
+                    datasets: [
+                        {
+                            label: "收入",
+                            backgroundColor: randomColor,
+                            data: getDataArray(),
+                        }
+                    ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: new Date().getFullYear() + " 年度 每月收入 ( 臺幣, TWD )"
+                    }
+                }
+            });
+        })
     })
 
-    .on('change', () => {
+    $('#orderDateTimePicker').datetimepicker({
+        startView: 4,
+        minView: 3,
+        maxView: 4,
+        format: 'mm/yyyy',
+        language: 'zh-TW'
+    }).on('change', () => {
         var dateInfo = $('#orderDate').val().split(/\//g);
         var month = dateInfo[0];
         var year = dateInfo[1];
+        $.ajax({
+            type: "GET",
+            url: `/api/dashboard/orderstatistic/?year=${year}&month=${month}`
+        }).done((result) => {
 
-        if (dateInfo.length == 0) {
-            console.log("Cannot be empty ! ")
-        } else {
-            $.ajax({
-                type: "GET",
-                url: `/api/dashboard/?year=${year}&month=${month}`
-            }).done((result) => {
+            function getLabelArray() {
+                var analysisString = result.orderDay + '';
+                return analysisString.split(',')
+            }
+            function getDataArray() {
+                var scoreString = result.orderDailyReport + '';
+                return scoreString.split(',')
+            }
 
-                function getLabelArray() {
-                    var analysisString = result.orderDay + '';
-                    return analysisString.split(',')
-                }
-                function getDataArray() {
-                    var scoreString = result.orderDailyReport + '';
-                    return scoreString.split(',')
-                }
+            $('#orderMonthlyReport').remove();
 
-                var lineChart = document.getElementById('orderMonthlyReport').getContext('2d');
-                var lineChart = new Chart(lineChart, {
-                    type: 'line',
-                    data: {
-                        labels: getLabelArray(),
-                        datasets: [{
-                            borderColor: "#3e95cd",
-                            pointBackgroundColor: "#3e95cd",
-                            borderWidth: 2,
-                            data: getDataArray(),
-                            fill: true,
-                            label: " 訂單總數"
+            var orderCanvasParent = document.getElementById('orderCanvasParent');
+            orderCanvasParent.innerHTML = '&nbsp;';
+            $('#orderCanvasParent').append('<canvas id="orderMonthlyReport"></canvas>');
 
+            var lineChart = document.getElementById('orderMonthlyReport').getContext('2d');
+            var lineChart = new Chart(lineChart, {
+                type: 'line',
+                data: {
+                    labels: getLabelArray(),
+                    datasets: [{
+                        borderColor: "#3e95cd",
+                        pointBackgroundColor: "#3e95cd",
+                        borderWidth: 2,
+                        data: getDataArray(),
+                        fill: true,
+                        label: " 訂單總數"
+
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: '日期'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: '總數'
+                            },
+                            ticks: {
+                                beginAtZero: true,
+                                stepSize: 1
+                            }
                         }]
                     },
-                    options: {
-                        scales: {
-                            xAxes: [{
-                                display: true,
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: '日期'
-                                }
-                            }],
-                            yAxes: [{
-                                display: true,
-                                scaleLabel: {
-                                    display: true,
-                                    labelString: '總數'
-                                }
-                            }]
-                        },
-                        legend: {
-                            display: false
-                        }
+                    legend: {
+                        display: false
                     }
-                });
-            })
-        }
+                }
+            });
+        })
     })
 
 });

@@ -62,7 +62,7 @@ exports.addToCart = (cartId, userId, companyId, productId, quantity) => {
         })
         .catch((err) => {
             console.error(`CATCH ERROR CART: ${err.message}`);
-            throw new Error(`無法添加至購物車`);
+            throw new Error(err);
         })
         .finally(() => {
             connection.release();

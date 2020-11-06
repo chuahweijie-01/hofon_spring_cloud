@@ -37,67 +37,145 @@
                             </div>
                         </div>
                     </div>
-                    
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-5 col-sm-5">
+                                                <i class="material-icons dashboard-panel"
+                                                    style="font-size: 100px;">bar_chart</i>
+                                            </div>
+                                            <div class="col-md-7 col-sm-7" style="text-align: left;">
+                                                <div>
+                                                    <h2><strong><%= panelBoardSummary[0].totalProduct%></strong></h2>
+                                                </div>
+                                                <div>
+                                                    <h5>公司產品</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr style="margin: 10px 0px;">
+                                        <div><a href="/api/product">More Info</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-5 col-sm-5">
+                                                <i class="material-icons dashboard-panel"
+                                                    style="font-size: 100px;">bar_chart</i>
+                                            </div>
+                                            <div class="col-md-7 col-sm-7" style="text-align: left;">
+                                                <div>
+                                                    <h2><strong><%= panelBoardSummary[0].totalUser%></strong></h2>
+                                                </div>
+                                                <div>
+                                                    <h5>消費者總數</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr style="margin: 10px 0px;">
+                                        <div><a href="/api/user">More Info</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-5 col-sm-5">
+                                                <i class="material-icons dashboard-panel"
+                                                    style="font-size: 100px;">bar_chart</i>
+                                            </div>
+                                            <div class="col-md-7 col-sm-7" style="text-align: left;">
+                                                <div>
+                                                    <h2><strong><%= panelBoardSummary[0].totalSales%></strong></h2>
+                                                </div>
+                                                <div>
+                                                    <h5>產品出售數量</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr style="margin: 10px 0px;">
+                                        <div><a href="/api/invoice">More Info</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="panel panel-dafault">
                         <div class="panel-body">
                             <div class="col-sm-6" style="padding-bottom: 20px;">
                                 <div class="row">
                                     <div class="form-group col-md-8 col-sm-8">
-                                        <div class='input-group date' id='datetimepicker10'>
-                                           <input type='text' class="form-control" id="orderDate" placeholder="MM/YYYY"/>
-                                           <span class="input-group-addon">
-                                           <span class="glyphicon glyphicon-calendar">
-                                           </span>
-                                           </span>
+                                        <div class='input-group date' id='orderDateTimePicker'>
+                                            <input type='text' class="form-control" id="orderDate"
+                                                placeholder="MM/YYYY" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar">
+                                                </span>
+                                            </span>
                                         </div>
                                     </div>
-                                    <!--<div class="form-group col-md-4 col-sm-4">
-                                        <button class="btn btn-danger" id="getDateButton">查閲</button>
-                                    </div>-->
                                 </div>
-                             </div>
-                            <div><canvas id="orderMonthlyReport"></canvas></div>
+                            </div>
+                            <div id="orderCanvasParent"><canvas id="orderMonthlyReport"></canvas></div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-dafault">
+                        <div class="panel-body">
+                            <div class="col-sm-6" style="padding-bottom: 20px;">
+                                <div class="row">
+                                    <div class="form-group col-md-8 col-sm-8">
+                                        <div class='input-group date' id='revenueDateTimePicker'>
+                                            <input type='text' class="form-control" id="revenueDate"
+                                                placeholder="MM/YYYY" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar">
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="revenueCanvasParent"><canvas id="revenueMonthlyReport"></canvas></div>
                         </div>
                     </div>
 
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Latest Users</h3>
+                        <div class="panel-heading main-color-bg">
+                            <h3 class="panel-title">新加入消費者</h3>
                         </div>
                         <div class="panel-body">
                             <table class="table table-striped table-hover">
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Joined</th>
+                                    <th>名稱</th>
+                                    <th>電郵</th>
+                                    <th>加入日期</th>
                                 </tr>
+                                <% if (userRecord.length) { %>
+                                <% for (var i=0; i< userRecord.length; i++) { %>
                                 <tr>
-                                    <td>Jill Smith</td>
-                                    <td>jillsmith@gmail.com</td>
-                                    <td>Dec 12, 2016</td>
+                                    <td><%= userRecord[i].user_name %></td>
+                                    <td><%= userRecord[i].user_email %></td>
+                                    <td><%= userRecord[i].created_date %></td>
                                 </tr>
-                                <tr>
-                                    <td>Eve Jackson</td>
-                                    <td>ejackson@yahoo.com</td>
-                                    <td>Dec 13, 2016</td>
-                                </tr>
-                                <tr>
-                                    <td>John Doe</td>
-                                    <td>jdoe@gmail.com</td>
-                                    <td>Dec 13, 2016</td>
-                                </tr>
-                                <tr>
-                                    <td>Stephanie Landon</td>
-                                    <td>landon@yahoo.com</td>
-                                    <td>Dec 14, 2016</td>
-                                </tr>
-                                <tr>
-                                    <td>Mike Johnson</td>
-                                    <td>mjohnson@gmail.com</td>
-                                    <td>Dec 15, 2016</td>
-                                </tr>
+                                <% } %>
+                                <% } %>
                             </table>
+                            <hr style="margin: 10px 0px;">
+                            <div><a href="/api/user">More Info</a></div>
                         </div>
                     </div>
                 </div>
@@ -106,25 +184,60 @@
     </section>
 
     <script>
-        function getLabelArray() {
-            var analysisString = "<%= orderDay%>";
+        var randomColor = [];
+
+        for (var i in "<%= revenueMonth%>") {
+            randomColor.push(rgbColorGenerator());
+        }
+
+        function rgbColorGenerator() {
+            var r = Math.floor(Math.random() * 255);
+            var g = Math.floor(Math.random() * 255);
+            var b = Math.floor(Math.random() * 255);
+            return "rgb(" + r + "," + g + "," + b + ")";
+        }
+
+        function getLabelArray(label) {
+            var analysisString = label;
             return analysisString.split(',')
         }
-        function getDataArray() {
-            var scoreString = "<%= orderDailyReport%>";
+        function getDataArray(data) {
+            var scoreString = data;
             return scoreString.split(',')
         }
+
+        var barChart = document.getElementById('revenueMonthlyReport').getContext('2d');
+        var barChart = new Chart(barChart, {
+            type: 'bar',
+            data: {
+                labels: getLabelArray("<%= revenueMonth%>"),
+                datasets: [
+                    {
+                        label: "收入",
+                        backgroundColor: randomColor,
+                        data: getDataArray("<%= revenueMonthlyReport%>"),
+                    }
+                ]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: new Date().getFullYear() + " 年度 每月收入 ( 臺幣, TWD )"
+                }
+            }
+        });
 
         var lineChart = document.getElementById('orderMonthlyReport').getContext('2d');
         var lineChart = new Chart(lineChart, {
             type: 'line',
             data: {
-                labels: getLabelArray(),
+                labels: getLabelArray("<%= orderDay%>"),
                 datasets: [{
                     borderColor: "#3e95cd",
                     pointBackgroundColor: "#3e95cd",
                     borderWidth: 2,
-                    data: getDataArray(),
+                    data: getDataArray("<%= orderDailyReport%>"),
                     fill: true,
                     label: " 訂單總數"
 
@@ -144,6 +257,10 @@
                         scaleLabel: {
                             display: true,
                             labelString: '總數'
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1
                         }
                     }]
                 },

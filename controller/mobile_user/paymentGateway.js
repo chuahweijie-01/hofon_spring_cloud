@@ -36,8 +36,8 @@ exports.generateOrder = (req, res) => {
                 cummulativeProduct = cummulativeProduct + result[i].product_name + '#'
             }
             var totalPrice = (Math.round(result[0].order_final_price)).toString();
-            var returnURL = `https://5c5858655ec0.ngrok.io/mobile/api/payment/result/${cartId}/${companyId}`;
-            var orderResultURL = `https://5c5858655ec0.ngrok.io/mobile/api/payment/resultInterface`;
+            var returnURL = `https://a16e1bd010b6.ngrok.io/mobile/api/payment/result/${cartId}/${companyId}`;
+            var orderResultURL = `https://a16e1bd010b6.ngrok.io/mobile/api/payment/resultInterface`;
             initiateParameters(orderId, totalPrice, cummulativeProduct, returnURL, orderResultURL);
 
             let create = new ecpay_payment();
@@ -66,7 +66,7 @@ exports.paymentResult = (req, res) => {
     var companyId = req.params.company;
     var cartId = req.params.cart;
 
-    var orderView = `https://5c5858655ec0.ngrok.io/mobile/api/order/${orderId}`;
+    var orderView = `https://a16e1bd010b6.ngrok.io/mobile/api/order/${orderId}`;
 
     paymentModel.merchantTradeNoUpdate(orderId, paymentDate, tradeDate, tradeNo)
         .then((result) => {

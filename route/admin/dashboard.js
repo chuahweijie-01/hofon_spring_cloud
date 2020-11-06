@@ -1,9 +1,11 @@
 const express = require('express');
-const dashboard_controller = require('../../controller/admin/dashboard')
+const dashboardController = require('../../controller/admin/dashboard')
 
 router = express.Router();
 router.use(express.static('./public/'));
 
-router.get('/', dashboard_controller.dashboard);
+router.get('/', dashboardController.dashboard);
+router.get('/orderstatistic', dashboardController.orderstatistic);
+router.get('/revenuestatistic/month', dashboardController.getRevenueReportByMonth);
 
 module.exports = router;

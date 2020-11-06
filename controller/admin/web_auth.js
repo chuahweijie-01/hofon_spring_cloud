@@ -23,9 +23,16 @@ exports.loginFailed = (req, res) => {
 }
 
 exports.auth = (req, res) => {
-    req.session.save(function (err) {
-        res.redirect('/api/dashboard');
-    })
+    if (req.session.role) {
+        req.session.save(function (err) {
+            res.redirect('/api/company');
+        })
+    } else {
+        req.session.save(function (err) {
+            res.redirect('/api/dashboard');
+        })
+    }
+
 }
 
 exports.register_admin = (req, res) => {
