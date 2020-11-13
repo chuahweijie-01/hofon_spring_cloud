@@ -1,6 +1,6 @@
 const { check, validationResult } = require('express-validator');
 
-exports.user_info_input = [
+exports.userLoginInput = [
     check('user_email')
         .notEmpty().withMessage('* 不可空缺')
         .isEmail().withMessage('* 請輸入正確的郵箱格式'),

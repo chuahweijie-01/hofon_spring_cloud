@@ -27,7 +27,7 @@
                   <tr>
                     <th></th>
                     <th>名稱</th>
-                    <% if (locals.role === 1) { %>
+                    <% if (locals.isAdmin) { %>
                     <th>統編</th>
                     <th>所屬公司</th>
                     <% } else { %>
@@ -45,7 +45,7 @@
                   <tr>
                     <td><%= i + 1; %></td>
                     <td><%= data[i].admin_name %></td>
-                    <% if (locals.role === 1) { %>
+                    <% if (locals.isAdmin) { %>
                     <td><%= data[i].company_official_id %></td>
                     <td><%= data[i].company_name %></td>
                     <% } else { %>

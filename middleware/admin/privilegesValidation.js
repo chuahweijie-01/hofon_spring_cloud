@@ -3,7 +3,7 @@ const privilegesCheck = require('../../model/admin/privilegesValidation');
 
 exports.privilegesCheck = (previliges_id) => {
     return (req, res, next) => {
-        if (req.session.role == 0) {
+        if (!req.session.isAdmin) {
             privilegesCheck.privilegesCheck(req.user, previliges_id)
                 .then((result) => {
                     next();

@@ -17,7 +17,7 @@ exports.getUserList = (pageInfo, companyId, role) => {
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_admin;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
-            if (role == 1) {
+            if (role) {
                 query = `SELECT user.user_id, user.user_email, user.user_name, company.company_name, user.user_gender, user_status,
                          DATE_FORMAT(user.created_date, '%d-%c-%Y %H:%i:%s') AS created_date
                          FROM userdb.user AS user
@@ -29,7 +29,7 @@ exports.getUserList = (pageInfo, companyId, role) => {
                          DATE_FORMAT(user.last_login, '%d-%c-%Y %H:%i:%s') AS last_login
                          FROM userdb.user AS user
                          JOIN userdb.user_company AS user_company ON user.user_id = user_company.user_id 
-                         WHERE user_company.company_id = ${companyId} LIMIT ${limit}`;
+                         WHERE user_company.company_id = '${companyId}' LIMIT ${limit}`;
             }
             return connection.query(query)
         })

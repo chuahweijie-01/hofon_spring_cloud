@@ -64,7 +64,7 @@ exports.getAwardList = (companyId, pageInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_award FROM productdb.award WHERE company_id = ${companyId}`);
+            return connection.query(`SELECT COUNT(*) AS total_award FROM productdb.award WHERE company_id = ?`, companyId);
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_product;

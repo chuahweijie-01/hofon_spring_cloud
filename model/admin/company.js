@@ -8,7 +8,7 @@ exports.addNewCompany = (companyInfo) => {
             return connection.query(`INSERT INTO companydb.company SET ?`, [companyInfo]);
         })
         .then((result) => {
-            if (result[0].affectedRows === 1) return (result[0].insertId);
+            if (result[0].affectedRows === 1) return (companyInfo.company_id);
             else throw new Error(`資料新增失敗`);
         })
         .catch((err) => {

@@ -1,64 +1,132 @@
 const dashboardModel = require('../../model/admin/dashboard');
 
 exports.dashboard = (req, res) => {
-    var companyId = req.session.company;
-    var panelBoardSummary, userRecord;
-    var orderDailyReport = [];
-    var orderDay = [];
-    var orderSummary = [];
-    var revenueMonthlyReport = [];
-    var revenueMonth = [];
+    if (!req.session.isAdmin) {
+        var companyId = req.session.company;
+        var panelBoardSummary, userRecord;
+        var orderDailyReport = [];
+        var orderDay = [];
+        var orderSummary = [];
+        var revenueMonthlyReport = [];
+        var revenueMonth = [];
 
-    dashboardModel.orderReport(companyId)
-        .then((result) => {
-            for (var item in result) {
-                var date = result[item].tradeDate + '/' + result[item].tradeMonth + '/' + result[item].tradeYear;
-                orderDailyReport.push(result[item].totalOrder);
-                orderDay.push(date);
-            }
-            return dashboardModel.orderSummary(companyId);
-        })
-        .then((result) => {
-            orderSummary = result;
-            return dashboardModel.getPanelBoardSummary(companyId);
-        })
-        .then((result) => {
-            panelBoardSummary = result;
-            return dashboardModel.getUserRecord(companyId);
-        })
-        .then((result) => {
-            userRecord = result;
-            return dashboardModel.getRevenueReport(companyId);
-        })
-        .then((result) => {
-            for (var item in result) {
-                var month = result[item].month + '/' + result[item].year;
-                revenueMonthlyReport.push(result[item].total);
-                revenueMonth.push(month);
-            }
+        dashboardModel.getOrderReport(companyId)
+            .then((result) => {
+                for (var item in result) {
+                    var date = result[item].tradeDate + '/' + result[item].tradeMonth + '/' + result[item].tradeYear;
+                    orderDailyReport.push(result[item].totalOrder);
+                    orderDay.push(date);
+                }
+                return dashboardModel.getOrderSummary(companyId);
+            })
+            .then((result) => {
+                orderSummary = result;
+                return dashboardModel.getPanelBoardSummary(companyId);
+            })
+            .then((result) => {
+                panelBoardSummary = result;
+                return dashboardModel.getUserRecord(companyId);
+            })
+            .then((result) => {
+                userRecord = result;
+                return dashboardModel.getRevenueReport(companyId);
+            })
+            .then((result) => {
+                for (var item in result) {
+                    var month = result[item].month + '/' + result[item].year;
+                    revenueMonthlyReport.push(result[item].total);
+                    revenueMonth.push(month);
+                }
+                
+                res.render('dashboard', {
+                    title: '管理總表',
+                    icon: '<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>',
+                    navigation: '<li class="active">管理總表</li>',
+                    message: req.flash(`flash`),
+                    panelBoardSummary: panelBoardSummary,
+                    orderSummary: orderSummary,
+                    orderDailyReport: orderDailyReport,
+                    orderDay: orderDay,
+                    userRecord: userRecord,
+                    revenueMonthlyReport: revenueMonthlyReport,
+                    revenueMonth: revenueMonth
+                });
+            })
+            .catch((err) => {
+                console.log(err.message)
+                res.redirect('/api/error');
+            })
+    } else {
+        var databaseName = [];
+        var databaseSize = [];
+        var databaseTables = [];
+        var orderDailyReport = [];
+        var orderDay = [];
+        var panelBoardSummary;
 
-            res.render('dashboard', {
-                title: '管理總表',
-                icon: '<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>',
-                navigation: '<li class="active">管理總表</li>',
-                message: req.flash(`flash`),
-                panelBoardSummary: panelBoardSummary,
-                orderSummary: orderSummary,
-                orderDailyReport: orderDailyReport,
-                orderDay: orderDay,
-                userRecord: userRecord,
-                revenueMonthlyReport: revenueMonthlyReport,
-                revenueMonth: revenueMonth
-            });
-        })
-        .catch((err) => {
-            console.log(err.message)
-            res.redirect('/api/error');
-        })
+        dashboardModel.getDatabaseCondition()
+            .then((result) => {
+                var dbChineseName;
+                for (var item in result) {
+                    switch (result[item].db) {
+                        case 'analysisdb':
+                            dbChineseName = "分析資料";
+                            break;
+                        case 'companydb':
+                            dbChineseName = "公司";
+                            break;
+                        case 'orderdb':
+                            dbChineseName = "訂單";
+                            break;
+                        case 'productdb':
+                            dbChineseName = "產品";
+                            break;
+                        case 'userdb':
+                            dbChineseName = "用戶";
+                            break;
+                        default:
+                            dbChineseName = result[item].db;
+                            break;
+                    }
+                    databaseName.push(dbChineseName);
+                    databaseSize.push(result[item].Mb);
+                    databaseTables.push(result[item].tb);
+                }
+                return dashboardModel.getAdminPanelBoardSummary()
+            })
+            .then((result) => {
+                panelBoardSummary = result;
+                return dashboardModel.getOverallOrderReport()
+            })
+            .then((result) => {
+                for (var item in result) {
+                    var date = result[item].tradeDate + '/' + result[item].tradeMonth + '/' + result[item].tradeYear;
+                    orderDailyReport.push(result[item].totalOrder);
+                    orderDay.push(date);
+                }
+
+                res.render('dashboard_admin', {
+                    title: '管理總表',
+                    icon: '<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>',
+                    navigation: '<li class="active">管理總表</li>',
+                    message: req.flash(`flash`),
+                    databaseName: databaseName,
+                    databaseSize: databaseSize,
+                    databaseTables: databaseTables,
+                    panelBoardSummary: panelBoardSummary,
+                    orderDailyReport: orderDailyReport,
+                    orderDay: orderDay,
+                    userRecord: ''
+                });
+            })
+            .catch((err) => {
+                console.log(err.message)
+                res.redirect('/api/error');
+            })
+    }
 }
 
 exports.orderstatistic = (req, res) => {
-    var companyId = req.session.company;
     var year, month;
     var orderDailyReport = [];
     var orderDay = [];
@@ -66,7 +134,15 @@ exports.orderstatistic = (req, res) => {
     req.query.year ? year = req.query.year : year = new Date().getFullYear();
     req.query.month ? month = req.query.month : month = new Date().getMonth() + 1;
 
-    dashboardModel.orderStatistic(companyId, month, year)
+    var statisticFunction;
+    if (req.session.isAdmin) {
+        statisticFunction = dashboardModel.getOverallOrderStatistic(month, year);
+    } else {
+        var companyId = req.session.company;
+        statisticFunction = dashboardModel.orderStatistic(companyId, month, year);
+    }
+
+    statisticFunction
         .then((result) => {
             for (var item in result) {
                 var date = result[item].tradeDate + '/' + result[item].tradeMonth + '/' + result[item].tradeYear;

@@ -104,7 +104,7 @@ app.use((req, res, next) => {
 })
 
 app.use((req, res, next) => {
-    res.locals.role = req.session.role;
+    res.locals.isAdmin = req.session.isAdmin;
     next();
 })
 

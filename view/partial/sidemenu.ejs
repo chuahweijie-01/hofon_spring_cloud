@@ -5,7 +5,7 @@
         <a href="javascript:void(0)" class="list-group-item" data-toggle="collapse"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 用戶 <i class="fa fa-angle"></i></a>
         <div class="list-group collapse">
 
-            <% if (locals.role === 1) { %>
+            <% if (locals.isAdmin) { %>
             <a href="/api/admin" class="list-group-item"><span aria-hidden="true"></span> 禾豐春總管</a>
             <% } %>
             <a href="/api/client" class="list-group-item"><span aria-hidden="true"></span> 管理者</a>
@@ -13,7 +13,7 @@
 
         </div>
 
-        <% if (locals.role === 0 ) { %>
+        <% if (!locals.isAdmin) { %>
         <a href="/api/product" class="list-group-item"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 產品</a>
         <a href="/api/zone" class="list-group-item"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> 物流區域</a>
         <a href="/api/discount" class="list-group-item"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> 促銷管理</a>
@@ -29,7 +29,7 @@
         <a href="javascript:void(0)" class="list-group-item" data-toggle="collapse"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 報告 <i class="fa fa-angle"></i></a>
         <div class="list-group collapse">
 
-            <% if (locals.role === 0) { %>
+            <% if (!locals.isAdmin) { %>
             <a href="/api/order" class="list-group-item"><span aria-hidden="true"></span> 訂單生成</a>
             <a href="/api/invoice" class="list-group-item"><span aria-hidden="true"></span> 訂單維護</a>
             <a href="/api/analysis" class="list-group-item"><span aria-hidden="true"></span> 分析報告</a>

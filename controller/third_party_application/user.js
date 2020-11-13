@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 
 exports.registerUser = (req, res) => {
     var userId = UUID.v4();
+    var companyOfficialId = req.body.company_official_id;
     bcrypt.hash(req.body.user_password, 10, (err, hash) => {
         var userInfo = {
             user_id: userId,
@@ -15,11 +16,6 @@ exports.registerUser = (req, res) => {
             user_birth_day: req.body.user_birth_day,
             user_gender: req.body.user_gender
         }
-        var companyOfficialId = req.body.company_official_id;
-
-        console.log(userInfo);
-        console.log(companyOfficialId)
-
         userModel.registerUser(userInfo, companyOfficialId)
             .then((result) => {
                 res.status(200).send(result);

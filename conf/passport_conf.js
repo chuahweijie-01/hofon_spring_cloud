@@ -11,7 +11,7 @@ module.exports = function (passport) {
                         if (!rows.length) done(null, false)
                         bcrypt.compare(password, rows[0].admin_password, (err, result) => {
                             if (result) {
-                                req.session.role = rows[0].admin_role;
+                                req.session.isAdmin = rows[0].admin_role;
                                 req.session.username = rows[0].admin_name;
                                 req.session.company = rows[0].company_id;
                                 return (rows, connection.query(`UPDATE companydb.admin SET last_login = NOW() WHERE admin_id = ?`, rows[0].admin_id))

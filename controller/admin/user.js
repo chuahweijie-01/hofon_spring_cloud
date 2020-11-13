@@ -1,7 +1,7 @@
 const user_model = require('../../model/admin/user')
 
 exports.getUserList = (req, res) => {
-    user_model.getUserList(req.query, req.session.company, req.session.role).then((result) => {
+    user_model.getUserList(req.query, req.session.company, req.session.isAdmin).then((result) => {
         res.render('user', {
             title: "消費者",
             icon: '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>',

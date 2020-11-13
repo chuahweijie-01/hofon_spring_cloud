@@ -30,6 +30,10 @@ const company_bank_image_storage = multer.diskStorage({
 
 const ads_storage = multer.diskStorage({
     destination: (req, file, callback) => {
+        var path = `public/image/admin/${req.session.company}`;
+        if (!fs.existsSync(path)) { 
+            fs.mkdirSync(path);
+        }
         var path = `public/image/admin/${req.session.company}/ads`;
         if (!fs.existsSync(path)) {
             fs.mkdirSync(path);

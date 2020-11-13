@@ -15,7 +15,7 @@ exports.checkNotAuthenticated = (req, res, next) => {
 }
 
 exports.checkUserRole = (req, res, next) => {
-    if (req.session.role == 0) {
+    if (!req.session.isAdmin) {
         res.redirect('/api/company/' + req.session.company);
     } else {
         return next();

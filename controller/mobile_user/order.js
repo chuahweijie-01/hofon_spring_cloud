@@ -46,21 +46,6 @@ exports.getOrder = (req, res) => {
         })
 }
 
-exports.order_test = (req, res) => {
-    order_model.getOrder(190, 29)
-        .then((result) => {
-            res.render('mobile_order_view', {
-                title: "訂單瀏覽",
-                data: result
-            }, ((err, html) => {
-                res.status(200).send(html);
-            }));
-        })
-        .catch((err) => {
-            res.status(404).send({ message: err.message })
-        })
-}
-
 exports.order_review = (req, res) => {
     order_model.order_review(req.params.id)
         .then((result) => {

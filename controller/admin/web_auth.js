@@ -23,16 +23,9 @@ exports.loginFailed = (req, res) => {
 }
 
 exports.auth = (req, res) => {
-    if (req.session.role) {
-        req.session.save(function (err) {
-            res.redirect('/api/company');
-        })
-    } else {
-        req.session.save(function (err) {
-            res.redirect('/api/dashboard');
-        })
-    }
-
+    req.session.save(function (err) {
+        res.redirect('/api/dashboard');
+    });
 }
 
 exports.register_admin = (req, res) => {
@@ -43,7 +36,7 @@ exports.register_admin = (req, res) => {
                 req.flash(`flash`, { msg: result, type: 'success' });
                 req.session.save(function (err) {
                     res.redirect('/');
-                })
+                });
             })
             .catch((err) => {
                 req.flash(`flash`, { msg: err.message, type: `error` });
@@ -55,5 +48,5 @@ exports.register_admin = (req, res) => {
 }
 
 exports.register_page = (req, res) => {
-    res.render('register', { title: "注冊頁面", message: req.flash(`flash`) })
+    res.render('register', { title: "注冊頁面", message: req.flash(`flash`) });
 }

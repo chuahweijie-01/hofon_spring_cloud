@@ -36,8 +36,8 @@ exports.generateOrder = (req, res) => {
                 cummulativeProduct = cummulativeProduct + result[i].product_name + '#'
             }
             var totalPrice = (Math.round(result[0].order_final_price)).toString();
-            var returnURL = `https://a16e1bd010b6.ngrok.io/mobile/api/payment/result/${cartId}/${companyId}`;
-            var orderResultURL = `https://a16e1bd010b6.ngrok.io/mobile/api/payment/resultInterface`;
+            var returnURL = `https://7df23bf1eed1.ngrok.io/mobile/api/payment/result/${cartId}/${companyId}`;
+            var orderResultURL = `https://7df23bf1eed1.ngrok.io/mobile/api/payment/resultInterface`;
             initiateParameters(orderId, totalPrice, cummulativeProduct, returnURL, orderResultURL);
 
             let create = new ecpay_payment();
@@ -51,69 +51,66 @@ exports.generateOrder = (req, res) => {
 }
 
 exports.paymentResult = (req, res) => {
-    console.log(req.body)
-    console.log(req.body.RtnCode);
 
-    if (req.body.RtnCode == 1) console.log('Succeed')
-    else console.log('Failed')
+    console.log('Entering STMP server ... ');
 
-    var orderId = req.body.MerchantTradeNo;
-    var orderAmount = req.body.TradeAmt;
-    var paymentDate = req.body.PaymentDate;
-    var tradeDate = req.body.TradeDate;
-    var tradeNo = req.body.TradeNo;
+    if (req.body.RtnCode == 1) {
+        var orderId = req.body.MerchantTradeNo;
+        var orderAmount = req.body.TradeAmt;
+        var paymentDate = req.body.PaymentDate;
+        var tradeDate = req.body.TradeDate;
+        var tradeNo = req.body.TradeNo;
+        var companyId = req.params.company;
+        var cartId = req.params.cart;
+        var orderView = `https://7df23bf1eed1.ngrok.io/mobile/api/order/${orderId}`;
 
-    var companyId = req.params.company;
-    var cartId = req.params.cart;
-
-    var orderView = `https://a16e1bd010b6.ngrok.io/mobile/api/order/${orderId}`;
-
-    paymentModel.merchantTradeNoUpdate(orderId, paymentDate, tradeDate, tradeNo)
-        .then((result) => {
-            return paymentModel.deleteCartItem(cartId, orderId)
-        })
-        .then((result) => {
-            return paymentModel.getCompanyEmail(companyId);
-        })
-        .then((result) => {
-
-            const transporter = nodemailer.createTransport({
-                service: 'Gmail',
-                auth: {
-                    user: process.env.EMAIL,
-                    pass: process.env.EMAIL_PASSWORD
-                },
-                from: process.env.EMAIL
+        paymentModel.merchantTradeNoUpdate(orderId, paymentDate, tradeDate, tradeNo)
+            .then((result) => {
+                return paymentModel.deleteCartItem(cartId, orderId);
             })
-
-            const options = {
-                from: '雲端商城小助手 <hscserverbot-noreply@gmail.com>',
-                to: result[0].company_email,
-                subject: '[雲端商城] 訂單通知',
-                html:
-                    `
-                <p>親愛的管理者你好：</p>
-                <p>系統偵測到新的訂單，請儘快查閲。</p>
-                <hr>
-                <p>訂單序號：${orderId}</p>
-                <p>訂單總額：NT$ ${orderAmount}</p>
-                <a href="${orderView}">查看訂單詳情</a>
-                <br><br><br><br><br><br><br><hr>
-                
-                <p>此信件為系統通知信，請勿直接回復。</p>
-                `
-            }
-
-            transporter.sendMail(options, (err, info) => {
-                if (err)
-                    console.log(err.message);
-                else
-                    console.log(`郵件已發送`);
+            .then((result) => {
+                return paymentModel.getCompanyEmail(companyId);
             })
-        })
-        .catch((err) => {
-            console.log(err);
-        })
+            .then((result) => {
+
+                const transporter = nodemailer.createTransport({
+                    service: 'Gmail',
+                    auth: {
+                        user: process.env.EMAIL,
+                        pass: process.env.EMAIL_PASSWORD
+                    },
+                    from: process.env.EMAIL
+                });
+
+                const options = {
+                    from: '雲端商城小助手 <hscserverbot-noreply@gmail.com>',
+                    to: result[0].company_email,
+                    subject: '[雲端商城] 訂單通知',
+                    html:
+                        `
+                        <p>親愛的管理者你好：</p>
+                        <p>系統偵測到新的訂單，請儘快查閲。</p>
+                        <hr>
+                        <p>訂單序號：${orderId}</p>
+                        <p>訂單總額：NT$ ${orderAmount}</p>
+                        <a href="${orderView}">查看訂單詳情</a>
+                        <br><br><br><br><br><br><br><hr>
+                        
+                        <p>此信件為系統通知信，請勿直接回復。</p>
+                        `
+                }
+
+                transporter.sendMail(options, (err, info) => {
+                    if (err)
+                        console.log(err.message);
+                    else
+                        console.log(`郵件已發送`);
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 }
 
 exports.resultInterface = (req, res) => {

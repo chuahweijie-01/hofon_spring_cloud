@@ -9,34 +9,36 @@
                 <%- include('partial/sidemenu')-%>
                 <div class="col-md-9">
                     <%- include('partial/flash')-%>
+                    <!--
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="col-md-3 col-sm-3">
                                 <div class="well dash-box" style="border-color: #f0ad4e;">
                                     <h4 style="color: #f0ad4e;"><strong>訂單處理中</strong></h4>
-                                    <h2> <%= orderSummary[0].pending%></h2>
+                                    <h2> </h2>
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-3">
                                 <div class="well dash-box" style="border-color: #50a150;">
                                     <h4 style="color: #50a150;"><strong>交易已完成</strong></h4>
-                                    <h2> <%= orderSummary[0].done%></h2>
+                                    <h2> </h2>
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-3">
                                 <div class="well dash-box" style="border-color: #f15e5e;">
                                     <h4 style="color: #f15e5e;"><strong>其他事項</strong></h4>
-                                    <h2> <%= orderSummary[0].other%></h2>
+                                    <h2> </h2>
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-3">
                                 <div class="well dash-box" style="border-color: #0275d8;">
                                     <h4 style="color: #0275d8;"><strong>訂單總數</strong></h4>
-                                    <h2> <%= orderSummary[0].total%></h2>
+                                    <h2> </h2>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    -->
 
                     <div class="row">
                         <div class="col-md-4 col-sm-4">
@@ -50,15 +52,39 @@
                                             </div>
                                             <div class="col-md-7 col-sm-7" style="text-align: left;">
                                                 <div>
-                                                    <h2><strong><%= panelBoardSummary[0].totalProduct%></strong></h2>
+                                                    <h2><strong><%= panelBoardSummary[0].totalCompany%></strong></h2>
                                                 </div>
                                                 <div>
-                                                    <h5>公司產品</h5>
+                                                    <h5>公司總數</h5>
                                                 </div>
                                             </div>
                                         </div>
                                         <hr style="margin: 10px 0px;">
-                                        <div><a href="/api/product">更多資訊</a></div>
+                                        <div><a href="/api/company">更多資訊</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-5 col-sm-5">
+                                                <i class="material-icons dashboard-panel"
+                                                    style="font-size: 100px;">bar_chart</i>
+                                            </div>
+                                            <div class="col-md-7 col-sm-7" style="text-align: left;">
+                                                <div>
+                                                    <h2><strong><%= panelBoardSummary[0].totalClient%></strong></h2>
+                                                </div>
+                                                <div>
+                                                    <h5>客戶總數</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr style="margin: 10px 0px;">
+                                        <div><a href="/api/client">更多資訊</a></div>
                                     </div>
                                 </div>
                             </div>
@@ -87,26 +113,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-4">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div>
-                                        <div class="row">
-                                            <div class="col-md-5 col-sm-5">
-                                                <i class="material-icons dashboard-panel"
-                                                    style="font-size: 100px;">bar_chart</i>
-                                            </div>
-                                            <div class="col-md-7 col-sm-7" style="text-align: left;">
-                                                <div>
-                                                    <h2><strong><%= panelBoardSummary[0].totalSales%></strong></h2>
-                                                </div>
-                                                <div>
-                                                    <h5>產品出售數量</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr style="margin: 10px 0px;">
-                                        <div><a href="/api/invoice">更多資訊</a></div>
+                    </div>
+
+                    <div class="panel panel-dafault">
+                        <div class="panel-body">
+                            <div class="col-sm-6" style="padding-bottom: 20px;">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div><canvas id="databaseConditionReport"></canvas></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="padding-bottom: 20px;">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div><canvas id="databaseTableReport" height="325px"></canvas></div>
                                     </div>
                                 </div>
                             </div>
@@ -130,26 +151,6 @@
                                 </div>
                             </div>
                             <div id="orderCanvasParent"><canvas id="orderMonthlyReport"></canvas></div>
-                        </div>
-                    </div>
-
-                    <div class="panel panel-dafault">
-                        <div class="panel-body">
-                            <div class="col-sm-6" style="padding-bottom: 20px;">
-                                <div class="row">
-                                    <div class="form-group col-md-8 col-sm-8">
-                                        <div class='input-group date' id='revenueDateTimePicker'>
-                                            <input type='text' class="form-control" id="revenueDate"
-                                                placeholder="MM/YYYY" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar">
-                                                </span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="revenueCanvasParent"><canvas id="revenueMonthlyReport"></canvas></div>
                         </div>
                     </div>
 
@@ -186,7 +187,7 @@
     <script>
         var randomColor = [];
 
-        for (var i in "<%= revenueMonth%>") {
+        for (var i in "<%= databaseName%>") {
             randomColor.push(rgbColorGenerator());
         }
 
@@ -206,24 +207,75 @@
             return scoreString.split(',')
         }
 
-        var barChart = document.getElementById('revenueMonthlyReport').getContext('2d');
-        var barChart = new Chart(barChart, {
-            type: 'bar',
+        var pieChart = document.getElementById('databaseConditionReport').getContext('2d');
+        var pieChart = new Chart(pieChart, {
+            type: 'doughnut',
             data: {
-                labels: getLabelArray("<%= revenueMonth%>"),
+                labels: getLabelArray("<%= databaseName%>"),
                 datasets: [
                     {
-                        label: "收入",
                         backgroundColor: randomColor,
-                        data: getDataArray("<%= revenueMonthlyReport%>"),
+                        data: getDataArray("<%= databaseSize%>"),
                     }
                 ]
             },
             options: {
-                legend: { display: false },
                 title: {
                     display: true,
-                    text: new Date().getFullYear() + " 年度 每月收入 ( 臺幣, TWD )"
+                    text: "資料庫 數據存放空間 (Mb)",
+                    fontSize: 18
+                },
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            }
+        });
+
+        var barChart = document.getElementById('databaseTableReport').getContext('2d');
+        var barChart = new Chart(barChart, {
+            type: 'bar',
+            data: {
+                labels: getLabelArray("<%= databaseName%>"),
+                datasets: [
+                    {
+                        backgroundColor: randomColor,
+                        data: getDataArray("<%= databaseTables%>"),
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "資料庫 欄位總數 (Table)",
+                    fontSize: 18
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: '資料庫'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: '總數'
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                }, 
+                layout: {
+                    padding: {
+                        top: 0
+                    }
                 }
             }
         });

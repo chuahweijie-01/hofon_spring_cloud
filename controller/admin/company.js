@@ -1,6 +1,7 @@
 const fs = require('fs');
 const company_model = require('../../model/admin/company');
-const upload_image = require('../../middleware/admin/upload_image')
+const upload_image = require('../../middleware/admin/upload_image');
+const UUID = require('uuid');
 
 exports.upload_company_logo = (req, res, next) => {
     upload_image.upload_company_logo(req, res, (err) => {
@@ -70,6 +71,7 @@ exports.upload_company_bank_image = (req, res, next) => {
 
 exports.company_create = (req, res) => {
     company_info = {
+        company_id: UUID.v4(),
         company_name: req.body.company_name,
         company_phone: req.body.company_phone,
         company_address: req.body.company_address,
@@ -91,21 +93,22 @@ exports.company_create = (req, res) => {
         company_bank_account: req.body.company_bank_account,
         company_bank_account_holder: req.body.company_bank_account_holder
     }
-    company_model.addNewCompany(company_info).then((result) => {
-        req.flash(`flash`, {
-            msg: '接下來，請上傳 公司商標 以及 銀行存摺封面影本。', type: 'success'
-        });
-        req.session.save(function (err) {
-            res.redirect(`/api/company/${result}`);
+    company_model.addNewCompany(company_info)
+        .then((result) => {
+            req.flash(`flash`, {
+                msg: '接下來，請上傳 公司商標 以及 銀行存摺封面影本。', type: 'success'
+            });
+            req.session.save(function (err) {
+                res.redirect(`/api/company/${result}`);
+            })
+        }).catch((err) => {
+            req.flash(`flash`, {
+                msg: err.message, type: `error`
+            });
+            req.session.save(function (err) {
+                res.redirect('/api/company');
+            })
         })
-    }).catch((err) => {
-        req.flash(`flash`, {
-            msg: err.message, type: `error`
-        });
-        req.session.save(function (err) {
-            res.redirect('/api/company');
-        })
-    })
 }
 
 exports.company_display = (req, res) => {
@@ -113,7 +116,7 @@ exports.company_display = (req, res) => {
         var company_edit_page;
         var company_info = req.session.company_info;
         req.session.company_info = null;
-        if (req.session.role === 1) company_edit_page = 'company_edit'
+        if (req.session.isAdmin) company_edit_page = 'company_edit'
         else company_edit_page = 'company_edit_client'
         res.render(company_edit_page, {
             title: "公司",
@@ -171,7 +174,7 @@ exports.company_new = (req, res) => {
 exports.updateCompany = (req, res) => {
     company_id = req.params.id;
     company_info = {}
-    if (req.session.role == 0) {
+    if (!req.session.isAdmin) {
         company_info = {
             company_remarks: req.body.company_remarks,
             company_description: req.body.company_description

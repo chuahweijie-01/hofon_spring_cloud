@@ -8,7 +8,7 @@ exports.addNewClient = (req, res) => {
     Array.isArray(req.body.privileges_id) ? privileges_id = req.body.privileges_id : privileges_id = [req.body.privileges_id];
 
     bcrypt.hash(req.body.admin_password, 10, (err, hash) => {
-        if (req.session.role == 1) {
+        if (req.session.isAdmin) {
             client_info = {
                 admin_id: clientId,
                 admin_email: req.body.admin_email,
@@ -78,7 +78,7 @@ exports.getClient = (req, res) => {
 }
 
 exports.getClientList = (req, res) => {
-    client_model.getClientList(req.session.role, req.session.company, req.query)
+    client_model.getClientList(req.session.isAdmin, req.session.company, req.query)
         .then((result) => {
             res.render('client', {
                 title: "管理者",

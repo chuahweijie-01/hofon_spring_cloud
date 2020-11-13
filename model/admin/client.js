@@ -31,7 +31,7 @@ exports.addNewClient = (clientInfo, privilegesId) => {
         })
         .catch((err) => {
             console.error(err);
-            throw new Error('資料新增失敗');
+            throw new Error(err.message);
         })
         .finally(() => {
             connection.release();
@@ -93,21 +93,21 @@ exports.getClientList = (role, company_id, pageInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            if (role == 1) query = `SELECT COUNT(*) AS total_client FROM companydb.admin WHERE admin_role = 0`;
-            else query = `SELECT COUNT(*) AS total_client FROM companydb.admin WHERE admin_role = 0 AND company_id = ${company_id}`;
+            if (role) query = `SELECT COUNT(*) AS total_client FROM companydb.admin WHERE admin_role = 0`;
+            else query = `SELECT COUNT(*) AS total_client FROM companydb.admin WHERE admin_role = 0 AND company_id = '${company_id}'`;
             return connection.query(query);
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_client;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
-            if (role == 1) {
+            if (role) {
                 query = `SELECT admin.admin_id, admin.admin_name, company.company_name, company.company_official_id,
                          DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login FROM companydb.admin AS admin
                          JOIN companydb.company AS company ON admin.company_id = company.company_id
                          WHERE admin_role = 0 LIMIT ${limit}`;
             } else {
                 query = `SELECT admin_id, admin_name, admin_email, DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login
-                         FROM companydb.admin WHERE company_id = ${company_id} LIMIT ${limit}`;
+                         FROM companydb.admin WHERE company_id = '${company_id}' LIMIT ${limit}`;
             }
             return connection.query(query);
         })
@@ -140,7 +140,7 @@ exports.getCompanyList = () => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT company_id, company_name FROM companydb.company`);
+            return connection.query(`SELECT company_id, company_name FROM companydb.company WHERE company_id <> '1'`);
         })
         .then(([rows, field]) => {
             return (rows);

@@ -99,8 +99,8 @@ exports.getProductList = (companyId, pageInfo) => {
             return connection.query(`SELECT product.product_id, product.product_name, product.product_stock, product.product_status, category.category_id, category.category_name, 
                                      DATE_FORMAT(product.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
                                      FROM productdb.product AS product
-                                     JOIN productdb.category AS category ON product.category_id = category.category_id
-                                     JOIN companydb.company AS company ON product.company_id = company.company_id
+                                     JOIN productdb.category AS category USING (category_id)
+                                     JOIN companydb.company AS company USING (company_id)
                                      WHERE company.company_id = ? AND product.deleted = 0 LIMIT ${limit}`, [companyId]);
         })
         .then(([rows, field]) => {
@@ -178,7 +178,6 @@ exports.deleteProduct = (productId) => {
         })
         .then(([rows, field]) => {
             image_path = rows;
-            //return connection.query(`DELETE FROM productdb.product WHERE product_id = ?`, [productId]);
             return connection.query(`UPDATE productdb.product SET deleted = 1, product_status = 0 WHERE product_id = ?`, [productId]);
         })
         .then((result) => {

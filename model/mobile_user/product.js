@@ -6,9 +6,9 @@ exports.getProductList = (companyId, categoryId) => {
         .then((connect) => {
             connection = connect;
             if (categoryId) {
-                return connection.query(`SELECT * FROM productdb.product_full_information WHERE company_id = ? AND category_id = ?`, [companyId, categoryId]);
+                return connection.query(`SELECT * FROM productdb.product_full_information WHERE company_id = ? AND category_id = ? AND product_stock <> 0`, [companyId, categoryId]);
             } else {
-                return connection.query(`SELECT * FROM productdb.product_full_information WHERE company_id = ?`, [companyId]);
+                return connection.query(`SELECT * FROM productdb.product_full_information WHERE company_id = ? AND product_stock <> 0`, [companyId]);
             }
         })
         .then(([rows, field]) => {
