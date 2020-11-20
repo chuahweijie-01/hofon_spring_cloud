@@ -8,7 +8,10 @@ exports.addNewDiscount = (discountInfo, productId) => {
             return connection.query(`START TRANSACTION`)
         })
         .then((result) => {
-            return connection.query(`INSERT INTO productdb.discount SET ?`, [discountInfo]);
+            return connection.query(`
+            INSERT INTO
+                productdb.discount
+            SET ?`, [discountInfo]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) {
@@ -16,7 +19,11 @@ exports.addNewDiscount = (discountInfo, productId) => {
                 for (var i = 0; i < productId.length; i++) {
                     product.push([discountInfo.discount_id, productId[i]])
                 }
-                return connection.query(`INSERT INTO productdb.product_discount(discount_id, product_id) VALUES ?`, [product]);
+                return connection.query(`
+                INSERT INTO
+                    productdb.product_discount
+                    (discount_id, product_id)
+                VALUES ?`, [product]);
             } else throw new Error(`資料新增失敗`);
         })
         .then((result) => {
@@ -46,17 +53,37 @@ exports.getDiscountList = (companyId, pageInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_discount FROM productdb.discount WHERE company_id = ?`, [companyId]);
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_discount
+            FROM
+                productdb.discount
+            WHERE
+                company_id = ?`, [companyId]);
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_discount;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
-            return connection.query(`SELECT discount.discount_id, discount.discount_name, discount.discount_percent, COUNT(*) AS total_product,
-                                     DATE_FORMAT(discount.created_date, '%d-%c-%Y %H:%i:%s') AS created_date
-                                     FROM productdb.discount AS discount
-                                     JOIN productdb.product_discount AS product_discount ON discount.discount_id = product_discount.discount_id
-                                     JOIN productdb.product AS product ON product_discount.product_id = product.product_id
-                                     WHERE product.company_id = ? GROUP BY discount.discount_name LIMIT ${limit}`, [companyId]);
+            return connection.query(`
+            SELECT
+                discount.discount_id,
+                discount.discount_name,
+                discount.discount_percent,
+                COUNT(*) AS total_product,
+                DATE_FORMAT(discount.created_date, '%d-%c-%Y %H:%i:%s') AS created_date
+            FROM
+                productdb.discount AS discount
+            JOIN
+                productdb.product_discount AS product_discount
+                ON discount.discount_id = product_discount.discount_id
+            JOIN
+                productdb.product AS product
+                ON product_discount.product_id = product.product_id
+            WHERE
+                product.company_id = ?
+            GROUP BY
+                discount.discount_name
+            LIMIT ${limit}`, [companyId]);
         })
         .then(([rows, field]) => {
             result = {
@@ -87,11 +114,25 @@ exports.getProductList = (companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT product.product_id, product.product_name, discount.discount_name, discount.discount_id
-                                     FROM productdb.product AS product
-                                     LEFT JOIN productdb.product_discount AS product_discount ON product.product_id = product_discount.product_id
-                                     LEFT JOIN productdb.discount AS discount ON product_discount.discount_id = discount.discount_id
-                                     WHERE product.company_id = ? AND product.product_status = 1 ORDER BY discount.discount_id`, [companyId]);
+            return connection.query(`
+            SELECT
+                product.product_id,
+                product.product_name,
+                discount.discount_name,
+                discount.discount_id
+            FROM
+                productdb.product AS product
+            LEFT JOIN
+                productdb.product_discount AS product_discount
+                ON product.product_id = product_discount.product_id
+            LEFT JOIN
+                productdb.discount AS discount
+                ON product_discount.discount_id = discount.discount_id
+            WHERE
+                product.company_id = ?
+                AND product.product_status = 1
+            ORDER BY
+                discount.discount_id`, [companyId]);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -110,11 +151,22 @@ exports.getDiscount = (discountId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT discount.discount_id, discount.discount_name, discount.discount_percent, product.product_id
-                                     FROM productdb.discount AS discount
-                                     JOIN productdb.product_discount AS product_discount ON discount.discount_id = product_discount.discount_id
-                                     JOIN productdb.product AS product ON product_discount.product_id = product.product_id
-                                     WHERE discount.discount_id = ?`, [discountId]);
+            return connection.query(`
+            SELECT
+                discount.discount_id,
+                discount.discount_name,
+                discount.discount_percent,
+                product.product_id
+            FROM
+                productdb.discount AS discount
+            JOIN
+                productdb.product_discount AS product_discount
+                ON discount.discount_id = product_discount.discount_id
+            JOIN
+                productdb.product AS product
+                ON product_discount.product_id = product.product_id
+            WHERE
+                discount.discount_id = ?`, [discountId]);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -133,7 +185,11 @@ exports.updateDiscount = (discountInfo, discountId, product_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM productdb.product_discount WHERE discount_id = ?`, [discountId]);
+            return connection.query(`
+            DELETE FROM
+                productdb.product_discount
+            WHERE
+                discount_id = ?`, [discountId]);
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) {
@@ -141,11 +197,20 @@ exports.updateDiscount = (discountInfo, discountId, product_id) => {
                 for (var i = 0; i < product_id.length; i++) {
                     product.push([discountId, product_id[i]])
                 }
-                return connection.query(`INSERT INTO productdb.product_discount(discount_id, product_id) VALUES ?`, [product]);
+                return connection.query(`
+                INSERT INTO
+                    productdb.product_discount
+                    (discount_id, product_id)
+                VALUES ?`, [product]);
             } else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return connection.query(`UPDATE productdb.discount SET ? WHERE discount_id = ?`, [discountInfo, discountId]);
+            if (result[0].affectedRows >= 1) return connection.query(`
+            UPDATE
+                productdb.discount
+            SET ?
+            WHERE
+                discount_id = ?`, [discountInfo, discountId]);
             else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
@@ -166,7 +231,11 @@ exports.deleteDiscount = (discountId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM productdb.discount WHERE discount_id = ?`, [discountId]);
+            return connection.query(`
+            DELETE FROM
+                productdb.discount
+            WHERE
+                discount_id = ?`, [discountId]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);

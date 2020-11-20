@@ -1,10 +1,10 @@
 const connection = require('../../conf/db');
 const privilegesCheck = require('../../model/admin/privilegesValidation');
 
-exports.privilegesCheck = (previliges_id) => {
+exports.privilegesCheck = (previligesId) => {
     return (req, res, next) => {
         if (!req.session.isAdmin) {
-            privilegesCheck.privilegesCheck(req.user, previliges_id)
+            privilegesCheck.privilegesCheck(req.user, previligesId)
                 .then((result) => {
                     next();
                 })

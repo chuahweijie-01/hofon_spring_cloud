@@ -10,9 +10,9 @@ exports.client_info_input = [
     check('confirmed_password')
         .notEmpty().withMessage('* 不可空缺')
         .custom((value, { req, loc, path }) => {
-            if (value !== req.body.admin_password) throw new Error('Password Not Matched')
+            if (value !== req.body.admin_password) throw new Error('密碼不符合')
             else return value;
-        }).withMessage('Password Not Matched'),
+        }).withMessage('密碼不符合'),
     check('privileges_id')
         .notEmpty().withMessage('* 不可空缺'),
 

@@ -5,7 +5,11 @@ exports.addNewProductImage = (imagePath) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`INSERT INTO productdb.image (product_id, image_path) VALUES ?`, [imagePath]);
+            return connection.query(`
+            INSERT INTO
+                productdb.image
+                (product_id, image_path)
+            VALUES ?`, [imagePath]);
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) return (`產品圖片添加成功`);
@@ -25,7 +29,14 @@ exports.getProductImage = (productId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT image_id, image_path FROM productdb.image WHERE product_id = ?`, [productId]);
+            return connection.query(`
+            SELECT
+                image_id,
+                image_path
+            FROM
+                productdb.image
+            WHERE
+                product_id = ?`, [productId]);
         })
         .then(([rows, field]) => {
             return rows;
@@ -44,7 +55,10 @@ exports.addNewProduct = (productInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`INSERT INTO productdb.product SET ?`, [productInfo]);
+            return connection.query(`
+            INSERT INTO
+                productdb.product
+            SET ?`, [productInfo]);
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) return (result);
@@ -64,9 +78,17 @@ exports.getCategoryList = (companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT category.category_id, category.category_name FROM productdb.category AS category
-                                     JOIN companydb.company_category AS company_category ON category.category_id = company_category.category_id
-                                     WHERE company_category.company_id = ?`, [companyId]);
+            return connection.query(`
+            SELECT
+                category.category_id,
+                category.category_name
+            FROM
+                productdb.category AS category
+            JOIN
+                companydb.company_category AS company_category
+                ON category.category_id = company_category.category_id
+            WHERE
+                company_category.company_id = ?`, [companyId]);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -91,17 +113,36 @@ exports.getProductList = (companyId, pageInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_product FROM productdb.product WHERE company_id = ?`, [companyId]);
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_product
+            FROM
+                productdb.product
+            WHERE
+                company_id = ?`, [companyId]);
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_product;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
-            return connection.query(`SELECT product.product_id, product.product_name, product.product_stock, product.product_status, category.category_id, category.category_name, 
-                                     DATE_FORMAT(product.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
-                                     FROM productdb.product AS product
-                                     JOIN productdb.category AS category USING (category_id)
-                                     JOIN companydb.company AS company USING (company_id)
-                                     WHERE company.company_id = ? AND product.deleted = 0 LIMIT ${limit}`, [companyId]);
+            return connection.query(`
+            SELECT
+                product.product_id,
+                product.product_name,
+                product.product_stock,
+                product.product_status,
+                category.category_id,
+                category.category_name,
+                DATE_FORMAT(product.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
+            FROM
+                productdb.product AS product
+            JOIN
+                productdb.category AS category USING (category_id)
+            JOIN
+                companydb.company AS company USING (company_id)
+            WHERE
+                company.company_id = ?
+                AND product.deleted = 0
+            LIMIT ${limit}`, [companyId]);
         })
         .then(([rows, field]) => {
             result = {
@@ -132,8 +173,21 @@ exports.getProduct = (productId, companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT product_id, product_name, product_stock, product_description, product_rating, product_price, product_member_price, category_id
-                                     FROM productdb.product WHERE product.product_id = ? AND company_id = ?`, [productId, companyId]);
+            return connection.query(`
+            SELECT
+                product_id,
+                product_name,
+                product_stock,
+                product_description,
+                product_rating,
+                product_price,
+                product_member_price,
+                category_id
+            FROM
+                productdb.product
+            WHERE
+                product.product_id = ?
+                AND company_id = ?`, [productId, companyId]);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -152,7 +206,12 @@ exports.updateProduct = (productId, productInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`UPDATE productdb.product SET ? WHERE product_id = ?`, [productInfo, productId]);
+            return connection.query(`
+            UPDATE
+                productdb.product
+            SET ?
+            WHERE
+                product_id = ?`, [productInfo, productId]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return (`${productInfo.product_name} 資料更新成功`);
@@ -172,13 +231,27 @@ exports.deleteProduct = (productId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT image.image_path FROM productdb.image AS image
-                                     JOIN productdb.product AS product ON image.product_id = product.product_id
-                                     WHERE product.product_id = ?`, [productId]);
+            return connection.query(`
+            SELECT
+                image.image_path
+            FRO
+                productdb.image AS image
+            JOIN
+                productdb.product AS product
+                ON image.product_id = product.product_id
+            WHERE
+                product.product_id = ?`, [productId]);
         })
         .then(([rows, field]) => {
             image_path = rows;
-            return connection.query(`UPDATE productdb.product SET deleted = 1, product_status = 0 WHERE product_id = ?`, [productId]);
+            return connection.query(`
+            UPDATE
+                productdb.product
+            SET
+                deleted = 1,
+                product_status = 0
+            WHERE
+                product_id = ?`, [productId]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (image_path);
@@ -198,11 +271,21 @@ exports.deleteProductImage = (imageId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT image_path FROM productdb.image WHERE image_id = ?`, [imageId]);
+            return connection.query(`
+            SELECT
+                image_path
+            FROM
+                productdb.image
+            WHERE
+                image_id = ?`, [imageId]);
         })
         .then(([rows, field]) => {
             image_path = rows;
-            return connection.query(`DELETE FROM productdb.image WHERE image_id = ?`, [imageId]);
+            return connection.query(`
+            DELETE FROM
+                productdb.image
+            WHERE
+                image_id = ?`, [imageId]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return image_path;
@@ -222,7 +305,14 @@ exports.unpublishProduct = (productId, companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`UPDATE productdb.product SET product_status = 0 WHERE product_id = ? AND company_id = ?`, [productId, companyId]);
+            return connection.query(`
+            UPDATE
+                productdb.product
+            SET
+                product_status = 0
+            WHERE
+                product_id = ?
+                AND company_id = ?`, [productId, companyId]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return (`資料更新成功`);
@@ -242,14 +332,37 @@ exports.publishProduct = (productId, categoryId, companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT company_product_max, (SELECT COUNT(*) FROM productdb.product AS product
-            JOIN companydb.company AS company ON product.company_id = company.company_id
-            WHERE product.product_status = 1 AND product.category_id = ? AND product.company_id = ?) AS total_product
-            FROM companydb.company WHERE company_id = ?`, [categoryId, companyId, companyId]);
+            return connection.query(`
+            SELECT
+                company_product_max,
+                (
+                SELECT
+                    COUNT(*)
+                FROM
+                    productdb.product AS product
+                JOIN
+                    companydb.company AS company
+                    ON product.company_id = company.company_id
+                WHERE
+                    product.product_status = 1
+                    AND product.category_id = ?
+                    AND product.company_id = ?
+                ) AS total_product
+            FROM
+                companydb.company
+            WHERE
+                company_id = ?`, [categoryId, companyId, companyId]);
         })
         .then(([rows, field]) => {
             if (rows[0].total_product >= rows[0].company_product_max) throw new Error(`該產品屬性已超過可以發佈的產品上限`);
-            else return connection.query(`UPDATE productdb.product SET product_status = 1 WHERE product_id = ? AND company_id = ?`, [productId, companyId]);
+            else return connection.query(`
+            UPDATE
+                productdb.product
+            SET
+                product_status = 1
+            WHERE
+                product_id = ?
+                AND company_id = ?`, [productId, companyId]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return (`資料更新成功`);
@@ -269,7 +382,13 @@ exports.getTotalOfProductImage = (productId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_image FROM productdb.image WHERE product_id = ?`, [productId]);
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_image
+            FROM
+                productdb.image
+            WHERE
+                product_id = ?`, [productId]);
         })
         .then(([rows, field]) => {
             return rows;

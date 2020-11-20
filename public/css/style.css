@@ -893,3 +893,20 @@ textarea {
 .dashboard-panel {
     color: #f15e5e;
 }
+
+.payment-confirm .icon-box {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto;
+    border-radius: 50%;
+    z-index: 9;
+    text-align: center;
+    border: 5px solid #f15e5e;
+}
+
+.payment-confirm .icon-box i {
+    color: #f15e5e;
+    font-size: 60px;
+    display: inline-block;
+    margin-top: 22px;
+}

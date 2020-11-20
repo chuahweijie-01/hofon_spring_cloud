@@ -36,8 +36,8 @@ exports.generateOrder = (req, res) => {
                 cummulativeProduct = cummulativeProduct + result[i].product_name + '#'
             }
             var totalPrice = (Math.round(result[0].order_final_price)).toString();
-            var returnURL = `https://7df23bf1eed1.ngrok.io/mobile/api/payment/result/${cartId}/${companyId}`;
-            var orderResultURL = `https://7df23bf1eed1.ngrok.io/mobile/api/payment/resultInterface`;
+            var returnURL = `${process.env.NGROK_IP}/mobile/api/payment/result/${cartId}/${companyId}`;
+            var orderResultURL = `${process.env.NGROK_IP}/mobile/api/payment/resultInterface`;
             initiateParameters(orderId, totalPrice, cummulativeProduct, returnURL, orderResultURL);
 
             let create = new ecpay_payment();
@@ -51,9 +51,6 @@ exports.generateOrder = (req, res) => {
 }
 
 exports.paymentResult = (req, res) => {
-
-    console.log('Entering STMP server ... ');
-
     if (req.body.RtnCode == 1) {
         var orderId = req.body.MerchantTradeNo;
         var orderAmount = req.body.TradeAmt;
@@ -62,7 +59,7 @@ exports.paymentResult = (req, res) => {
         var tradeNo = req.body.TradeNo;
         var companyId = req.params.company;
         var cartId = req.params.cart;
-        var orderView = `https://7df23bf1eed1.ngrok.io/mobile/api/order/${orderId}`;
+        var orderView = `${process.env.NGROK_IP}/mobile/api/order/${orderId}`;
 
         paymentModel.merchantTradeNoUpdate(orderId, paymentDate, tradeDate, tradeNo)
             .then((result) => {
@@ -114,9 +111,26 @@ exports.paymentResult = (req, res) => {
 }
 
 exports.resultInterface = (req, res) => {
+    var merchantTradeNo = req.body.MerchantTradeNo;
     var returnCode = req.body.RtnCode;
-    req.session.save(function (err) {
-        res.render('paymentResult', { paymentResult: returnCode });
-    })
-    req.session.destroy();
+    paymentModel.getOrder(merchantTradeNo)
+        .then((result) => {
+            req.session.save(function (err) {
+                res.render('mobile_order_view', {
+                    title: "訂單瀏覽",
+                    data: result,
+                    paymentResult: returnCode
+                });
+            });
+            req.session.destroy();
+        })
+        .catch((err) => {
+            req.session.save(function (err) {
+                res.render('mobile_order_view_not_found', {
+                    title: "訂單瀏覽",
+                    message: err.message
+                });
+            });
+            req.session.destroy();
+        });
 }

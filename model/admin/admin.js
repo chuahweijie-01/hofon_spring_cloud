@@ -5,7 +5,12 @@ exports.getAdmin = (adminId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM companydb.admin WHERE admin_id = ?`, [adminId]);
+            return connection.query(`
+            SELECT *
+            FROM
+                companydb.admin
+            WHERE
+                admin_id = ?`, [adminId]);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -30,13 +35,26 @@ exports.getAdminList = (pageInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_admin FROM companydb.admin WHERE admin_role = 1`);
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_admin
+            FROM
+                companydb.admin
+            WHERE
+                admin_role = 1`);
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_admin;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
-            return connection.query(`SELECT admin_id, admin_name, DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login
-                                     FROM companydb.admin WHERE admin_role = 1 LIMIT ${limit}`);
+            return connection.query(`
+            SELECT
+                admin_id,
+                admin_name,
+                DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login
+            FROM
+                companydb.admin
+            WHERE
+                admin_role = 1 LIMIT ${limit}`);
         })
         .then(([rows, field]) => {
             result = {
@@ -67,11 +85,20 @@ exports.addNewAdmin = (adminInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM companydb.admin WHERE admin_email = ? AND admin_role = 1`, [adminInfo.admin_email]);
+            return connection.query(`
+            SELECT *
+            FROM
+                companydb.admin
+            WHERE
+                admin_email = ?
+                AND admin_role = 1`, [adminInfo.admin_email]);
         })
         .then(([rows, field]) => {
             if (rows.length) throw new Error('該郵箱已存在，請使用新的郵箱註冊');
-            else return connection.query(`INSERT INTO companydb.admin SET ?`, [adminInfo]);
+            else return connection.query(`
+            INSERT INTO
+                companydb.admin
+            SET ?`, [adminInfo]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`${adminInfo.admin_name} 註冊成功`);
@@ -91,7 +118,12 @@ exports.updateAdmin = (adminId, admin_info) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`UPDATE companydb.admin SET ? WHERE admin_id = ?`, [admin_info, adminId]);
+            return connection.query(`
+            UPDATE
+                companydb.admin
+            SET ?
+            WHERE
+                admin_id = ?`, [admin_info, adminId]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return (`${admin_info.admin_name} 資料更新成功`);
@@ -111,11 +143,20 @@ exports.deleteAdmin = (adminId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM companydb.admin WHERE admin_role = 1`);
+            return connection.query(`
+            SELECT *
+            FROM
+                companydb.admin
+            WHERE
+                admin_role = 1`);
         })
         .then(([rows, field]) => {
             if (rows.length <= 2) throw new Error('該平臺需保留至少兩名以上的管理者');
-            else return connection.query(`DELETE FROM companydb.admin WHERE admin_id = ?`, [adminId]);
+            else return connection.query(`
+            DELETE FROM
+                companydb.admin
+            WHERE
+                admin_id = ?`, [adminId]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return ('資料刪除成功');

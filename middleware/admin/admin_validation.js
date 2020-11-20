@@ -2,17 +2,21 @@ const { check, validationResult } = require('express-validator');
 
 exports.admin_info_input = [
     check('admin_email')
-        .notEmpty().withMessage('* 不可空缺'),
+        .notEmpty().withMessage('* 不可空缺')
+        .isEmail().withMessage('* 請輸入正確的郵箱格式'),
     check('admin_name')
         .notEmpty().withMessage('* 不可空缺'),
     check('admin_password')
-        .notEmpty().withMessage('* 不可空缺'),
+        .notEmpty().withMessage('* 不可空缺')
+        .isLength({ min: 10 }).withMessage('* 密碼長度需多餘10個字元')
+        .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/, "i")
+        .withMessage('* 密碼組合需英數混合 至少包含一個大小寫字母'),
     check('confirmed_password')
         .notEmpty().withMessage('* 不可空缺')
         .custom((value, { req, loc, path }) => {
-            if (value !== req.body.admin_password) throw new Error('Password Not Matched')
+            if (value !== req.body.admin_password) throw new Error('密碼不符合')
             else return value;
-        }).withMessage('Password Not Matched'),
+        }).withMessage('密碼不符合'),
 
     (req, res, next) => {
         req.session.adminInput = {
@@ -34,7 +38,8 @@ exports.admin_info_input = [
 
 exports.admin_info_input_edit = [
     check('admin_email')
-        .notEmpty().withMessage('* 不可空缺'),
+        .notEmpty().withMessage('* 不可空缺')
+        .isEmail().withMessage('* 請輸入正確的郵箱格式'),
     check('admin_name')
         .notEmpty().withMessage('* 不可空缺'),
 

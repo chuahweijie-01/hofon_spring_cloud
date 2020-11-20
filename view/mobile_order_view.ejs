@@ -21,9 +21,15 @@
                 <div class="panel panel-default">
                     <div class="toolbar hidden-print">
                         <div class="row">
+                            <% if (paymentResult) { %>
+                            <div class="text-right col-sm-6" style="padding-top: 20px; padding-right: 45px;">
+                                <button class="btn btn-danger btn-info" id="paymentResult" value="<%= paymentResult%>"> 下一页 </button>
+                            </div>
+                            <% } else { %>
                             <div class="text-left col-sm-6" style="padding-top: 20px; padding-left: 45px;">
                                 <button class="btn btn-danger btn-info" id="download"><i class="fa fa-file-pdf-o"></i> 下載PDF檔案</button>
                             </div>
+                            <% } %>
                         </div>
                         <hr>
                     </div>
@@ -101,6 +107,13 @@
                                                 <td colspan="2"></td>
                                                 <td colspan="2">營業稅 (5%) </td>
                                                 <td> <%= data[0].order_tax%> </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                                <td colspan="2">運費 </td>
+                                                <td>
+                                                    <%= data[0].order_zone_charge%>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2"></td>

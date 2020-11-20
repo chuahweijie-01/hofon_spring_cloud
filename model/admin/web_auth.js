@@ -5,11 +5,20 @@ exports.insert = (user) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM companydb.admin WHERE admin_email = ? AND admin_role = 1`, user.admin_email)
+            return connection.query(`
+            SELECT *
+            FROM
+                companydb.admin
+            WHERE
+                admin_email = ?
+                AND admin_role = 1`, user.admin_email)
         })
         .then(([rows, field]) => {
             if (rows.length) throw new Error(`該郵箱已存在，請使用新的郵箱註冊`);
-            else return connection.query(`INSERT INTO companydb.admin SET ?`, [user])
+            else return connection.query(`
+            INSERT INTO
+                companydb.admin
+            SET ?`, [user])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`${user.admin_email} 註冊成功`);

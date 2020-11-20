@@ -1,11 +1,11 @@
 const connectionPool = require('../../conf/db');
 
-exports.generateOrder = (order_id) => {
+exports.generateOrder = (orderId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT product_name, order_final_price FROM orderdb.order_full_information WHERE order_id = ?`, [order_id])
+            return connection.query(`SELECT product_name, order_final_price FROM orderdb.order_full_information WHERE order_id = ?`, [orderId])
         })
         .then(([rows, field]) => {
             if (rows.length) return rows;
@@ -97,12 +97,12 @@ exports.merchantTradeNoUpdate = (orderId, paymentDate, tradeDate, tradeNo) => {
         })
 }
 
-exports.getCompanyEmail = (compnany_id) => {
+exports.getCompanyEmail = (companyId) => {
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT company_email FROM companydb.company WHERE company_id = ?`, [compnany_id])
+            return connection.query(`SELECT company_email FROM companydb.company WHERE company_id = ?`, [companyId])
         })
         .then(([rows, field]) => {
             return rows;
@@ -113,5 +113,25 @@ exports.getCompanyEmail = (compnany_id) => {
         })
         .finally(() => {
             connection.release()
+        })
+}
+
+exports.getOrder = (orderId) => {
+    var connection;
+    return connectionPool.getConnection()
+        .then((connect) => {
+            connection = connect;
+            return connection.query(`SELECT * FROM orderdb.order_full_information WHERE order_id = ? GROUP BY product_id`, [orderId])
+        })
+        .then(([rows, field]) => {
+            if (rows.length) return rows;
+            else throw new Error(`該訂單已從資料庫中移除`)
+        })
+        .catch((err) => {
+            console.error(err);
+            throw new Error(err.message);
+        })
+        .finally(() => {
+            connection.release();
         })
 }

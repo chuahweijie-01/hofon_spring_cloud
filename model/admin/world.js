@@ -6,7 +6,10 @@ exports.addNewCountry = (countryInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`INSERT INTO userdb.country SET ?`, [countryInfo])
+            return connection.query(`
+            INSERT INTO
+                userdb.country
+            SET ?`, [countryInfo])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`${countryInfo.country_name_chinese} 新增成功，請在 編輯 選項裏添加城市。`);
@@ -26,7 +29,10 @@ exports.addNewCity = (countryInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`INSERT INTO userdb.city SET ?`, [countryInfo])
+            return connection.query(`
+            INSERT INTO
+                userdb.city
+            SET ?`, [countryInfo])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`${countryInfo.city_name} 新增成功`);
@@ -46,7 +52,12 @@ exports.updateCountry = (countryInfo, countryId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query('UPDATE userdb.country SET ? WHERE country_id = ?', [countryInfo, countryId]);
+            return connection.query(`
+            UPDATE
+                userdb.country
+            SET ?
+            WHERE
+                country_id = ?`, [countryInfo, countryId]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return (`資料更新成功`);
@@ -72,14 +83,32 @@ exports.getCountryList = (pageInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_country FROM userdb.country`)
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_country
+            FROM
+                userdb.country`)
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_country;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
-            return connection.query(`SELECT country.country_id, country.country_name_chinese, country.country_name_english, country.country_code,
-                                     COUNT(*) AS total_city FROM userdb.country AS country
-                                     LEFT JOIN userdb.city AS city ON country.country_id = city.country_id GROUP BY country.country_id ORDER BY country.country_code LIMIT ${limit}`)
+            return connection.query(`
+            SELECT
+                country.country_id,
+                country.country_name_chinese,
+                country.country_name_english,
+                country.country_code,
+                COUNT(*) AS total_city
+            FROM
+                userdb.country AS country
+            LEFT JOIN
+                userdb.city AS city
+                ON country.country_id = city.country_id
+            GROUP BY
+                country.country_id
+            ORDER BY
+                country.country_code
+            LIMIT ${limit}`)
         })
         .then(([rows, field]) => {
             result = {
@@ -110,9 +139,23 @@ exports.getCountry = (countryId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT country.country_id, country.country_name_chinese, country.country_name_english, country.country_code,
-                                     city.city_id, city.city_name FROM userdb.country AS country
-                                     LEFT JOIN userdb.city AS city ON country.country_id = city.country_id WHERE country.country_id = ? ORDER BY city.city_id`, [countryId])
+            return connection.query(`
+            SELECT
+                country.country_id,
+                country.country_name_chinese,
+                country.country_name_english,
+                country.country_code,
+                city.city_id,
+                city.city_name
+            FROM
+                userdb.country AS country
+            LEFT JOIN
+                userdb.city AS city
+                ON country.country_id = city.country_id
+            WHERE
+                country.country_id = ?
+            ORDER BY
+                city.city_id`, [countryId])
         })
         .then(([rows, field]) => {
             return rows
@@ -131,7 +174,11 @@ exports.deleteCountry = (countryId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM userdb.country WHERE country_id = ?`, [countryId])
+            return connection.query(`
+            DELETE FROM
+                userdb.country
+            WHERE
+                country_id = ?`, [countryId])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);
@@ -151,7 +198,11 @@ exports.deleteCity = (cityId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM userdb.city WHERE city_id = ?`, [cityId])
+            return connection.query(`
+            DELETE FROM
+                userdb.city
+            WHERE
+                city_id = ?`, [cityId])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);

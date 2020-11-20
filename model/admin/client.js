@@ -2,26 +2,44 @@ const connectionPool = require('../../conf/db');
 
 exports.addNewClient = (clientInfo, privilegesId) => {
     var connection;
+    var privileges = [];
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_client FROM companydb.admin WHERE company_id = ?`, [clientInfo.company_id])
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_client
+            FROM
+                companydb.admin
+            WHERE
+                company_id = ?`, [clientInfo.company_id])
         })
         .then(([rows, field]) => {
             if (rows[0].total_client >= 10) throw new Error(`已超過可註冊的管理者上限`);
-            else return connection.query(`SELECT * FROM companydb.admin WHERE admin_email = ?`, [clientInfo.admin_email])
+            else return connection.query(`
+            SELECT * 
+            FROM
+                companydb.admin
+            WHERE
+                admin_email = ?`, [clientInfo.admin_email])
         })
         .then(([rows, field]) => {
             if (rows.length) throw new Error(`該郵箱已存在數據庫，請使用新的郵箱註冊`);
-            else return connection.query(`INSERT INTO companydb.admin SET ?`, [clientInfo])
+            else return connection.query(`
+            INSERT INTO
+                companydb.admin
+            SET ?`, [clientInfo])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) {
-                var privileges = [];
                 for (var i = 0; i < privilegesId.length; i++) {
                     privileges.push([clientInfo.admin_id, privilegesId[i]])
                 }
-                return connection.query(`INSERT INTO companydb.admin_privileges (admin_id, privileges_id) VALUES ?`, [privileges]);
+                return connection.query(`
+                INSERT INTO
+                    companydb.admin_privileges
+                    (admin_id, privileges_id)
+                VALUES ?`, [privileges]);
             }
             else throw new Error(`資料新增失敗`);
         })
@@ -43,7 +61,13 @@ exports.getPrivilegesList = () => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT privileges_id, privileges_name, privileges_description FROM companydb.privileges`);
+            return connection.query(`
+            SELECT
+                privileges_id,
+                privileges_name,
+                privileges_description
+            FROM
+                companydb.privileges`);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -62,11 +86,24 @@ exports.getClient = (clientId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT admin.admin_id, admin.admin_name, admin_email, privileges.privileges_id, privileges.privileges_name,
-                                     privileges.privileges_description FROM companydb.admin AS admin
-                                     JOIN companydb.admin_privileges AS admin_privileges ON admin.admin_id = admin_privileges.admin_id
-                                     JOIN companydb.privileges as privileges ON admin_privileges.privileges_id = privileges.privileges_id
-                                     WHERE admin.admin_id = ?`, [clientId]);
+            return connection.query(`
+            SELECT
+                admin_email,    
+                admin.admin_id,
+                admin.admin_name,
+                privileges.privileges_id,
+                privileges.privileges_name,
+                privileges.privileges_description
+            FROM
+                companydb.admin AS admin
+            JOIN
+                companydb.admin_privileges AS admin_privileges
+                ON admin.admin_id = admin_privileges.admin_id
+            JOIN
+                companydb.privileges as privileges
+                ON admin_privileges.privileges_id = privileges.privileges_id
+            WHERE
+                admin.admin_id = ?`, [clientId]);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -93,21 +130,54 @@ exports.getClientList = (role, company_id, pageInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            if (role) query = `SELECT COUNT(*) AS total_client FROM companydb.admin WHERE admin_role = 0`;
-            else query = `SELECT COUNT(*) AS total_client FROM companydb.admin WHERE admin_role = 0 AND company_id = '${company_id}'`;
+            if (role) query = `
+            SELECT
+                COUNT(*) AS total_client
+            FROM
+                companydb.admin
+            WHERE
+                admin_role = 0`;
+            else query = `
+            SELECT
+                COUNT(*) AS total_client
+            FROM
+                companydb.admin
+            WHERE
+                admin_role = 0
+                AND company_id = '${company_id}'`;
             return connection.query(query);
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_client;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
             if (role) {
-                query = `SELECT admin.admin_id, admin.admin_name, company.company_name, company.company_official_id,
-                         DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login FROM companydb.admin AS admin
-                         JOIN companydb.company AS company ON admin.company_id = company.company_id
-                         WHERE admin_role = 0 LIMIT ${limit}`;
+                query = `
+                SELECT
+                    admin.admin_id,
+                    admin.admin_name,
+                    company.company_name,
+                    company.company_official_id,
+                    DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login
+                    FROM
+                    companydb.admin AS admin
+                JOIN
+                    companydb.company AS company
+                    ON admin.company_id = company.company_id
+                WHERE
+                    admin_role = 0
+                LIMIT ${limit}`;
             } else {
-                query = `SELECT admin_id, admin_name, admin_email, DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login
-                         FROM companydb.admin WHERE company_id = '${company_id}' LIMIT ${limit}`;
+                query = `
+                SELECT
+                    admin_id,
+                    admin_name,
+                    admin_email,
+                    DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login
+                FROM
+                    companydb.admin
+                WHERE
+                    company_id = '${company_id}'
+                LIMIT ${limit}`;
             }
             return connection.query(query);
         })
@@ -140,7 +210,14 @@ exports.getCompanyList = () => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT company_id, company_name FROM companydb.company WHERE company_id <> '1'`);
+            return connection.query(`
+            SELECT
+                company_id,
+                company_name
+            FROM
+                companydb.company
+            WHERE
+                company_id <> '1'`);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -156,22 +233,35 @@ exports.getCompanyList = () => {
 
 exports.updateClient = (clientId, clientInfo, privilegesId) => {
     var connection;
+    var privileges = [];
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM companydb.admin_privileges WHERE admin_id = ?`, [clientId]);
+            return connection.query(`
+            DELETE FROM
+                companydb.admin_privileges
+            WHERE
+                admin_id = ?`, [clientId]);
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) {
-                var privileges = [];
                 for (var i = 0; i < privilegesId.length; i++) {
                     privileges.push([clientId, privilegesId[i]]);
                 }
-                return connection.query(`INSERT INTO companydb.admin_privileges (admin_id, privileges_id) VALUES ?`, [privileges]);
+                return connection.query(`
+                INSERT INTO
+                    companydb.admin_privileges
+                    (admin_id, privileges_id)
+                VALUES ?`, [privileges]);
             } else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return connection.query(`UPDATE companydb.admin SET ? WHERE admin_id = ?`, [clientInfo, clientId]);
+            if (result[0].affectedRows >= 1) return connection.query(`
+            UPDATE
+                companydb.admin
+            SET ?
+            WHERE
+                admin_id = ?`, [clientInfo, clientId]);
             else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
@@ -193,7 +283,11 @@ exports.deleteClient = (clientId, currentLoginUser) => {
         .then((connect) => {
             connection = connect;
             if (clientId === currentLoginUser.toString()) throw new Error(`该帐号目前为使用状态，无法被删除`);
-            else return connection.query(`DELETE FROM companydb.admin WHERE admin_id = ?`, [clientId]);
+            else return connection.query(`
+            DELETE FROM
+                companydb.admin
+            WHERE
+                admin_id = ?`, [clientId]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);

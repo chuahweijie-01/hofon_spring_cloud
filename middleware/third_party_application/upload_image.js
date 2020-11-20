@@ -40,21 +40,3 @@ function analysisImageFunction(folderName) {
 }
 
 module.exports = { analysisImageFunction };
-
-/*
-Concept 1 of uploading bulk image from 3rd party device
-1. Get all the data (Format not yet determined)
-2. Store analysis date into session to be called as file name
-3. In storage, generate path according to the date session.
-4. Store all image into path, update into database.
-5. Clear session, complete image uploading and continue with raw data.
-*/
-
-/*
-Concept 2 of uploading bulk image from 3rd party device
-1. Get all the data (Format not yet determined)
-2. Store all image into temp file.
-3. Continue to process raw data, image path set as analysis date/image_name.
-4. Then, move all temp file to new created file (According to analysis date).
-5. When done, clear temp.
-*/

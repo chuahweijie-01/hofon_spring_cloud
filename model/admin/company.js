@@ -5,7 +5,10 @@ exports.addNewCompany = (companyInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`INSERT INTO companydb.company SET ?`, [companyInfo]);
+            return connection.query(`
+            INSERT INTO
+                companydb.company
+            SET ?`, [companyInfo]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (companyInfo.company_id);
@@ -31,13 +34,26 @@ exports.getCompanyList = (pageInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_company FROM companydb.company`);
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_company
+            FROM
+                companydb.company`);
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_company;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
-            return connection.query(`SELECT company_id, company_official_id, company_name, DATE_FORMAT(created_date, '%d-%c-%Y %H:%i:%s') AS created_date
-                                     FROM companydb.company WHERE company_id <> '1' LIMIT ${limit}`);
+            return connection.query(`
+            SELECT
+                company_id,
+                company_official_id,
+                company_name,
+                DATE_FORMAT(created_date, '%d-%c-%Y %H:%i:%s') AS created_date
+            FROM
+                companydb.company
+            WHERE
+                company_id <> '1'
+            LIMIT ${limit}`);
         })
         .then(([rows, field]) => {
             result = {
@@ -68,7 +84,12 @@ exports.getCompany = (companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM companydb.company WHERE company_id = ?`, [companyId])
+            return connection.query(`
+            SELECT *
+            FROM
+                companydb.company
+            WHERE
+                company_id = ?`, [companyId])
         })
         .then(([rows, field]) => {
             return (rows);
@@ -87,7 +108,12 @@ exports.updateCompany = (companyId, companyInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`UPDATE companydb.company SET ? WHERE company_id = ?`, [companyInfo, companyId]);
+            return connection.query(`
+            UPDATE
+                companydb.company
+            SET ?
+            WHERE
+                company_id = ?`, [companyInfo, companyId]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return (`資料更新成功`);
@@ -107,7 +133,11 @@ exports.deleteCompany = (companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM companydb.company WHERE company_id = ?`, [companyId]);
+            return connection.query(`
+            DELETE FROM
+                companydb.company
+            WHERE
+                company_id = ?`, [companyId]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);
@@ -127,11 +157,22 @@ exports.updateCompanyLogo = (imageInfo, companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT company_logo FROM companydb.company WHERE company_id = ?`, [companyId]);
+            return connection.query(`
+            SELECT
+                company_logo
+            FROM
+                companydb.company
+            WHERE
+                company_id = ?`, [companyId]);
         })
         .then(([rows, field]) => {
             image_path = rows;
-            return connection.query(`UPDATE companydb.company SET ? WHERE company_id = ?`, [imageInfo, companyId]);
+            return connection.query(`
+            UPDATE
+                companydb.company
+            SET ?
+            WHERE
+                company_id = ?`, [imageInfo, companyId]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return (image_path);
@@ -151,11 +192,22 @@ exports.updateCompanyBankImage = (imageInfo, companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT company_bank_image FROM companydb.company WHERE company_id = ?`, [companyId]);
+            return connection.query(`
+            SELECT
+                company_bank_image
+            FROM
+                companydb.company
+            WHERE
+                company_id = ?`, [companyId]);
         })
         .then(([rows, field]) => {
             image_path = rows;
-            return connection.query(`UPDATE companydb.company SET ? WHERE company_id = ?`, [imageInfo, companyId]);
+            return connection.query(`
+            UPDATE
+                companydb.company
+            SET ?
+            WHERE
+                company_id = ?`, [imageInfo, companyId]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return (image_path);

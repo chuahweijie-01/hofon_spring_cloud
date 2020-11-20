@@ -5,11 +5,19 @@ exports.addNewCategory = (categoryInfo, companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM productdb.category WHERE category_name = ?`, [categoryInfo.category_name])
+            return connection.query(`
+            SELECT *
+            FROM
+                productdb.category
+            WHERE
+                category_name = ?`, [categoryInfo.category_name])
         })
         .then(([rows, field]) => {
             if (rows.length) throw new Error(`該類別已存在數據庫，請使用新的類別名稱`);
-            else return connection.query(`INSERT INTO productdb.category SET ?`, [categoryInfo])
+            else return connection.query(`
+            INSERT INTO
+                productdb.category
+            SET ?`, [categoryInfo])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) {
@@ -17,7 +25,11 @@ exports.addNewCategory = (categoryInfo, companyId) => {
                 for (var i = 0; i < companyId.length; i++) {
                     company.push([companyId[i], categoryInfo.category_id])
                 }
-                return connection.query(`INSERT INTO companydb.company_category (company_id, category_id) VALUES ?`, [company]);
+                return connection.query(`
+                INSERT INTO
+                    companydb.company_category
+                    (company_id, category_id)
+                VALUES ?`, [company]);
             }
             else throw new Error(`資料新增失敗`);
         })
@@ -39,7 +51,15 @@ exports.getCompanyList = () => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT company_id, company_official_id, company_name FROM companydb.company WHERE company_id <> '1'`)
+            return connection.query(`
+            SELECT
+                company_id,
+                company_official_id,
+                company_name
+            FROM
+                companydb.company
+            WHERE
+                company_id <> '1'`)
         })
         .then(([rows, field]) => {
             return (rows);
@@ -58,9 +78,22 @@ exports.getCategory = (categoryId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT category.category_id, category.category_name, company.company_id, company.company_name FROM productdb.category AS category
-                                     JOIN companydb.company_category AS company_category ON category.category_id = company_category.category_id
-                                     JOIN companydb.company as company ON company_category.company_id = company.company_id WHERE category.category_id = ?`, [categoryId])
+            return connection.query(`
+            SELECT
+                category.category_id,
+                category.category_name,
+                company.company_id,
+                company.company_name
+            FROM
+                productdb.category AS category
+            JOIN
+                companydb.company_category AS company_category
+                ON category.category_id = company_category.category_id
+            JOIN
+                companydb.company as company
+                ON company_category.company_id = company.company_id
+            WHERE
+                category.category_id = ?`, [categoryId])
         })
         .then(([rows, field]) => {
             return (rows);
@@ -85,16 +118,29 @@ exports.getCategoryList = (pageInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_category FROM productdb.category`)
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_category
+            FROM
+                productdb.category`)
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_product;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
-            return connection.query(`SELECT COUNT(*) AS total_company, company_category.category_id, category.category_name,
-                                     DATE_FORMAT(category.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
-                                     FROM companydb.company_category AS company_category
-                                     JOIN productdb.category AS category ON company_category.category_id = category.category_id
-                                     GROUP BY category.category_name LIMIT ${limit}`)
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_company,
+                company_category.category_id,
+                category.category_name,
+                DATE_FORMAT(category.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
+            FROM
+                companydb.company_category AS company_category
+            JOIN
+                productdb.category AS category
+                ON company_category.category_id = category.category_id
+            GROUP BY
+                category.category_name
+            LIMIT ${limit}`)
         })
         .then(([rows, field]) => {
             result = {
@@ -125,7 +171,11 @@ exports.updateCategory = (categoryInfo, companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM companydb.company_category WHERE category_id = ?`, [categoryInfo.category_id])
+            return connection.query(`
+            DELETE FROM
+                companydb.company_category
+            WHERE
+                category_id = ?`, [categoryInfo.category_id])
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) {
@@ -133,11 +183,20 @@ exports.updateCategory = (categoryInfo, companyId) => {
                 for (var i = 0; i < companyId.length; i++) {
                     company.push([companyId[i], categoryInfo.category_id])
                 }
-                return connection.query(`INSERT INTO companydb.company_category (company_id, category_id) VALUES ?`, [company])
+                return connection.query(`
+                INSERT INTO
+                    companydb.company_category
+                    (company_id, category_id)
+                VALUES ?`, [company])
             } else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return connection.query(`UPDATE productdb.category SET ? WHERE category_id = ?`, [categoryInfo, categoryInfo.category_id]);
+            if (result[0].affectedRows >= 1) return connection.query(`
+            UPDATE
+                productdb.category
+            SET ?
+            WHERE
+                category_id = ?`, [categoryInfo, categoryInfo.category_id]);
             else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
@@ -158,7 +217,11 @@ exports.deleteCategory = (categoryId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM productdb.category WHERE category_id = ?`, [categoryId])
+            return connection.query(`
+            DELETE FROM
+                productdb.category
+            WHERE
+                category_id = ?`, [categoryId])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);

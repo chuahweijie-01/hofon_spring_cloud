@@ -23,7 +23,7 @@ exports.userRegistrationInput = [
         .notEmpty().withMessage('* 不可空缺'),
     check('company_official_id')
         .notEmpty().withMessage('* 不可空缺')
-        .isLength({ min: 8, max: 10 }).withMessage('請填寫正確的公司統編號碼')
+        .isLength({ min: 8, max: 10 }).withMessage('公司統編號碼需介於 8 至 10 個字數')
         .isInt().withMessage('請填寫正確的公司統編號碼'),
 
     (req, res, next) => {

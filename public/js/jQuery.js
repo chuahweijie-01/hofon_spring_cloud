@@ -45,11 +45,11 @@ $(function () {
     //PASSWORD SIMILIARITY CHECK
     $('#password, #confirmed_password').on('keyup', function () {
         if (!$('#password').val() || !$('#confirmed_password').val()) {
-            $('#message').html('Please Enter Your Password Again').css({ 'font-weight': 'Bold', 'color': '#CC0000' });
+            $('#message').html('請輸入密碼').css({ 'font-weight': 'Bold', 'color': '#CC0000' });
         } else if ($('#password').val() == $('#confirmed_password').val()) {
-            $('#message').html('Password Matched').css({ 'font-weight': 'Bold', 'color': '#007E33' });
+            $('#message').html('密碼符合').css({ 'font-weight': 'Bold', 'color': '#007E33' });
         } else {
-            $('#message').html('Password Not Matched').css({ 'font-weight': 'Bold', 'color': '#CC0000' });
+            $('#message').html('密碼不符合').css({ 'font-weight': 'Bold', 'color': '#CC0000' });
         }
     });
 

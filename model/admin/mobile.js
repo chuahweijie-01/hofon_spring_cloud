@@ -5,11 +5,27 @@ exports.updateAppInterfaceSetting = (settingInfo, companyId, settingInfoWithComp
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM companydb.mobile_setting WHERE company_id = ?`, companyId);
+            return connection.query(`
+            SELECT *
+            FROM
+                companydb.mobile_setting
+            WHERE
+                company_id = ?`, companyId);
         })
         .then(([rows, field]) => {
-            if (rows.length) return connection.query(`UPDATE companydb.mobile_setting SET ? WHERE company_id = ?`, [settingInfo, companyId]);
-            else return connection.query(`INSERT INTO companydb.mobile_setting SET ?`, [settingInfoWithCompanyId]);
+            if (rows.length) {
+                return connection.query(`
+                UPDATE
+                    companydb.mobile_setting
+                SET ?
+                WHERE
+                    company_id = ?`, [settingInfo, companyId]);
+            } else {
+                return connection.query(`
+                INSERT INTO
+                    companydb.mobile_setting
+                SET ?`, [settingInfoWithCompanyId]);
+            }
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) return (`軟體設定成功`);
@@ -29,7 +45,16 @@ exports.getAppInterfaceSetting = (companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT header_color, body_color, footer_color, button_1_color FROM companydb.mobile_setting WHERE company_id = ?`, [companyId]);
+            return connection.query(`
+            SELECT
+                header_color,
+                body_color,
+                footer_color,
+                button_1_color
+            FROM
+                companydb.mobile_setting
+            WHERE
+                company_id = ?`, [companyId]);
         })
         .then(([rows, field]) => {
             return (rows);

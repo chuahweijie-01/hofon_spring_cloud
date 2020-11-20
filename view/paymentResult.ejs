@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> 付款结束 </title>
+    <link href="css/classic.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+</head>
+
 <body>
-    <button id='paymentResult' value="<%= paymentResult%>">Send post message from web</button>
-    <div>Payment Result is : <%= paymentResult%></div>
-    <div>Post message log</div>
-
-    <textarea style="height: 50%; width: 100%;" rows="10" readonly></textarea>
-
-    <!--<script>
-        var log = document.querySelector("textarea");
-        var button = document.getElementById('paymentResult');
-
-        document.querySelector("button").onclick = function () {
-            //passingMessage();
-        }
-        window.addEventListener("message", function (event) {
-            console.log("Received post message", event);
-            logMessage(event.data);
-        }, false);
-
-        function logMessage(message) {
-            log.append((new Date()) + " " + message + "\n");
-        }
-
-        function passingMessage() {
-            event.preventDefault();
-            if (window.postMessage.length !== 1) {
-                setTimeout(passingMessage, 200);
-            } else {
-                console.log("Send post message");
-                logMessage("Sending post message from web..");
-                window.postMessage("Hello From Express JS Backend ! ", "*");
-            }
-        }
-
-    </script>-->
+    <section id="main" class="col-lg-12 ">
+        <div class="container text-center" style="padding-top: 50px; width: 600px;">
+            <div class="col-md-12 col-lg-12 col-sm-12">
+                <div class="panel panel-default">
+                    <div class="toolbar hidden-print" style="padding-top: 100px;">
+                        <div class="row payment-confirm text-center">
+                            <div class="icon-box">
+                                <i class="material-icons">done_outline</i>
+                            </div>
+                            <h2><strong>付款完成</strong></h2>
+                            <div style="padding-top: 100px; min-height: 500px;">
+                                <button class="btn btn-danger btn-info" id="paymentResult"
+                                    value="<%= paymentResult%>">下一页</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jQuery.js"></script>
 
 </html>

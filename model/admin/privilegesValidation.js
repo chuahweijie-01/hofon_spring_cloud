@@ -5,10 +5,20 @@ exports.privilegesCheck = (adminId, privilegesId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT privileges.privileges_id FROM companydb.privileges AS privileges
-                                     JOIN companydb.admin_privileges AS admin_privileges ON privileges.privileges_id = admin_privileges.privileges_id
-                                     JOIN companydb.admin AS admin ON admin.admin_id = admin_privileges.admin_id
-                                     WHERE admin.admin_id = ? AND admin_privileges.privileges_id = ?`, [adminId, privilegesId]);
+            return connection.query(`
+            SELECT
+                privileges.privileges_id
+            FROM
+                companydb.privileges AS privileges
+            JOIN
+                companydb.admin_privileges AS admin_privileges
+                ON privileges.privileges_id = admin_privileges.privileges_id
+            JOIN
+                companydb.admin AS admin
+                ON admin.admin_id = admin_privileges.admin_id
+            WHERE
+                admin.admin_id = ?
+                AND admin_privileges.privileges_id = ?`, [adminId, privilegesId]);
         })
         .then(([rows, field]) => {
             if (rows.length) return rows
