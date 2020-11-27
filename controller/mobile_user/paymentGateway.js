@@ -61,6 +61,8 @@ exports.paymentResult = (req, res) => {
         var cartId = req.params.cart;
         var orderView = `${process.env.NGROK_IP}/mobile/api/order/${orderId}`;
 
+        var companyEmail;
+
         paymentModel.merchantTradeNoUpdate(orderId, paymentDate, tradeDate, tradeNo)
             .then((result) => {
                 return paymentModel.deleteCartItem(cartId, orderId);
@@ -69,6 +71,8 @@ exports.paymentResult = (req, res) => {
                 return paymentModel.getCompanyEmail(companyId);
             })
             .then((result) => {
+
+                companyEmail = result[0].company_email;
 
                 const transporter = nodemailer.createTransport({
                     service: 'Gmail',
@@ -81,7 +85,7 @@ exports.paymentResult = (req, res) => {
 
                 const options = {
                     from: '雲端商城小助手 <hscserverbot-noreply@gmail.com>',
-                    to: result[0].company_email,
+                    to: companyEmail,
                     subject: '[雲端商城] 訂單通知',
                     html:
                         `
@@ -103,11 +107,52 @@ exports.paymentResult = (req, res) => {
                     else
                         console.log(`郵件已發送`);
                 })
+
+                //${process.env.NGROK_IP}/mobile/api/payment/sendmail/{"company_email":"${companyEmail}", "orderId":"${orderId}", "orderAmount":"${orderAmount}", "orderView":"${orderView}"}
             })
             .catch((err) => {
                 console.log(err);
             });
     }
+}
+
+exports.sendNotificationMail = (req, res) => {
+    var mailInfo = JSON.parse(req.params.mailInfo);
+    console.log(mailInfo);
+
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.EMAIL_PASSWORD
+        },
+        from: process.env.EMAIL
+    });
+
+    const options = {
+        from: '雲端商城小助手 <hscserverbot-noreply@gmail.com>',
+        to: mailInfo.company_email,
+        subject: '[雲端商城] 訂單通知',
+        html:
+            `
+            <p>親愛的管理者你好：</p>
+            <p>系統偵測到新的訂單，請儘快查閲。</p>
+            <hr>
+            <p>訂單序號：${mailInfo.orderId}</p>
+            <p>訂單總額：NT$ ${mailInfo.orderAmount}</p>
+            <a href="${mailInfo.orderView}">查看訂單詳情</a>
+            <br><br><br><br><br><br><br><hr>
+            
+            <p>此信件為系統通知信，請勿直接回復。</p>
+            `
+    }
+
+    transporter.sendMail(options, (err, info) => {
+        if (err)
+            console.log(err.message);
+        else
+            console.log(`郵件已發送`);
+    })
 }
 
 exports.resultInterface = (req, res) => {

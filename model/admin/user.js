@@ -19,7 +19,7 @@ exports.getUserList = (pageInfo, companyId, isAdmin) => {
                 userdb.user`)
         })
         .then(([rows, field]) => {
-            numberOfRows = rows[0].total_admin;
+            numberOfRows = rows[0].total_user;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
             if (isAdmin) {
                 query = `
@@ -35,10 +35,10 @@ exports.getUserList = (pageInfo, companyId, isAdmin) => {
                     userdb.user AS user
                 JOIN
                     userdb.user_company AS user_company
-                    ON user.user_id = user_company.user_id
+                    USING (user_id)
                 JOIN
                     companydb.company AS company
-                    ON user_company.company_id = company.company_id
+                    USING (company_id)
                 GROUP BY
                     user.user_email
                 LIMIT ${limit}`;
@@ -55,7 +55,7 @@ exports.getUserList = (pageInfo, companyId, isAdmin) => {
                     userdb.user AS user
                 JOIN
                     userdb.user_company AS user_company
-                    ON user.user_id = user_company.user_id 
+                    USING (user_id)
                 WHERE
                     user_company.company_id = '${companyId}'
                 LIMIT ${limit}`;

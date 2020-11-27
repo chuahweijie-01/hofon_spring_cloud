@@ -5,8 +5,15 @@ exports.getAdsList = (company_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT advertisement_id, advertisement_name, DATE_FORMAT(last_update, '%d-%c-%Y %H:%i:%s') AS last_update
-                                     FROM companydb.advertisement WHERE company_id = ?`, [company_id]);
+            return connection.query(`
+            SELECT
+                advertisement_id,
+                advertisement_name,
+                DATE_FORMAT(last_update, '%d-%c-%Y %H:%i:%s') AS last_update
+            FROM
+                companydb.advertisement
+            WHERE
+                company_id = ?`, [company_id]);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -25,7 +32,12 @@ exports.getAds = (advertisement_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM companydb.advertisement WHERE advertisement_id = ?`, [advertisement_id]);
+            return connection.query(`
+            SELECT *
+            FROM
+                companydb.advertisement
+            WHERE
+                advertisement_id = ?`, [advertisement_id]);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -44,7 +56,10 @@ exports.addNewAds = (advertisement_info) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`INSERT INTO companydb.advertisement SET ? `, [advertisement_info]);
+            return connection.query(`
+            INSERT INTO
+                companydb.advertisement
+            SET ? `, [advertisement_info]);
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) return (`${advertisement_info.advertisement_name} 新增成功`);
@@ -64,7 +79,12 @@ exports.updateAds = (advertisement_id, advertisement_info) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`UPDATE companydb.advertisement SET ? WHERE advertisement_id = ?`, [advertisement_info, advertisement_id]);
+            return connection.query(`
+            UPDATE
+                companydb.advertisement
+            SET ?
+            WHERE
+                advertisement_id = ?`, [advertisement_info, advertisement_id]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return (`${advertisement_info.advertisement_name} 資料更新成功`);
@@ -84,11 +104,21 @@ exports.deleteAds = (advertisement_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT advertisement_image FROM companydb.advertisement WHERE advertisement_id = ?`, [advertisement_id]);
+            return connection.query(`
+            SELECT
+                advertisement_image
+            FROM
+                companydb.advertisement
+            WHERE
+                advertisement_id = ?`, [advertisement_id]);
         })
         .then(([rows, field]) => {
             image_path = rows;
-            return connection.query(`DELETE FROM companydb.advertisement WHERE advertisement_id = ?`, [advertisement_id]);
+            return connection.query(`
+            DELETE FROM
+                companydb.advertisement
+            WHERE
+                advertisement_id = ?`, [advertisement_id]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (image_path);
@@ -108,7 +138,13 @@ exports.getAdsImage = (advertisement_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT advertisement_image FROM companydb.advertisement WHERE advertisement_id = ?`, [advertisement_id]);
+            return connection.query(`
+            SELECT
+                advertisement_image
+            FROM
+                companydb.advertisement
+            WHERE
+                advertisement_id = ?`, [advertisement_id]);
         })
         .then(([rows, field]) => {
             return rows;
@@ -127,7 +163,13 @@ exports.updateAdsImage = (advertisement_id, advertisement_image) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`UPDATE companydb.advertisement SET advertisement_image = ? WHERE advertisement_id = ?`, [advertisement_image, advertisement_id]);
+            return connection.query(`
+            UPDATE
+                companydb.advertisement
+            SET
+                advertisement_image = ?
+            WHERE
+                advertisement_id = ?`, [advertisement_image, advertisement_id]);
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return ('圖片更新成功');

@@ -86,7 +86,7 @@ exports.getCategoryList = (companyId) => {
                 productdb.category AS category
             JOIN
                 companydb.company_category AS company_category
-                ON category.category_id = company_category.category_id
+                USING (category_id)
             WHERE
                 company_category.company_id = ?`, [companyId]);
         })
@@ -136,9 +136,11 @@ exports.getProductList = (companyId, pageInfo) => {
             FROM
                 productdb.product AS product
             JOIN
-                productdb.category AS category USING (category_id)
+                productdb.category AS category
+                USING (category_id)
             JOIN
-                companydb.company AS company USING (company_id)
+                companydb.company AS company
+                USING (company_id)
             WHERE
                 company.company_id = ?
                 AND product.deleted = 0
@@ -238,7 +240,7 @@ exports.deleteProduct = (productId) => {
                 productdb.image AS image
             JOIN
                 productdb.product AS product
-                ON image.product_id = product.product_id
+                USING (product_id)
             WHERE
                 product.product_id = ?`, [productId]);
         })
@@ -342,7 +344,7 @@ exports.publishProduct = (productId, categoryId, companyId) => {
                     productdb.product AS product
                 JOIN
                     companydb.company AS company
-                    ON product.company_id = company.company_id
+                    USING (company_id)
                 WHERE
                     product.product_status = 1
                     AND product.category_id = ?

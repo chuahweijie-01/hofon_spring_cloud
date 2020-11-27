@@ -4,113 +4,107 @@
 <%- include('partial/header')-%>
 
 <body>
-  <section id="main">
-    <div class="container">
-      <div class="row">
-        <%- include('partial/sidemenu')-%>
-        <div class="col-md-9">
-          <%- include('partial/flash')-%>
-          <div class="panel panel-default">
-            <div class="panel-heading main-color-bg">
-              <h3 class="panel-title"><%= title%></h3>
-            </div>
-            <div class="panel-body">
-              <form action="/api/award/<%= data[0].award_id%>?_method=PUT" method='POST'>
-                <label style="font-size: 20px;"><%= title%>資料</label>
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label>名稱</label>
-                    <% if (validation.length > 0) { %>
-                    <% if (validation.find(element => element.param == "award_name")) { %>
-                    <div class="has-error">
-                      <input type="text" name="award_name" class="form-control" value="<%= award_info.award_name %>">
-                      <span
-                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "award_name"))].msg; %></span>
+    <section id="main">
+        <div class="container">
+            <div class="row">
+                <%- include('partial/sidemenu')-%>
+                <div class="col-md-9">
+                    <%- include('partial/flash')-%>
+                    <div class="panel panel-default">
+                        <div class="panel-heading main-color-bg">
+                            <h3 class="panel-title"><%= title%></h3>
+                        </div>
+                        <div class="panel-body">
+                            <form action="/api/award/<%= data[0].award_id%>?_method=PUT" method='POST'>
+                                <label style="font-size: 20px;"><%= title%>資料</label>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label>名稱</label>
+                                        <% if (validation.length > 0) { %>
+                                        <% if (validation.find(element => element.param == "award_name")) { %>
+                                        <div class="has-error">
+                                            <input type="text" name="award_name" class="form-control" value="<%= award_info.award_name %>">
+                                            <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "award_name"))].msg; %></span>
+                                        </div>
+                                        <% } else { %>
+                                        <input type="text" name="award_name" class="form-control" value="<%= award_info.award_name %>">
+                                        <% } %>
+                                        <% } else { %>
+                                        <input type="text" name="award_name" class="form-control" value="<%= data[0].award_name%>">
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>暢銷原因</label>
+                                    <% if (validation.length > 0) { %>
+                                    <% if (validation.find(element => element.param == "award_description")) { %>
+                                    <div class="has-error">
+                                        <textarea name="award_description" class="form-control" rows="6" style="resize:none;"><%= award_info.award_description %></textarea>
+                                        <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "award_description"))].msg; %></span>
+                                    </div>
+                                    <% } else { %>
+                                    <textarea name="award_description" class="form-control" rows="6" style="resize:none;"><%= award_info.award_description %></textarea>
+                                    <% } %>
+                                    <% } else { %>
+                                    <textarea name="award_description" class="form-control" rows="6" style="resize:none;"><%= data[0].award_description%></textarea>
+                                    <% } %>
+                                </div>
+                                <hr>
+                                <label style="font-size: 20px; margin-bottom: 10px;">選擇產品</label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input class="form-control" id="tableSearch" type="text" placeholder="搜索">
+                                    </div>
+                                </div>
+                                <br>
+                                <table class="table table-striped table-hover">
+                                    <tbody id="myTable">
+
+                                        <% if (product.length) { %>
+                                        <% var checked = 0; %>
+                                        <% for (var i=0; i< product.length; i++) { %>
+                                        <% for (var j=0; j< data.length; j++) { %>
+                                        <% if (product[i].product_id === data[j].product_id ) { %>
+                                        <% checked = 1; %>
+                                        <% break; %>
+                                        <% } %>
+                                        <% } %>
+
+                                        <tr>
+                                            <td>
+                                                <% if (checked == 1) { %>
+                                                <input type="checkbox" name="product_id" id="<%= product[i].product_id%>" value="<%= product[i].product_id%>" checked>
+                                                <% } else { %>
+                                                <input type="checkbox" name="product_id" id="<%= product[i].product_id%>" value="<%= product[i].product_id%>">
+                                                <% } %>
+                                                <label for="<%= product[i].product_id%>"><%= product[i].product_name%></label>
+                                            </td>
+                                        </tr>
+
+                                        <% checked = 0; %>
+                                        <% } %>
+                                        <% } %>
+
+                                    </tbody>
+                                </table>
+                                <% if (validation.length > 0) { %>
+                                <% if (validation.find(element => element.param == "product_id")) { %>
+                                <div class="has-error" style="padding-bottom: 10px;">
+                                    <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_id"))].msg; %></span>
+                                </div>
+                                <% } %>
+                                <% } %>
+                                <br>
+                                <input type="submit" class="btn btn-danger" value="更新">
+                            </form>
+                        </div>
                     </div>
-                    <% } else { %>
-                    <input type="text" name="award_name" class="form-control" value="<%= award_info.award_name %>">
-                    <% } %>
-                    <% } else { %>
-                    <input type="text" name="award_name" class="form-control" value="<%= data[0].award_name%>">
-                    <% } %>
-                  </div>
                 </div>
-                <div class="form-group">
-                  <label>暢銷原因</label>
-                  <% if (validation.length > 0) { %>
-                  <% if (validation.find(element => element.param == "award_description")) { %>
-                  <div class="has-error">
-                    <textarea name="award_description" class="form-control" rows="6"
-                      style="resize:none;"><%= award_info.award_description %></textarea>
-                    <span
-                      class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "award_description"))].msg; %></span>
-                  </div>
-                  <% } else { %>
-                  <textarea name="award_description" class="form-control" rows="6"
-                    style="resize:none;"><%= award_info.award_description %></textarea>
-                  <% } %>
-                  <% } else { %>
-                  <textarea name="award_description" class="form-control" rows="6"
-                    style="resize:none;"><%= data[0].award_description%></textarea>
-                  <% } %>
-                </div>
-                <hr>
-                <label style="font-size: 20px; margin-bottom: 10px;">選擇產品</label>
-                <div class="row">
-                  <div class="col-md-12">
-                    <input class="form-control" id="tableSearch" type="text" placeholder="搜索">
-                  </div>
-                </div>
-                <br>
-                <table class="table table-striped table-hover">
-                  <tbody id="myTable">
-
-                    <% if (product.length) { %>
-                    <% var checked = 0; %>
-                    <% for (var i=0; i< product.length; i++) { %>
-                    <% for (var j=0; j< data.length; j++) { %>
-                    <% if (product[i].product_id === data[j].product_id ) { %>
-                    <% checked = 1; %>
-                    <% break; %>
-                    <% } %>
-                    <% } %>
-
-                    <tr>
-                      <td>
-                        <% if (checked == 1) { %>
-                        <input type="checkbox" name="product_id" id="<%= product[i].product_id%>" value="<%= product[i].product_id%>" checked>
-                        <% } else { %>
-                        <input type="checkbox" name="product_id" id="<%= product[i].product_id%>" value="<%= product[i].product_id%>">
-                        <% } %>
-                        <label for="<%= product[i].product_id%>"><%= product[i].product_name%></label>
-                      </td>
-                    </tr>
-
-                    <% checked = 0; %>
-                    <% } %>
-                    <% } %>
-
-                  </tbody>
-                </table>
-                <% if (validation.length > 0) { %>
-                <% if (validation.find(element => element.param == "product_id")) { %>
-                <div class="has-error" style="padding-bottom: 10px;">
-                  <span
-                    class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "product_id"))].msg; %></span>
-                </div>
-                <% } %>
-                <% } %>
-                <br>
-                <input type="submit" class="btn btn-danger" value="更新">
-              </form>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <%- include('partial/footer')-%>
+    <%- include('partial/footer')-%>
 
 </body>
 

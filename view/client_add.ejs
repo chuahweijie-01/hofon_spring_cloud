@@ -23,14 +23,12 @@
                                         <% if (validation.length > 0) { %>
                                         <% if (validation.find(element => element.param == "admin_email")) { %>
                                         <div class="has-error">
-                                            <input type="text" name="admin_email" class="form-control"
-                                                placeholder="電子郵件地址" value="<%= client_info.admin_email %>">
+                                            <input type="text" name="admin_email" class="form-control" placeholder="電子郵件地址" value="<%= client_info.admin_email %>">
                                             <span
                                                 class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_email"))].msg; %></span>
                                         </div>
                                         <% } else { %>
-                                        <input type="text" name="admin_email" class="form-control" placeholder="電子郵件地址"
-                                            value="<%= client_info.admin_email %>">
+                                        <input type="text" name="admin_email" class="form-control" placeholder="電子郵件地址" value="<%= client_info.admin_email %>">
                                         <% } %>
                                         <% } else { %>
                                         <input type="text" name="admin_email" class="form-control" placeholder="電子郵件地址">
@@ -41,14 +39,11 @@
                                         <% if (validation.length > 0) { %>
                                         <% if (validation.find(element => element.param == "admin_name")) { %>
                                         <div class="has-error">
-                                            <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱"
-                                                value="<%= client_info.admin_name %>">
-                                            <span
-                                                class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_name"))].msg; %></span>
+                                            <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱" value="<%= client_info.admin_name %>">
+                                            <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_name"))].msg; %></span>
                                         </div>
                                         <% } else { %>
-                                        <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱"
-                                            value="<%= client_info.admin_name %>">
+                                        <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱" value="<%= client_info.admin_name %>">
                                         <% } %>
                                         <% } else { %>
                                         <input type="text" name="admin_name" class="form-control" placeholder="用戶名稱">
@@ -61,19 +56,15 @@
                                         <% if (validation.length > 0) { %>
                                         <% if (validation.find(element => element.param == "admin_password")) { %>
                                         <div class="has-error">
-                                            <input type="password" name="admin_password" id="password"
-                                                class="form-control" placeholder="密碼">
-                                            <span
-                                                class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_password"))].msg; %></span>
+                                            <input type="password" name="admin_password" id="password" class="form-control" placeholder="密碼">
+                                            <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "admin_password"))].msg; %></span>
                                         </div>
                                         <% } else { %>
-                                        <input type="password" name="admin_password" id="password" class="form-control"
-                                            placeholder="密碼">
+                                        <input type="password" name="admin_password" id="password" class="form-control" placeholder="密碼">
                                         <span class="error text-danger"></span>
                                         <% } %>
                                         <% } else { %>
-                                        <input type="password" name="admin_password" id="password" class="form-control"
-                                            placeholder="密碼">
+                                        <input type="password" name="admin_password" id="password" class="form-control" placeholder="密碼">
                                         <span class="error text-danger"></span>
                                         <% } %>
                                     </div>
@@ -82,19 +73,15 @@
                                         <% if (validation.length > 0) { %>
                                         <% if (validation.find(element => element.param == "confirmed_password")) { %>
                                         <div class="has-error">
-                                            <input type="password" name="confirmed_password" id="confirmed_password"
-                                                class="form-control" placeholder="再次輸入密碼">
-                                            <span class="error text-danger validation"
-                                                id="message"><%= validation[(validation.findIndex(element => element.param == "confirmed_password"))].msg; %></span>
+                                            <input type="password" name="confirmed_password" id="confirmed_password" class="form-control" placeholder="再次輸入密碼">
+                                            <span class="error text-danger validation" id="message"><%= validation[(validation.findIndex(element => element.param == "confirmed_password"))].msg; %></span>
                                         </div>
                                         <% } else { %>
-                                        <input type="password" name="confirmed_password" id="confirmed_password"
-                                            class="form-control" placeholder="再次輸入密碼">
+                                        <input type="password" name="confirmed_password" id="confirmed_password" class="form-control" placeholder="再次輸入密碼">
                                         <span class="error text-danger validation" id="message"></span>
                                         <% } %>
                                         <% } else { %>
-                                        <input type="password" name="confirmed_password" id="confirmed_password"
-                                            class="form-control" placeholder="再次輸入密碼">
+                                        <input type="password" name="confirmed_password" id="confirmed_password" class="form-control" placeholder="再次輸入密碼">
                                         <span class="error text-danger" id="message"></span>
                                         <% } %>
                                         <span id='message'></span>
@@ -125,11 +112,8 @@
                                         <% for (var i=0; i< privileges.length; i++) { %>
                                         <tr>
                                             <td class="col-md-3">
-                                                <input type="checkbox" name="privileges_id"
-                                                    id="<%= privileges[i].privileges_id%>"
-                                                    value="<%= privileges[i].privileges_id%>">
-                                                <label
-                                                    for="<%= privileges[i].privileges_id%>"><%= privileges[i].privileges_name%></label>
+                                                <input type="checkbox" name="privileges_id" id="<%= privileges[i].privileges_id%>" value="<%= privileges[i].privileges_id%>">
+                                                <label for="<%= privileges[i].privileges_id%>"><%= privileges[i].privileges_name%></label>
                                             </td>
                                             <td><%= privileges[i].privileges_description%></td>
                                         </tr>
@@ -140,8 +124,7 @@
                                 <% if (validation.length > 0) { %>
                                 <% if (validation.find(element => element.param == "privileges_id")) { %>
                                 <div class="has-error" style="padding-bottom: 10px;">
-                                    <span
-                                        class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "privileges_id"))].msg; %></span>
+                                    <span class="error text-danger validation"><%= validation[(validation.findIndex(element => element.param == "privileges_id"))].msg; %></span>
                                 </div>
                                 <% } %>
                                 <% } %>

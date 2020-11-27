@@ -5,7 +5,13 @@ exports.getAnalysisReport = (analysisId, companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM analysisdb.analysis_full_information WHERE analysis_id = ? AND company_id = ?`, [analysisId, companyId]);
+            return connection.query(`
+            SELECT *
+            FROM
+                analysisdb.analysis_full_information
+            WHERE
+                analysis_id = ?
+                AND company_id = ?`, [analysisId, companyId]);
         })
         .then(([rows, field]) => {
             if (rows.length) return rows;
@@ -22,10 +28,19 @@ exports.getAnalysisReport = (analysisId, companyId) => {
 
 exports.getAnalysisReportList = (userId, companyId) => {
     var connection;
-    return connectionPool.getConnection()   
+    return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT analysis_id, analysis_date, created_date FROM analysisdb.analysis WHERE company_id = ? AND user_id = ?`, [companyId, userId]);
+            return connection.query(`
+            SELECT
+                analysis_id,
+                analysis_date,
+                created_date
+            FROM
+                analysisdb.analysis
+            WHERE
+                company_id = ?
+                AND user_id = ?`, [companyId, userId]);
         })
         .then(([rows, field]) => {
             return rows;

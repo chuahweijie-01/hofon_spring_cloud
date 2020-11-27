@@ -3,7 +3,18 @@ const testController = require('../../controller/test/test');
 const uuid = require('uuid');
 
 router = express.Router();
-router.use(express.static('./public/'));
+
+router.post('/analysis', testController.upload, (req, res) => {
+
+    var newJSONObject = {
+        analysisInfo: JSON.parse(req.body.analysisInfo),
+        analysisDetails: JSON.parse(req.body.analysisDetails)
+    }
+
+    console.log(newJSONObject);
+
+    res.status(200).send("成功上傳");
+})
 
 router.delete('/', testController.deleteAPI);
 
@@ -16,6 +27,7 @@ router.get('/paymentInterface', (req, res) => {
     res.render('paymentResult', {
         paymentResult: 1
     })
-})
+});
+
 
 module.exports = router;

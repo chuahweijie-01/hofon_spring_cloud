@@ -10,14 +10,11 @@ const cookieParser = require('cookie-parser');
 const methodOverride = require('method-override')
 const cors = require('cors');
 const morgan = require('morgan');
-
-const pdf = require('html-pdf');
-const options = { format: 'a4', base: 'http://localhost:3000' };
-
-var sessionStore = new MySQLStore({}, connection);
+const sessionStore = new MySQLStore({}, connection);
 const passport = require('passport');
 const flash = require('connect-flash');
 
+//WED ADMIN ROUTES
 const user = require('./route/admin/user');
 const client = require('./route/admin/client');
 const product = require('./route/admin/product');
@@ -36,7 +33,9 @@ const album = require('./route/admin/album');
 const world = require('./route/admin/world');
 const analysis = require('./route/admin/analysis');
 const zone = require('./route/admin/zone');
+const errorPage = require('./route/admin/error');
 
+//REACT NATIVE ROUTES
 const mobile_auth = require('./route/mobile_user/mobile_auth');
 const m_company = require('./route/mobile_user/company');
 const m_product = require('./route/mobile_user/product');
@@ -46,13 +45,12 @@ const m_order = require('./route/mobile_user/order');
 const m_paymentGateway = require('./route/mobile_user/paymentGateway');
 const m_analysis = require('./route/mobile_user/analysis');
 
+//3RD PARTY ROUTES
 const analysis3rdParty = require('./route/third_party_application/analysis');
 const user3rdParty = require('./route/third_party_application/user');
 
-const errorPage = require('./route/admin/error');
-
+//TEST CASE ROUTES
 const testEndPoint = require('./route/test/test');
-
 
 const middlewares = require('./middleware/middlewares');
 const passport_conf = require('./conf/passport_conf')(passport);
@@ -63,11 +61,9 @@ app.use(helmet());
 //app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.static('./public'));
 app.set('views', './view');
 app.set('view engine', 'ejs');
-
 app.use(session({
     secret: 'secret',
     store: sessionStore,
@@ -82,9 +78,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-
 app.use(methodOverride('_method'));
-
 app.use((req, res, next) => {
     if (req.query._method == 'DELETE') {
         req.method = 'DELETE';
@@ -113,19 +107,15 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get('/session', (req, res) => {
-    res.send(`Expires in ${req.session.cookie.maxAge / 1000} 's`);
-})
-
 //REACT NATIVE ENDPOINT
 app.use('/mobile', mobile_auth);
-app.use('/mobile/api/company', m_company);
-app.use('/mobile/api/product', m_product);
 app.use('/mobile/api/cart', m_cart);
 app.use('/mobile/api/user', m_user);
 app.use('/mobile/api/order', m_order);
-app.use('/mobile/api/payment', m_paymentGateway);
+app.use('/mobile/api/company', m_company);
+app.use('/mobile/api/product', m_product);
 app.use('/mobile/api/analysis', m_analysis);
+app.use('/mobile/api/payment', m_paymentGateway);
 
 //3RD PARTY ENDPOINT
 app.use('/analysisResult', analysis3rdParty);
@@ -134,14 +124,11 @@ app.use('/user', user3rdParty);
 //TEST CASE ENDPOINT
 app.use('/test/v1', testEndPoint);
 
-//ERROR PAGE ENDPOINT
-app.use('/api/error', errorPage);
-
 //WEB ADMIN ENDPOINT
 app.use('/', web_auth);
+app.use('/api/user', middlewares.checkAuthenticated, user);
 app.use('/api/client', middlewares.checkAuthenticated, client);
 app.use('/api/company', middlewares.checkAuthenticated, company);
-app.use('/api/user', middlewares.checkAuthenticated, user);
 app.use('/api/product', middlewares.checkAuthenticated, product);
 app.use('/api/discount', middlewares.checkAuthenticated, discount);
 app.use('/api/dashboard', middlewares.checkAuthenticated, dashboard);
@@ -156,6 +143,7 @@ app.use('/api/album', middlewares.checkAuthenticated, album);
 app.use('/api/world', middlewares.checkAuthenticated, world);
 app.use('/api/analysis', middlewares.checkAuthenticated, analysis);
 app.use('/api/zone', middlewares.checkAuthenticated, zone);
+app.use('/api/error', errorPage);
 
-var port = process.env.PORT || 3000
+var port = process.env.PORT || 3000;
 app.listen(3000, () => console.log(`Listening to Port : ${port} ... `));

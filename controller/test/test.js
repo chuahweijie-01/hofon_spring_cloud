@@ -1,4 +1,5 @@
 const testModel = require('../../model/test/test');
+const uploadImage = require('../../middleware/test/upload_image');
 
 exports.deleteAPI = (req, res) => {
     var cartId = '610';
@@ -9,5 +10,14 @@ exports.deleteAPI = (req, res) => {
         })
         .catch((err) => {
             res.status(404).send({ message: err.message });
-        })
+        });
+}
+
+exports.upload = (req, res, next) => {
+    var tempFolderName = Date.now();
+    req.session.tempFolderName = tempFolderName;
+    uploadImage.testImageUpload(tempFolderName)(req, res, (err) => {
+        if (err) res.status(404).send(err);
+        else next();
+    });
 }

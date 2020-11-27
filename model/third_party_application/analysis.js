@@ -10,14 +10,21 @@ exports.insertAnalysisData = (analysisInfo, analysisDetails) => {
             //return connection.query(`INSERT INTO analysisdb.analysis SET ?`, [analysisInfo])
         })
         .then((result) => {
-            return connection.query(`INSERT INTO analysisdb.analysis SET ?`, [analysisInfo])
+            return connection.query(`
+            INSERT INTO
+                analysisdb.analysis
+            SET ?`, [analysisInfo])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) {
                 analysisId = result[0].insertId;
                 for (var array in analysisDetails)
                     analysisDetails[array].unshift(analysisId);
-                return connection.query(`INSERT INTO analysisdb.analysis_details (analysis_id, model_id, score, image_name) VALUES ?`, [analysisDetails])
+                return connection.query(`
+                INSERT INTO
+                    analysisdb.analysis_details
+                    (analysis_id, model_id, score, image_name)
+                VALUES ?`, [analysisDetails])
             } else {
                 throw new Error('資料新增失敗');
             }
@@ -43,11 +50,21 @@ exports.deleteAnalysisData = (analysisId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT image_path FROM analysisdb.analysis WHERE analysis_id = ?`, [analysisId])
+            return connection.query(`
+            SELECT
+                image_path
+            FROM
+                analysisdb.analysis
+            WHERE
+                analysis_id = ?`, [analysisId])
         })
         .then(([rows, field]) => {
             imagePath = rows;
-            return connection.query(`DELETE FROM analysisdb.analysis WHERE analysis_id = ?`, [analysisId]);
+            return connection.query(`
+            DELETE FROM
+                analysisdb.analysis
+            WHERE
+                analysis_id = ?`, [analysisId]);
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) return (imagePath)

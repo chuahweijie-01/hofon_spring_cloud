@@ -11,16 +11,38 @@ exports.getAnalysisReportList = (pageInfo, company_id) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS analysisTotal FROM analysisdb.analysis`)
+            return connection.query(`
+            SELECT
+                COUNT(*) AS analysisTotal
+            FROM
+                analysisdb.analysis`)
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].analysisTotal;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
-            return connection.query(`SELECT analysis.analysis_id, analysis.analysis_date, user.user_name, user.user_gender, COUNT(*) AS total_method,
-                                     DATE_FORMAT(analysis.created_date, '%d-%c-%Y %H:%i:%s') AS created_date FROM analysisdb.analysis AS analysis
-                                     JOIN analysisdb.analysis_details AS analysis_details ON analysis.analysis_id = analysis_details.analysis_id
-                                     JOIN userdb.user AS user ON analysis.user_id = user.user_id
-                                     WHERE analysis.company_id = ? AND analysis_details.image_name <> 'null' GROUP BY analysis.analysis_id LIMIT ${limit}`, [company_id]);
+            return connection.query(`
+            SELECT analysis.analysis_id,
+                analysis.analysis_date,
+                user.user_name,
+                user.user_gender,
+                COUNT(*) AS total_method,
+                DATE_FORMAT(analysis.created_date, '%d-%c-%Y %H:%i:%s') AS created
+            FROM
+                analysisdb.analysis AS analysis
+            JOIN
+                analysisdb.analysis_details AS analysis_details
+                USING (analysis_id)
+            JOIN
+                userdb.user AS user
+                USING (user_id)
+            WHERE
+                analysis.company_id = ?
+                AND analysis_details.image_name <> 'null'
+            GROUP BY
+                analysis.analysis_id
+            ORDER BY
+                analysis.created_date DESC
+            LIMIT ${limit}`, [company_id]);
         })
         .then(([rows, field]) => {
             result = {
@@ -51,7 +73,13 @@ exports.getAnalysisReport = (analysisId, companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM analysisdb.analysis_full_information WHERE analysis_id = ? AND company_id = ?`, [analysisId, companyId])
+            return connection.query(`
+            SELECT *
+            FROM
+                analysisdb.analysis_full_information
+            WHERE
+                analysis_id = ?
+                AND company_id = ?`, [analysisId, companyId])
         })
         .then(([rows, field]) => {
             if (rows.length) return rows;
@@ -71,11 +99,21 @@ exports.deleteAnalysisData = (analysisId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT image_path FROM analysisdb.analysis WHERE analysis_id = ?`, [analysisId])
+            return connection.query(`
+            SELECT
+                image_path
+            FROM
+                analysisdb.analysis
+            WHERE
+                analysis_id = ?`, [analysisId])
         })
         .then(([rows, field]) => {
             imagePath = rows;
-            return connection.query(`DELETE FROM analysisdb.analysis WHERE analysis_id = ?`, [analysisId]);
+            return connection.query(`
+            DELETE FROM
+                analysisdb.analysis
+            WHERE
+                analysis_id = ?`, [analysisId]);
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) return (imagePath)

@@ -29,7 +29,7 @@ exports.getOrderList = (companyId, pageInfo) => {
                 order_total_item,
                 order_final_price,
                 order_status,
-                DATE_FORMAT(trade_date, '%d-%c-%Y %H:%i:%s') AS trade_date
+                DATE_FORMAT(trade_date, '%d-%c-%Y %H:%i:%s') AS trade
             FROM
                 orderdb.order
             WHERE

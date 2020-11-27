@@ -30,12 +30,14 @@ exports.getInvoiceList = (companyId, pageInfo) => {
                 order_total_item,
                 order_final_price,
                 order_status,
-                DATE_FORMAT(last_update, '%d-%c-%Y %H:%i:%s') AS last_update
+                DATE_FORMAT(last_update, '%d-%c-%Y %H:%i:%s') AS update_date
             FROM
                 orderdb.order
             WHERE
                 company_id = ?
                 AND order_status <> 0
+            ORDER BY
+                last_update DESC
             LIMIT ${limit}`, [companyId]);
         })
         .then(([rows, field]) => {

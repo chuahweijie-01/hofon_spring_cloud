@@ -49,6 +49,7 @@ exports.addNewOrder = (orderInfo, product_info) => {
 }
 
 exports.getOrderList = (companyId, userId) => {
+    console.log('Getting order list ...');
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {
@@ -84,7 +85,14 @@ exports.getOrder = (orderId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT * FROM orderdb.order_full_information WHERE order_id = ? GROUP BY product_id`, [orderId])
+            return connection.query(`
+            SELECT *
+            FROM
+                orderdb.order_full_information
+            WHERE
+                order_id = ?
+            GROUP BY
+                product_id`, [orderId])
         })
         .then(([rows, field]) => {
             if (rows.length) return rows;
@@ -104,9 +112,24 @@ exports.getOrderReview = (orderId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT address_detail, city_name, country_name_chinese, order_total_price, order_tax, order_final_price, order_zone_charge,
-                                     product_name, image_path, discount_price, quantity, total_price
-                                     FROM orderdb.order_full_information WHERE order_id = ?`, [orderId])
+            return connection.query(`
+            SELECT
+                address_detail,
+                city_name,
+                country_name_chinese,
+                order_total_price,
+                order_tax,
+                order_final_price,
+                order_zone_charge,
+                product_name,
+                image_path,
+                discount_price,
+                quantity,
+                total_price
+            FROM
+                orderdb.order_full_information
+            WHERE
+                order_id = ?`, [orderId])
         })
         .then(([rows, length]) => {
             if (rows.length) return rows;
@@ -126,7 +149,11 @@ exports.deleteOrder = (orderId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM orderdb.order WHERE order_id = ?`, [orderId])
+            return connection.query(`
+            DELETE FROM
+                orderdb.order
+            WHERE
+                order_id = ?`, [orderId])
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`訂單已移除`);
@@ -149,30 +176,66 @@ exports.updateOrderAddress = (orderAddress, userId, companyId) => {
             return connection.query(`START TRANSACTION`);
         })
         .then((result) => {
-            return connection.query(`SELECT * FROM userdb.address AS address
-                                     JOIN userdb.user_address AS user_address ON address.address_id = user_address.address_id
-                                     JOIN userdb.user AS user ON user_address.user_id = user.user_id WHERE user.user_id = ? AND address.address_id = ?`, [userId, orderAddress.address_id])
+            return connection.query(`
+            SELECT *
+            FROM
+                userdb.address AS address
+            JOIN
+                userdb.user_address AS user_address
+                USING (address_id)
+            JOIN
+                userdb.user AS user
+                USING (user_id)
+            WHERE
+                user.user_id = ?
+                AND address.address_id = ?`, [userId, orderAddress.address_id])
         })
         .then(([rows, field]) => {
-            if (rows.length) return connection.query(`INSERT INTO orderdb.order_address SET ? ON DUPLICATE KEY UPDATE address_Id = ?`, [orderAddress, orderAddress.address_id])
+            if (rows.length) return connection.query(`
+            INSERT INTO
+                orderdb.order_address
+            SET ?
+            ON DUPLICATE KEY
+                UPDATE
+                    address_Id = ?`, [orderAddress, orderAddress.address_id])
             else throw new Error(`訂單地址添加失敗1`);
         })
         .then((result) => {
             if (result[0].affectedRows >= 1)
-                return connection.query(`SELECT zone.zone_charge FROM orderdb.order AS orderr
-                                         JOIN orderdb.order_address AS order_address ON orderr.order_id = order_address.order_id
-                                         JOIN userdb.address AS address ON order_address.address_id = address.address_id
-                                         JOIN userdb.city AS city ON address.city_id = city.city_id
-                                         JOIN companydb.zone_city AS zone_city ON city.city_id = zone_city.city_id
-                                         JOIN companydb.zone AS zone ON zone_city.zone_id = zone.zone_id WHERE orderr.order_id = ? and zone.company_id = ?`, [orderAddress.order_id, companyId])
+                return connection.query(`
+                SELECT
+                    zone.zone_charge FROM orderdb.order AS orderr
+                JOIN
+                    orderdb.order_address AS order_address
+                    USING (order_id)
+                JOIN
+                    userdb.address AS address
+                    USING (address_id)
+                JOIN
+                    userdb.city AS city
+                    USING (city_id)
+                JOIN
+                    companydb.zone_city AS zone_city
+                    USING (city_id)
+                JOIN
+                    companydb.zone AS zone
+                    USING (zone_id)
+                WHERE
+                    orderr.order_id = ?
+                    AND zone.company_id = ?`, [orderAddress.order_id, companyId])
             else throw new Error(`訂單地址添加失敗2`)
         })
         .then(([rows, field]) => {
             var zoneCharge;
             if (rows.length) zoneCharge = rows[0].zone_charge;
             else zoneCharge = 0;
-            return connection.query(`UPDATE orderdb.order SET order_zone_charge = ?, order_final_price = order_final_price + order_zone_charge WHERE order_id = ?`,
-                [zoneCharge, orderAddress.order_id])
+            return connection.query(`
+            UPDATE orderdb.order
+            SET
+                order_zone_charge = ?,
+                order_final_price = order_final_price + order_zone_charge
+            WHERE
+                order_id = ?`, [zoneCharge, orderAddress.order_id])
         })
         .then((result) => {
             if (result[0].info.match('Changed: 1')) return connection.query(`COMMIT`);

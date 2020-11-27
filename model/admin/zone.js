@@ -31,7 +31,7 @@ exports.getZoneList = (pageInfo, companyId) => {
                 companydb.zone AS zone
             LEFT JOIN
                 companydb.zone_city AS zone_city
-                ON zone.zone_id = zone_city.zone_id
+                USING (zone_id)
             WHERE
                 zone.company_id = ?
             GROUP BY
@@ -105,10 +105,10 @@ exports.getCity = (countryId) => {
                 userdb.city AS city
             LEFT JOIN
                 companydb.zone_city AS zone_city
-                ON city.city_id = zone_city.city_id
+                USING (city_id)
             LEFT JOIN
                 companydb.zone AS zone
-                ON zone_city.zone_id = zone.zone_id
+                USING (zone_id)
             WHERE
                 city.country_id = ?
             ORDER BY
@@ -181,10 +181,10 @@ exports.getZone = (zoneId) => {
                 userdb.city AS city
             LEFT JOIN
                 companydb.zone_city AS zone_city
-                ON city.city_id = zone_city.city_id
+                USING (city_id)
             LEFT JOIN
                 companydb.zone AS zone
-                ON zone_city.zone_id = zone.zone_id
+                USING (zone_id)
             WHERE
                 zone.zone_id = ?`, [zoneId])
         })
@@ -225,7 +225,12 @@ exports.updateZone = (zoneInfo, zoneId, cityId) => {
             } else throw new Error(`資料更新失敗`)
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return connection.query(`UPDATE companydb.zone SET ? WHERE zone_id = ?`, [zoneInfo, zoneId])
+            if (result[0].affectedRows >= 1) return connection.query(`
+            UPDATE
+                companydb.zone
+            SET ?
+            WHERE
+                zone_id = ?`, [zoneInfo, zoneId])
             else throw new Error(`資料更新失敗`)
         })
         .then((result) => {

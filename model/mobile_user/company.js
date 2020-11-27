@@ -17,10 +17,10 @@ exports.getCompanyList = (user_id) => {
                 companydb.company AS company
             JOIN
                 companydb.mobile_setting AS mobile
-                ON company.company_id = mobile.company_id
+                USING (company_id)
             JOIN
                 userdb.user_company AS user_company
-                ON user_company.company_id = company.company_id
+                USING (company_id)
             JOIN
                 userdb.user AS user
                 ON user.user_id = user_company.user_id

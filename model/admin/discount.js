@@ -75,10 +75,10 @@ exports.getDiscountList = (companyId, pageInfo) => {
                 productdb.discount AS discount
             JOIN
                 productdb.product_discount AS product_discount
-                ON discount.discount_id = product_discount.discount_id
+                USING (discount_id)
             JOIN
                 productdb.product AS product
-                ON product_discount.product_id = product.product_id
+                USING (product_id)
             WHERE
                 product.company_id = ?
             GROUP BY
@@ -124,10 +124,10 @@ exports.getProductList = (companyId) => {
                 productdb.product AS product
             LEFT JOIN
                 productdb.product_discount AS product_discount
-                ON product.product_id = product_discount.product_id
+                USING (product_id)
             LEFT JOIN
                 productdb.discount AS discount
-                ON product_discount.discount_id = discount.discount_id
+                USING (discount_id)
             WHERE
                 product.company_id = ?
                 AND product.product_status = 1
@@ -161,10 +161,10 @@ exports.getDiscount = (discountId) => {
                 productdb.discount AS discount
             JOIN
                 productdb.product_discount AS product_discount
-                ON discount.discount_id = product_discount.discount_id
+                USING (discount_id)
             JOIN
                 productdb.product AS product
-                ON product_discount.product_id = product.product_id
+                USING (product_id)
             WHERE
                 discount.discount_id = ?`, [discountId]);
         })

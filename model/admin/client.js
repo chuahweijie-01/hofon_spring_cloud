@@ -98,10 +98,10 @@ exports.getClient = (clientId) => {
                 companydb.admin AS admin
             JOIN
                 companydb.admin_privileges AS admin_privileges
-                ON admin.admin_id = admin_privileges.admin_id
+                USING (admin_id)
             JOIN
                 companydb.privileges as privileges
-                ON admin_privileges.privileges_id = privileges.privileges_id
+                USING (privileges_id)
             WHERE
                 admin.admin_id = ?`, [clientId]);
         })
@@ -158,11 +158,11 @@ exports.getClientList = (role, company_id, pageInfo) => {
                     company.company_name,
                     company.company_official_id,
                     DATE_FORMAT(last_login, '%d-%c-%Y %H:%i:%s') AS last_login
-                    FROM
+                FROM
                     companydb.admin AS admin
                 JOIN
                     companydb.company AS company
-                    ON admin.company_id = company.company_id
+                    USING (company_id)
                 WHERE
                     admin_role = 0
                 LIMIT ${limit}`;
@@ -231,13 +231,31 @@ exports.getCompanyList = () => {
         })
 };
 
-exports.updateClient = (clientId, clientInfo, privilegesId) => {
+exports.updateClient = (clientId, clientInfo, privilegesId, companyId) => {
     var connection;
     var privileges = [];
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
             return connection.query(`
+            SELECT
+                COUNT(*) AS importantPrivileges
+            FROM
+                companydb.admin AS admin
+            JOIN
+                companydb.admin_privileges
+                USING (admin_id)
+            JOIN
+                companydb.privileges AS privileges
+                USING(privileges_id)
+            WHERE
+                admin.company_id = ?
+                AND privileges.privileges_id = 3`, [companyId])
+        })
+        .then(([rows, field]) => {
+            if (!privilegesId.includes("3") && rows[0].importantPrivileges === 1)
+                throw new Error(`至少需要一位管理者擁有用戶管理權限`);
+            else return connection.query(`
             DELETE FROM
                 companydb.admin_privileges
             WHERE

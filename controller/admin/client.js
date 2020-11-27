@@ -105,7 +105,7 @@ exports.client_new = (req, res) => {
     client_model.getCompanyList()
         .then((result) => {
             company_info = result;
-            return client_model.getPrivilegesList()
+            return client_model.getPrivilegesList();
         })
         .then((result) => {
             privileges_info = result;
@@ -128,8 +128,8 @@ exports.client_new = (req, res) => {
             });
             req.session.save(function (err) {
                 res.redirect('/api/client');
-            })
-        })
+            });
+        });
 }
 
 
@@ -137,7 +137,7 @@ exports.updateClient = (req, res) => {
     var privileges_id;
     Array.isArray(req.body.privileges_id) ? privileges_id = req.body.privileges_id : privileges_id = [req.body.privileges_id];
 
-    client_info = {
+    var client_info = {
         admin_email: req.body.admin_email,
         admin_name: req.body.admin_name,
     }

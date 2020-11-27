@@ -103,7 +103,7 @@ exports.getCountryList = (pageInfo) => {
                 userdb.country AS country
             LEFT JOIN
                 userdb.city AS city
-                ON country.country_id = city.country_id
+                USING (country_id)
             GROUP BY
                 country.country_id
             ORDER BY
@@ -151,7 +151,7 @@ exports.getCountry = (countryId) => {
                 userdb.country AS country
             LEFT JOIN
                 userdb.city AS city
-                ON country.country_id = city.country_id
+                USING (country_id)
             WHERE
                 country.country_id = ?
             ORDER BY

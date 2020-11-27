@@ -124,7 +124,8 @@ exports.getPanelBoardSummary = (companyId) => {
                 FROM
                     productdb.product
                 WHERE
-                    company_id = ?) AS totalProduct,
+                    company_id = ?
+                    AND deleted = 0) AS totalProduct,
                 (SELECT COUNT(*)
                 FROM
                     userdb.user AS user
@@ -230,7 +231,7 @@ exports.getUserRecord = (companyId) => {
             SELECT
                 user.user_name,
                 user.user_email,
-                DATE_FORMAT(user.created_date, '%d-%c-%Y %H:%i:%s') AS created_date
+                DATE_FORMAT(user.created_date, '%d-%c-%Y %H:%i:%s') AS created
             FROM
                 userdb.user AS user
             JOIN

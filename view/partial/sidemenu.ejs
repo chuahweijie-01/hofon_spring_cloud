@@ -13,7 +13,10 @@
 
         </div>
 
-        <% if (!locals.isAdmin) { %>
+        <% if (locals.isAdmin) { %>
+        <a href="/api/category" class="list-group-item"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 產品屬性</a>
+        <a href="/api/world" class="list-group-item"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> 區域</a>
+        <% } else { %>
         <a href="/api/product" class="list-group-item"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 產品</a>
         <a href="/api/zone" class="list-group-item"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> 物流區域</a>
         <a href="/api/discount" class="list-group-item"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> 促銷管理</a>
@@ -21,9 +24,6 @@
         <a href="/api/ads" class="list-group-item"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 廣告管理</a>
         <a href="/api/mobile" class="list-group-item"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> 軟體設定</a>
         <!--<a href="/api/album" class="list-group-item"><span class="glyphicon glyphicon-film" aria-hidden="true"></span> 相簿功能</a>-->
-        <% } else { %>
-        <a href="/api/category" class="list-group-item"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 產品屬性</a>
-        <a href="/api/world" class="list-group-item"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> 區域</a>
         <% } %>
 
         <a href="javascript:void(0)" class="list-group-item" data-toggle="collapse"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 報告 <i class="fa fa-angle"></i></a>

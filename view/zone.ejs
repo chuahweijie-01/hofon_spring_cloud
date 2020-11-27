@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('partial/header')-%>
+
 <body>
     <section id="main">
         <div class="container">
@@ -9,21 +10,6 @@
                 <div class="col-md-9">
                     <%- include('partial/flash')-%>
                     <a class="btn btn-danger" href="/api/zone/new" style="margin-bottom: 10px;">新增<%= title%></a>
-                    <!--
-                    <div class="panel panel-default">
-                        <div class="panel-heading main-color-bg">
-                            <h3 class="panel-title">設定</h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <input class="form-control" id="tableSearch" type="text" placeholder="搜索">
-                                </div>
-                            </div>
-                            <br>
-                        </div>
-                    </div>
-                    -->
                     <div class="panel panel-default">
                         <div class="panel-heading main-color-bg">
                             <h3 class="panel-title"><%= title%></h3>
@@ -57,7 +43,8 @@
                                         <td><%= data[i].zone_charge %></td>
                                         <td><%= data[i].total_city %></td>
                                         <td><%= data[i].last_update %></td>
-                                        <td><a class="btn btn-default" href="/api/zone/<%= data[i].zone_id%>">編輯</a></td>
+                                        <td><a class="btn btn-default" href="/api/zone/<%= data[i].zone_id%>">編輯</a>
+                                        </td>
                                         <td><a class="btn btn-danger" href="#zoneDeleteModal_<%= data[i].zone_id %>" data-toggle="modal">刪除</a></td>
                                     </tr>
                                     <div id="zoneDeleteModal_<%= data[i].zone_id %>" class="modal fade">
@@ -94,4 +81,5 @@
     </section>
     <%- include('partial/footer')-%>
 </body>
+
 </html>

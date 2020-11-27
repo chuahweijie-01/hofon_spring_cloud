@@ -5,7 +5,10 @@ exports.addNewAward = (awardInfo, productId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`INSERT INTO productdb.award SET ? `, [awardInfo]);
+            return connection.query(`
+            INSERT INTO
+                productdb.award
+            SET ? `, [awardInfo]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) {
@@ -13,7 +16,11 @@ exports.addNewAward = (awardInfo, productId) => {
                 for (var i = 0; i < productId.length; i++) {
                     product.push([productId[i], awardInfo.award_id])
                 }
-                return connection.query(`INSERT INTO productdb.product_award (product_id, award_id) VALUES ?`, [product]);
+                return connection.query(`
+                INSERT INTO
+                    productdb.product_award
+                    (product_id, award_id)
+                VALUES ?`, [product]);
             }
             else throw new Error(`資料新增失敗`);
         })
@@ -35,11 +42,23 @@ exports.getAward = (awardId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT award.award_id, award.award_name, award.award_description, product_award.product_id, product.product_name
-                                     FROM productdb.award AS award
-                                     JOIN productdb.product_award AS product_award ON award.award_id = product_award.award_id
-                                     JOIN productdb.product AS product ON product_award.product_id = product.product_id
-                                     WHERE award.award_id = ?`, [awardId]);
+            return connection.query(`
+            SELECT
+                award.award_id,
+                award.award_name,
+                award.award_description,
+                product_award.product_id,
+                product.product_name
+            FROM
+                productdb.award AS award
+            JOIN
+                productdb.product_award AS product_award
+                USING (award_id)
+            JOIN
+                productdb.product AS product
+                USING (product_id)
+            WHERE
+                award.award_id = ?`, [awardId]);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -64,17 +83,36 @@ exports.getAwardList = (companyId, pageInfo) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT COUNT(*) AS total_award FROM productdb.award WHERE company_id = ?`, companyId);
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_award
+            FROM
+                productdb.award
+            WHERE
+                company_id = ?`, companyId);
         })
         .then(([rows, field]) => {
             numberOfRows = rows[0].total_product;
             numberOfPages = Math.ceil(numberOfRows / numberPerPage);
-            return connection.query(`SELECT COUNT(*) AS total_award, award.award_id, award.award_name,
-                                     DATE_FORMAT(award.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
-                                     FROM productdb.award AS award
-                                     LEFT JOIN productdb.product_award AS product_award ON award.award_id = product_award.award_id
-                                     LEFT JOIN productdb.product AS product ON product_award.product_id = product.product_id
-                                     WHERE product.company_id = ? GROUP BY award.award_name LIMIT ${limit}`, [companyId]);
+            return connection.query(`
+            SELECT
+                COUNT(*) AS total_award,
+                award.award_id,
+                award.award_name,
+                DATE_FORMAT(award.last_update, '%d-%c-%Y %H:%i:%s') AS last_update
+            FROM
+                productdb.award AS award
+            LEFT JOIN
+                productdb.product_award AS product_award
+                USING (award_id)
+            LEFT JOIN
+                productdb.product AS product
+                USING (product_id)
+            WHERE
+                product.company_id = ?
+            GROUP BY
+                award.award_name
+            LIMIT ${limit}`, [companyId]);
         })
         .then(([rows, field]) => {
             result = {
@@ -106,7 +144,14 @@ exports.getProductList = (companyId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`SELECT product_id, product_name FROM productdb.product WHERE company_id = ?`, [companyId]);
+            return connection.query(`
+            SELECT
+                product_id,
+                product_name
+            FROM
+                productdb.product
+            WHERE
+                company_id = ?`, [companyId]);
         })
         .then(([rows, field]) => {
             return (rows);
@@ -125,7 +170,11 @@ exports.updateAward = (awardId, awardInfo, productId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM productdb.product_award WHERE award_id = ?`, [awardId]);
+            return connection.query(`
+            DELETE FROM
+                productdb.product_award
+            WHERE
+                award_id = ?`, [awardId]);
         })
         .then((result) => {
             if (result[0].affectedRows >= 1) {
@@ -133,11 +182,20 @@ exports.updateAward = (awardId, awardInfo, productId) => {
                 for (var i = 0; i < productId.length; i++) {
                     product.push([productId[i], award_id])
                 }
-                return connection.query(`INSERT INTO productdb.product_award (product_id, award_id) VALUES ?`, [product]);
+                return connection.query(`
+                INSERT INTO
+                    productdb.product_award
+                    (product_id, award_id)
+                VALUES ?`, [product]);
             } else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
-            if (result[0].affectedRows >= 1) return connection.query(`UPDATE productdb.award SET ? WHERE award_id = ?`, [awardInfo, awardId]);
+            if (result[0].affectedRows >= 1) return connection.query(`
+            UPDATE
+                productdb.award
+            SET ?
+            WHERE
+                award_id = ?`, [awardInfo, awardId]);
             else throw new Error(`資料更新失敗`);
         })
         .then((result) => {
@@ -158,7 +216,11 @@ exports.deleteAward = (awardId) => {
     return connectionPool.getConnection()
         .then((connect) => {
             connection = connect;
-            return connection.query(`DELETE FROM productdb.award WHERE award_id = ?`, [awardId]);
+            return connection.query(`
+            DELETE FROM
+                productdb.award
+            WHERE
+                award_id = ?`, [awardId]);
         })
         .then((result) => {
             if (result[0].affectedRows === 1) return (`資料刪除成功`);

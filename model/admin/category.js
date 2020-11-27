@@ -88,10 +88,10 @@ exports.getCategory = (categoryId) => {
                 productdb.category AS category
             JOIN
                 companydb.company_category AS company_category
-                ON category.category_id = company_category.category_id
+                USING (category_id)
             JOIN
                 companydb.company as company
-                ON company_category.company_id = company.company_id
+                USING (company_id)
             WHERE
                 category.category_id = ?`, [categoryId])
         })
@@ -137,7 +137,7 @@ exports.getCategoryList = (pageInfo) => {
                 companydb.company_category AS company_category
             JOIN
                 productdb.category AS category
-                ON company_category.category_id = category.category_id
+                USING (category_id)
             GROUP BY
                 category.category_name
             LIMIT ${limit}`)

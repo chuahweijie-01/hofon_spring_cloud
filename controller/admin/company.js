@@ -179,8 +179,7 @@ exports.updateCompany = (req, res) => {
             company_remarks: req.body.company_remarks,
             company_description: req.body.company_description
         };
-    }
-    else {
+    } else {
         company_info = {
             company_name: req.body.company_name,
             company_phone: req.body.company_phone,
