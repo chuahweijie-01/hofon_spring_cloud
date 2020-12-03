@@ -49,7 +49,6 @@ exports.addNewOrder = (orderInfo, product_info) => {
 }
 
 exports.getOrderList = (companyId, userId) => {
-    console.log('Getting order list ...');
     var connection;
     return connectionPool.getConnection()
         .then((connect) => {

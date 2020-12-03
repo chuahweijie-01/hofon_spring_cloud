@@ -12,6 +12,7 @@ exports.getCartProductList = (userId, companyId) => {
                 product.product_id,
                 product.product_name,
                 product.product_price,
+                product.product_stock,
                 cart_product.quantity,
                 product.product_member_price,
                 product_with_discount.discount_price,

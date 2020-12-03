@@ -23,6 +23,9 @@ exports.generateOrder = (req, res) => {
     var companyId = req.params.company;
     var userId = req.session.user;
 
+    //var ngrokTunnel = process.env.NGROK_IP;
+    var ngrokTunnel = 'https://8688a1b1b8c0.ngrok.io';
+
     var cartId;
 
     paymentModel.getCartId(userId, companyId)
@@ -36,8 +39,8 @@ exports.generateOrder = (req, res) => {
                 cummulativeProduct = cummulativeProduct + result[i].product_name + '#'
             }
             var totalPrice = (Math.round(result[0].order_final_price)).toString();
-            var returnURL = `${process.env.NGROK_IP}/mobile/api/payment/result/${cartId}/${companyId}`;
-            var orderResultURL = `${process.env.NGROK_IP}/mobile/api/payment/resultInterface`;
+            var returnURL = `${ngrokTunnel}/mobile/api/payment/result/${cartId}/${companyId}`;
+            var orderResultURL = `${ngrokTunnel}/mobile/api/payment/resultInterface`;
             initiateParameters(orderId, totalPrice, cummulativeProduct, returnURL, orderResultURL);
 
             let create = new ecpay_payment();
@@ -51,6 +54,10 @@ exports.generateOrder = (req, res) => {
 }
 
 exports.paymentResult = (req, res) => {
+
+    //var ngrokTunnel = process.env.NGROK_IP;
+    var ngrokTunnel = 'https://59f8279ef9d5.ngrok.io';
+
     if (req.body.RtnCode == 1) {
         var orderId = req.body.MerchantTradeNo;
         var orderAmount = req.body.TradeAmt;
@@ -59,7 +66,7 @@ exports.paymentResult = (req, res) => {
         var tradeNo = req.body.TradeNo;
         var companyId = req.params.company;
         var cartId = req.params.cart;
-        var orderView = `${process.env.NGROK_IP}/mobile/api/order/${orderId}`;
+        var orderView = `${ngrokTunnel}/mobile/api/order/${orderId}`;
 
         var companyEmail;
 

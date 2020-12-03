@@ -139,7 +139,8 @@ exports.product_display = (productId, companyId) => {
                 product.product_member_price, 
                 product_with_discount.discount_price,
                 product.product_rating, 
-                product.product_description, 
+                product.product_description,
+                product.product_stock,
                 category.category_name 
             FROM 
                 productdb.product AS product
